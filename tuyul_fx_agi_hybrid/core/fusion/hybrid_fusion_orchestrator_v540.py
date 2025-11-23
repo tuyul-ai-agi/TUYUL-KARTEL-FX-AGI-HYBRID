@@ -1,0 +1,17 @@
+from .tuyul_fusion_engine_v540 import run_fusion_layer12
+from ..risk.adaptive_risk_calculator_v540 import calculate_risk
+from ..reflective.meta_reflector_dispatch import run_meta_reflection
+
+
+def run_full_fusion_cycle(pair: str, timeframe: str):
+    fusion_output = run_fusion_layer12(pair, timeframe)
+    risk_output = calculate_risk(100000, 50)
+    reflection = run_meta_reflection(fusion_output)
+    return {
+        "pair": pair,
+        "conf12": fusion_output.conf12,
+        "wlwci": fusion_output.wlwci,
+        "rcadj": fusion_output.rcadj,
+        "risk": risk_output,
+        "reflection": reflection,
+    }

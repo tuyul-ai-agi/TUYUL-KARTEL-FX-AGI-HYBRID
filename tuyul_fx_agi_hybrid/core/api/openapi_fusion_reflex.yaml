@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: TUYUL FX Hybrid - Fusion Reflex API
+  version: 5.4.0
+paths:
+  /fusion/run:
+    post:
+      summary: Jalankan analisa Fusion Layer-12
+      description: Menghasilkan CONF₁₂, WLWCI, dan RCAdj berdasarkan data terbaru
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FusionRequest'
+      responses:
+        '200':
+          description: Fusion Output
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FusionResponse'
+  /reflex/run:
+    post:
+      summary: Jalankan Reflex Coherence Engine
+      responses:
+        '200':
+          description: Reflex Coherence hasil
+components:
+  schemas:
+    FusionRequest:
+      type: object
+      properties:
+        pair:
+          type: string
+        timeframe:
+          type: string
+    FusionResponse:
+      type: object
+      properties:
+        CONF12:
+          type: number
+        WLWCI:
+          type: number
+        RCAdj:
+          type: number

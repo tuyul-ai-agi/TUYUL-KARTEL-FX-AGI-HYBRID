@@ -1,0 +1,14 @@
+{
+  "pair": "XAUUSD",
+  "timeframe": "H4",
+  "conf12": 0.824,
+  "wlwci": 0.946,
+  "rcadj": 0.872,
+  "risk": {
+    "risk_percent": 1.0,
+    "lot_size": 1.25,
+    "rr_ratio": 2.1
+  },
+  "reflection_status": "ok",
+  "timestamp": "2025-11-23T12:48:01Z"
+}

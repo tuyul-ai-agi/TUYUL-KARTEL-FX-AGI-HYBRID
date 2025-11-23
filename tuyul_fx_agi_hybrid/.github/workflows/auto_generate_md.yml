@@ -1,0 +1,17 @@
+name: Auto Generate Documentation
+on:
+  push:
+    paths:
+      - 'core/**'
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Docs
+        run: python3 scripts/generate_docs.py
+      - name: Commit Docs
+        run: |
+          git add docs/
+          git commit -m "🧠 Auto-generated documentation"
+          git push

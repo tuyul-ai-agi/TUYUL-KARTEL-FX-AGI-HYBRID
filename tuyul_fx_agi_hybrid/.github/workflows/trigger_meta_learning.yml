@@ -1,0 +1,12 @@
+name: Trigger Meta Learning
+on:
+  push:
+    paths:
+      - 'vaults/fusion_journal.json'
+jobs:
+  reflect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Meta Learning
+        run: python3 core/reflective/relearning_cycle.py

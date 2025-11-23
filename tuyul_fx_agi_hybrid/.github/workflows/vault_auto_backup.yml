@@ -1,0 +1,16 @@
+name: Vault Auto Backup
+on:
+  schedule:
+    - cron: "0 2 * * *"
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Backup Vaults
+        run: zip -r backup_$(date +%F).zip vaults/
+      - name: Upload to Cloud
+        uses: actions/upload-artifact@v4
+        with:
+          name: vault_backup
+          path: backup_*.zip

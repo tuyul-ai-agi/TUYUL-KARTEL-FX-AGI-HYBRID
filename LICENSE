@@ -186,7 +186,7 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright [yyyy] [name of copyright owner]
+   Copyright 2024 TUYUL KARTEL
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -199,3 +199,22 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   MODIFICATIONS:
+   
+   This software includes modifications for AGI orchestration and autonomous
+   learning systems. The following additional terms apply:
+   
+   1. ATTRIBUTION: Any use of this software in production systems must
+      include attribution to TUYUL KARTEL and the TUYUL-FX-HYBRID project.
+   
+   2. DATA PRIVACY: Users of this software must ensure compliance with
+      applicable data protection regulations (GDPR, CCPA, etc.) when
+      processing user data through the AGI system.
+   
+   3. ETHICAL USE: This software must not be used for purposes that
+      could cause harm to individuals or society, including but not limited
+      to surveillance, discrimination, or manipulation.
+   
+   4. RESEARCH SHARING: Organizations using this software for research
+      are encouraged (but not required) to share findings with the community.

@@ -29,10 +29,10 @@ x-github:
   description: Unified AGI Reflective Sync Network (HYBRID ↔ JOURNAL ↔ VAULT)
 
 servers:
-  - url: https://api.github.com
-    description: GitHub REST API (for vault sync)
   - url: https://tuyul-agi-reflector.net/api
     description: AGI Reflex–Fusion Engine (Layer 8–12)
+  - url: https://api.github.com
+    description: GitHub REST API (for vault sync)
 
 components:
   securitySchemes:

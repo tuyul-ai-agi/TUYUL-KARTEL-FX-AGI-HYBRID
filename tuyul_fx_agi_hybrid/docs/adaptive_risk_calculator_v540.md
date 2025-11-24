@@ -13,4 +13,4 @@ No description available.
 Calculate position sizing using an adaptive 0.7–1% risk window.
 
 ---
-*Generated: 2025-11-24T05:49:57.147501+00:00*
+*Generated: 2025-11-24T05:53:34.028581+00:00*

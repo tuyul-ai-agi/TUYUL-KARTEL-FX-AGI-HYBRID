@@ -17,4 +17,4 @@ Run the full fusion-reflex cycle and return fusion metrics.
 Fetch Layer-12 fusion metrics for the given pair and timeframe.
 
 ---
-*Generated: 2025-11-24T05:49:57.137185+00:00*
+*Generated: 2025-11-24T05:53:34.021924+00:00*

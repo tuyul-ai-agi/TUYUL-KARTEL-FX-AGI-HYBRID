@@ -9,4 +9,4 @@
 Calculate adaptive risk metrics based on account balance and stop-loss size.
 
 ---
-*Generated: 2025-11-24T05:49:57.140253+00:00*
+*Generated: 2025-11-24T05:53:34.024115+00:00*

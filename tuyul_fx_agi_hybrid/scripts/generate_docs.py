@@ -61,24 +61,30 @@ def generate_module_docs(module_path: Path, output_dir: Path) -> None:
     module_name = module_path.stem
     functions = extract_functions(module_path)
     
-    if not functions:
-        return
-    
     # Create markdown content
     md_content = [
         f"# {module_name.replace('_', ' ').title()}",
         "",
         f"**Module:** `{module_path.relative_to(module_path.parents[2])}`",
         "",
-        "## Functions",
-        "",
     ]
     
-    for func in functions:
+    if functions:
         md_content.extend([
-            f"### `{func['signature']}`",
+            "## Functions",
             "",
-            func['docstring'],
+        ])
+        
+        for func in functions:
+            md_content.extend([
+                f"### `{func['signature']}`",
+                "",
+                func['docstring'],
+                "",
+            ])
+    else:
+        md_content.extend([
+            "*This module contains classes, constants, or other definitions. See source code for details.*",
             "",
         ])
     

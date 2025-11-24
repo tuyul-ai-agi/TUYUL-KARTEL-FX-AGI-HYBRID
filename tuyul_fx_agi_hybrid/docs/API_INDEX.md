@@ -1,6 +1,6 @@
 # TUYUL FX AGI Hybrid - API Documentation
 
-**Last Updated:** 2025-11-24T05:49:57.155051+00:00
+**Last Updated:** 2025-11-24T05:53:34.033242+00:00
 
 ## Modules
 

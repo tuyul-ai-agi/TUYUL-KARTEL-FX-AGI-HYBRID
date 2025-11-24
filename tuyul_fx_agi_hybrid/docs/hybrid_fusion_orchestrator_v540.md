@@ -16,4 +16,4 @@ Returns:
     Dictionary with fusion metrics, risk calculations, and reflection data.
 
 ---
-*Generated: 2025-11-24T05:49:57.146649+00:00*
+*Generated: 2025-11-24T05:53:34.028012+00:00*

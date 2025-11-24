@@ -13,4 +13,4 @@ Generate pseudo-random fusion factors (EMA, VWAP, RC, DVG).
 Compute a pseudo-realistic reflex coherence score between 0 and 1.
 
 ---
-*Generated: 2025-11-24T05:49:57.144744+00:00*
+*Generated: 2025-11-24T05:53:34.026911+00:00*

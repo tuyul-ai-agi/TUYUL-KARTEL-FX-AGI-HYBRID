@@ -15,4 +15,4 @@ Returns:
     Dictionary with command name and extracted arguments.
 
 ---
-*Generated: 2025-11-24T05:49:57.142848+00:00*
+*Generated: 2025-11-24T05:53:34.025771+00:00*

@@ -1,4 +1,7 @@
+"""Command parser for GPT reflex commands."""
+
 import re
+from typing import Dict, Tuple
 
 
 COMMANDS = {
@@ -10,8 +13,17 @@ COMMANDS = {
 
 
 class GPTCommandParser:
-    def parse(self, text: str):
-        """Mendeteksi perintah GPT Reflex Command dari input teks pengguna."""
+    """Parser for natural language commands to system actions."""
+    
+    def parse(self, text: str) -> Dict[str, any]:
+        """Detect and parse GPT Reflex Commands from user input.
+        
+        Args:
+            text: User input text to parse.
+            
+        Returns:
+            Dictionary with command name and extracted arguments.
+        """
         for pattern, action in COMMANDS.items():
             match = re.search(pattern, text.lower())
             if match:

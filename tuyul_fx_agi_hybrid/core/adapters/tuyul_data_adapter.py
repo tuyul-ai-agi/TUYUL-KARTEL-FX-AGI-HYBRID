@@ -2,7 +2,10 @@
 
 import json
 import random
+from pathlib import Path
 from typing import Dict
+
+VAULT_ROOT = Path(__file__).resolve().parents[2] / "vaults"
 
 
 class TuyulDataAdapter:
@@ -36,5 +39,7 @@ class TuyulDataAdapter:
     def save_feed(self, data: Dict[str, float]) -> None:
         """Persist feed data to the live feed vault."""
 
-        with open("vaults/live_feed.json", "w", encoding="utf-8") as file:
+        vault_path = VAULT_ROOT / "live_feed.json"
+        vault_path.parent.mkdir(parents=True, exist_ok=True)
+        with vault_path.open("w", encoding="utf-8") as file:
             json.dump(data, file, indent=2)

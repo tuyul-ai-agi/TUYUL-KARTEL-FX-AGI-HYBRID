@@ -1,7 +1,7 @@
 """Command parser for GPT reflex commands."""
 
 import re
-from typing import Dict, Tuple
+from typing import Any, Dict, Tuple
 
 
 COMMANDS = {
@@ -15,7 +15,7 @@ COMMANDS = {
 class GPTCommandParser:
     """Parser for natural language commands to system actions."""
     
-    def parse(self, text: str) -> Dict[str, any]:
+    def parse(self, text: str) -> Dict[str, Any]:
         """Detect and parse GPT Reflex Commands from user input.
         
         Args:

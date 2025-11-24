@@ -45,6 +45,25 @@ class GPTBridgeHandler:
         self.last_sync = datetime.utcnow().isoformat()
 
         print("✅ Analisa AGI Hybrid selesai.\n")
+    """Bridge handler for GPT commands to trigger full hybrid reasoning cycles."""
+
+    def __init__(self) -> None:
+        self.status = "Initialized"
+        self.last_sync = None
+
+    def run_analysis(self, pair: str, timeframe: str) -> Dict[str, Any]:
+        """
+        Execute complete reasoning analysis for a trading pair.
+        Includes fusion cycle, vault sync, and meta reflection.
+        """
+        print(f"🐺 Running hybrid fusion analysis for {pair} [{timeframe}]...")
+        fusion_output = run_full_fusion_cycle(pair, timeframe)
+
+        sync_vaults()  # Synchronize results to vault
+        run_meta_reflection(fusion_output)
+
+        self.last_sync = datetime.utcnow().isoformat()
+        self.status = "Completed"
 
         return {
             "pair": pair,
@@ -56,6 +75,7 @@ class GPTBridgeHandler:
 
     def get_status(self) -> Dict[str, str]:
         """Ambil status terkini dari bridge GPT–AGI."""
+        """Get current GPT bridge status."""
         return {
             "bridge_status": self.status,
             "last_sync": self.last_sync or "Not synced yet",

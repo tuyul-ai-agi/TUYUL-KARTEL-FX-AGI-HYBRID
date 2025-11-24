@@ -1,11 +1,11 @@
 """Reflective reasoning and bias analysis module."""
 
-from typing import Dict
+from typing import Any, Dict
 
 from ..vaults.reflection_output import save_reflection_report
 
 
-def analyze_reflection(last_conf12: float, current_conf12: float) -> Dict[str, any]:
+def analyze_reflection(last_conf12: float, current_conf12: float) -> Dict[str, Any]:
     """Analyze confidence delta and determine bias direction.
     
     Args:

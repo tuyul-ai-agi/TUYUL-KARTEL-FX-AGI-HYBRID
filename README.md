@@ -19,6 +19,55 @@ Filosofi: **"Precision adalah Survival."**
 - `risk/` → Adaptive Risk Management Layer
 - `vaults/` → Journal & Knowledge Vault
 - `scripts/` → Eksekusi & automation tools
+Berbasis pada integrasi Reflex Coherence, EMA Dynamics, dan Adaptive Risk Intelligence.
+
+---
+
+## 📂 Struktur
+
+
+adapters/ → API & Vault bridges
+ai_bridge/ → GPT–AGI interface layer (Bridge Handler)
+fusion/ → Hybrid Fusion Engine (Layer 8–12)
+reflective/ → Meta Reflection & Feedback
+risk/ → Adaptive Risk Module
+vaults/ → Journal & Knowledge Vault
+scripts/ → Eksekusi & automation tools
+
+
+---
+
+## ⚙️ Eksekusi
+Jalankan analisa penuh via terminal:
+
+```bash
+python scripts/run_hybrid_analysis.py
+```
+
+Atau panggil lewat GPT internal command:
+
+gas kan analisa XAU/USD H1
+
+🧠 Pipeline
+
+TWMS → EMA → VWAP → Reflex Coherence → FTA Alignment → DVG →
+Adaptive Risk → WLWCI → Monte Carlo → Fusion Reasoning → Reflective Cycle
+
+🧩 Output
+
+CONF₁₂
+
+WLWCI
+
+RCAdj
+
+Reflective Bias
+
+Vault Synchronization Feedback
+
+“Reflex defines Survival, Coherence defines Mastery.”
+— TUYUL WOLF 🐺⚡
+
 
 ---
 

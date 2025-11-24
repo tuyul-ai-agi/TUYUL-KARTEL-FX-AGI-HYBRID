@@ -55,3 +55,16 @@ def load_vault_feedback() -> Dict[str, Any]:
     """Load reflective bias report from the knowledge vault."""
 
     return _load_json(REFLECTIVE_FEEDBACK)
+
+
+if __name__ == "__main__":
+    """Run vault synchronization when executed as a script."""
+    print("🔄 Starting vault synchronization...")
+    try:
+        result = sync_vaults()
+        print(f"✅ Sync completed: {result['status']}")
+        print(f"📅 Timestamp: {result['synced_at']}")
+        print(f"📋 Actions: {', '.join(result['actions'])}")
+    except Exception as e:
+        print(f"❌ Sync failed: {e}")
+        exit(1)

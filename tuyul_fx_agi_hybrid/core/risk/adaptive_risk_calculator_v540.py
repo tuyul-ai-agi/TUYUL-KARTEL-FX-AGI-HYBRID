@@ -1,33 +1,3 @@
-"""Adaptive risk calculation utilities."""
-
-from typing import Dict
-
-
-def calculate_risk(balance: float, sl_pips: float, risk_percent: float = 1.0) -> Dict[str, float]:
-    """Calculate position sizing based on account balance and stop-loss distance."""
-
-    risk_amount = balance * (risk_percent / 100)
-    pip_value = 10
-    lot_size = round(risk_amount / (sl_pips * pip_value), 2)
-    return {
-        "risk_percent": risk_percent,
-        "risk_usd": round(risk_amount, 2),
-        "lot_size": lot_size,
-        "rr_ratio": 2.0,
-    }
-from .volatility_regressor_v540 import estimate_volatility
-
-
-def calculate_risk(equity: float, stop_loss_pips: float, risk_percent: float = 1.0):
-    volatility_factor = estimate_volatility("XAUUSD", "H1")
-    risk_amount = round(equity * (risk_percent / 100), 2)
-    pip_value = 10  # placeholder per standard lot
-    position_size = round((risk_amount / (stop_loss_pips * pip_value)) * volatility_factor, 3)
-    return {
-        "risk_amount": risk_amount,
-        "position_size": position_size,
-        "volatility_factor": volatility_factor,
-    }
 """Adaptive risk calculator for TUYUL FX Hybrid."""
 
 from __future__ import annotations

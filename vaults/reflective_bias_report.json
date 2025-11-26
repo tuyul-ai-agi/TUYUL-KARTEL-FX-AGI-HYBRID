@@ -1,0 +1,9 @@
+{
+  "bias_history": [
+    {"timestamp": "2025-11-20", "bias": "positive", "impact": 0.015},
+    {"timestamp": "2025-11-21", "bias": "negative", "impact": -0.010},
+    {"timestamp": "2025-11-22", "bias": "positive", "impact": 0.021}
+  ],
+  "meta_trend": "overall positive",
+  "rc_threshold_adjust": 0.78
+}

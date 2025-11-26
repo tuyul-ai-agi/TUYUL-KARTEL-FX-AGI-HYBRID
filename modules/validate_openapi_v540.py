@@ -7,21 +7,21 @@ from pathlib import Path
 from types import ModuleType
 from typing import Dict, Iterable, Mapping, MutableMapping, Sequence
 
+# ===============================================
+# 🐺 TUYUL FX AGI HYBRID – OpenAPI Validator v5.4.0
+# Precision = Survival
+# ===============================================
+
 REQUIRED_SECTIONS: tuple[str, ...] = ("openapi", "info", "paths", "components")
 
 GROUP_PREFIXES: Mapping[str, tuple[str, ...]] = {
-    "Fusion": (
-        "/fusion",
-        "/hybrid/runFullFusion",
-        "/hybrid/getFusionLayer12",
-        "/analytics/getConf12FusionStats",
-    ),
+    "Fusion": ("/fusion", "/hybrid/runFullFusion", "/hybrid/getFusionLayer12"),
     "Reflex": ("/reflex", "/hybrid/runReflexCoherence", "/hybrid/getReflexCoherence"),
-    "Risk": ("/risk/", "/analytics/getRiskEfficiencyStats", "/analytics/getDrawdownStats"),
-    "Vault": ("/vault/",),
-    "Reflective": ("/journal/", "/analytics/getReflectiveProgress"),
-    "GPT": ("/github/", "/repos/"),
-    "System": ("/system/",),
+    "Risk": ("/risk", "/analytics/getRiskEfficiencyStats", "/analytics/getDrawdownStats"),
+    "Vault Sync": ("/vault", "/vault/sync", "/vault/status"),
+    "Reflective": ("/reflective", "/analytics/getReflectiveProgress"),
+    "GPT Bridge": ("/gpt", "/gpt/bridge"),
+    "System": ("/system",),
 }
 
 
@@ -29,7 +29,6 @@ def ensure_yaml_loader() -> ModuleType:
     spec = importlib.util.find_spec("yaml")
     if spec is None:
         raise ImportError("PyYAML is required. Install with `pip install pyyaml`.")
-
     return importlib.import_module("yaml")
 
 
@@ -37,10 +36,8 @@ def load_openapi_document(path: Path) -> MutableMapping[str, object]:
     yaml = ensure_yaml_loader()
     with path.open("r", encoding="utf-8") as handle:
         document = yaml.safe_load(handle)
-
     if not isinstance(document, MutableMapping):
         raise ValueError("OpenAPI document must be a mapping at the root level.")
-
     return document
 
 
@@ -52,7 +49,6 @@ def extract_paths(document: Mapping[str, object]) -> Dict[str, object]:
     paths = document.get("paths", {})
     if not isinstance(paths, MutableMapping):
         raise ValueError("`paths` must be a mapping of endpoint definitions.")
-
     return dict(paths)
 
 
@@ -80,7 +76,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--openapi-file",
         type=Path,
-        default=Path("tuyul_fx_agi_hybrid/core/api/openapi_tuyul_fx_agi_v540.yaml"),
+        default=Path("modules/openapi_spec_v540.yaml"),
         help="Path to the OpenAPI YAML file.",
     )
     parser.add_argument(
@@ -94,12 +90,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     openapi_path = args.openapi_file
 
     if not openapi_path.exists():
-        print(f"❌ OpenAPI file not found: {openapi_path}")
+        print(f"❌ File not found: {openapi_path}")
         return 1
 
     try:
         document = load_openapi_document(openapi_path)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         print(f"❌ Failed to load OpenAPI document: {exc}")
         return 1
 
@@ -110,21 +106,22 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     try:
         paths = extract_paths(document)
-    except Exception as exc:  # noqa: BLE001
-        print(f"❌ Invalid paths definition: {exc}")
+    except Exception as exc:
+        print(f"❌ Invalid `paths` definition: {exc}")
         return 1
 
     endpoint_count = len(paths)
     grouped, ungrouped = group_endpoints(paths.keys())
     missing_groups = [group for group, count in grouped.items() if count == 0]
 
-    print("=== TUYUL FX AGI Hybrid OpenAPI Validator v5.4.0 ===")
+    print("🐺 === TUYUL FX AGI Hybrid OpenAPI Validator v5.4.0 ===")
     print(f"📄 File          : {openapi_path}")
     print(f"🔢 Endpoints     : {endpoint_count} detected")
+    print("───────────────────────────────────────────────")
 
     for group, count in grouped.items():
         status = "✅" if count else "❌"
-        print(f"{status} {group:<10} -> {count} endpoints")
+        print(f"{status} {group:<12} → {count} endpoints")
 
     if ungrouped:
         print("⚠️  Ungrouped endpoints detected:")
@@ -136,15 +133,15 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if endpoint_count != args.expected_count:
         print(
-            "❌ Endpoint count mismatch: "
-            f"expected {args.expected_count}, found {endpoint_count}."
+            f"❌ Endpoint count mismatch: expected {args.expected_count}, found {endpoint_count}."
         )
         return 1
 
     if missing_groups:
         return 1
 
-    print("✅ OpenAPI spec is valid and ready for pipeline usage.")
+    print("✅ OpenAPI spec validated successfully — ready for AGI Hybrid pipeline 🧠⚡")
+    print("───────────────────────────────────────────────")
     return 0
 
 

@@ -1,0 +1,11 @@
+{
+  "pair": "XAUUSD",
+  "interval": "1h",
+  "open": 1991.30,
+  "high": 1998.50,
+  "low": 1989.60,
+  "close": 1995.80,
+  "volume": 3250,
+  "source": "TwelveData",
+  "timestamp": "2025-11-23T12:50:00Z"
+}

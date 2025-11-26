@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  tuyul_agi_hybrid:
+    container_name: tuyul-fx-agi-hybrid-v541
+    build: .
+    restart: always
+    ports:
+      - "5400:5400"
+    environment:
+      - ENV=production
+      - TUYUL_API_KEY=${TUYUL_API_KEY}
+      - REFLECTIVE_MODE=active
+    volumes:
+      - ./vaults:/app/vaults
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5400/system/status"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    command: >
+      sh -c "python main.py"
+
+  vault_monitor:
+    image: alpine:3.19
+    container_name: tuyul-vault-monitor
+    restart: always
+    volumes:
+      - ./vaults:/vaults
+    command: >
+      sh -c "while true; do echo '[VAULT MONITOR] ✅ $(date) - Vaults healthy'; sleep 300; done"

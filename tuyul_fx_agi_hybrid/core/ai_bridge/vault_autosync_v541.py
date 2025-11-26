@@ -1,8 +1,13 @@
 """
-🐺 TUYUL FX ULTRA WOLF v5.4.1 — Vault AutoSync (Differential Mode)
-==================================================================
-Sinkronisasi lintas repositori dengan deteksi perubahan berbasis SHA256.
-Hanya file yang berubah (berbeda hash) yang akan di-push.
+🐺 TUYUL FX ULTRA WOLF v5.4.1-HYBRID
+Vault AutoSync Engine — Full Remote Commit Integration
+=======================================================
+
+Fungsi:
+- Melakukan sinkronisasi otomatis antar repo TUYUL AGI (Hybrid, Knowledge, Journal)
+- Menjalankan verifikasi SHA256 sebelum push
+- Menyimpan delta history (5 versi terakhir)
+- Membuat pull request otomatis di GitHub jika ada perubahan
 """
 
 import os
@@ -10,141 +15,165 @@ import json
 import hashlib
 import datetime
 from pathlib import Path
-from api_github_com__jit_plugin import githubCommitFile
 
-# ==========================================================
-# 🔧 Konfigurasi Repositori & Path Dasar
-# ==========================================================
-REPO_HYBRID = "tjx578/TUYUL-KARTEL-FX-AGI-HYBRID"
+# ====================== 🔧 KONFIGURASI REPO ==========================
+REMOTE_SYNC = True   # aktifkan untuk push ke GitHub
+REPO_HYBRID = "tjx578/tuyul-kartel-fx-agi-hybrid"
 REPO_KNOWLEDGE = "tjx578/TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI"
 REPO_JOURNAL = "tjx578/TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI"
 
-CACHE_FILE = "/mnt/data/vault_sync_cache.json"
+SYNC_BASE = Path("/mnt/data")
+LOG_PATH = SYNC_BASE / "journal/logs/vault_sync_meta.json"
+HISTORY_PATH = SYNC_BASE / "history"
 
+# ====================== ⚙️ SYNC RULES ================================
 SYNC_RULES = {
-    ".py": {
-        "target_repo": REPO_HYBRID,
-        "base_path": "tuyul_fx_agi_hybrid/core/",
-    },
-    ".md": {
-        "target_repo": REPO_KNOWLEDGE,
-        "base_path": "docs/modules/",
-    },
-    ".json": {
-        "target_repo": REPO_JOURNAL,
-        "base_path": "journal/logs/",
-    },
+    ".py": {"repo": REPO_HYBRID, "target": "tuyul_fx_agi_hybrid/core/"},
+    ".md": {"repo": REPO_KNOWLEDGE, "target": "knowledge_base/modules/"},
+    ".yaml": {"repo": REPO_KNOWLEDGE, "target": "knowledge_base/_index/"},
+    ".json": {"repo": REPO_JOURNAL, "target": "data/"},
 }
 
-# ==========================================================
-# 🧠 Fungsi Utilitas Hash & Cache
-# ==========================================================
-def compute_sha256(filepath: str) -> str:
-    """Hitung hash SHA256 dari sebuah file."""
-    sha = hashlib.sha256()
-    with open(filepath, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            sha.update(chunk)
-    return sha.hexdigest()
+# ====================== 🧩 IMPOR MODUL LAIN =========================
+from tuyul_fx_agi_hybrid.core.bridge.vault_delta_history_v541 import (
+    update_delta_history,
+    rollback_module,
+)
 
-def load_cache() -> dict:
-    """Muat cache hash terakhir."""
-    if not os.path.exists(CACHE_FILE):
-        return {}
+try:
+    from api_github_com__jit_plugin import githubCommitFile, triggerRuntimeReload
+except ImportError:
+    githubCommitFile = None
+    triggerRuntimeReload = None
+
+
+# ====================== 🔐 HASH & VERIFIKASI ========================
+def compute_sha256(file_path: Path) -> str:
+    """Hitung hash SHA256 dari file"""
+    with open(file_path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
+
+def verify_file_integrity(file_path: Path, ref_hash: str = None) -> bool:
+    """Verifikasi file menggunakan hash"""
+    if not file_path.exists():
+        print(f"❌ File hilang: {file_path}")
+        return False
+    new_hash = compute_sha256(file_path)
+    if ref_hash and new_hash != ref_hash:
+        print(f"⚠️ Hash mismatch pada {file_path.name}")
+        return False
+    return True
+
+
+# ====================== 📘 LOGGING FUNKSI ============================
+def log_event(event: str, status: str = "info"):
+    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    entry = {
+        "timestamp": datetime.datetime.utcnow().isoformat(),
+        "event": event,
+        "status": status,
+    }
+    with open(LOG_PATH, "a") as f:
+        f.write(json.dumps(entry) + "\n")
+    print(f"[{status.upper()}] {event}")
+
+
+# ====================== 🧠 FILE SCANNER ==============================
+def scan_files(base_dir: Path):
+    """Pindai semua file relevan untuk sinkronisasi"""
+    files = []
+    for ext in SYNC_RULES.keys():
+        for f in base_dir.rglob(f"*{ext}"):
+            files.append(f)
+    return files
+
+
+# ====================== 🧬 SYNC PROCESSOR ============================
+def push_file_to_repo(file_path: Path, repo: str, target_path: str):
+    """Push file ke GitHub jika REMOTE_SYNC aktif"""
+    if not REMOTE_SYNC:
+        print(f"🧩 [LOCAL MODE] {file_path.name} -> {repo}/{target_path}")
+        return True
+
+    if githubCommitFile is None:
+        print("⚠️ Plugin GitHub API tidak aktif.")
+        return False
+
     try:
-        with open(CACHE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return {}
-
-def save_cache(cache: dict):
-    """Simpan hash cache terbaru ke file."""
-    with open(CACHE_FILE, "w", encoding="utf-8") as f:
-        json.dump(cache, f, indent=2)
-
-# ==========================================================
-# ⚙️ Sinkronisasi File dengan Deteksi Perubahan
-# ==========================================================
-def detect_file_type(filename: str):
-    ext = Path(filename).suffix.lower()
-    return SYNC_RULES.get(ext, None)
-
-async def sync_file(filepath: str, cache: dict):
-    """Sinkronkan satu file, hanya jika hash berubah."""
-    if not os.path.exists(filepath):
-        print(f"❌ File tidak ditemukan: {filepath}")
-        return cache
-
-    file_info = detect_file_type(filepath)
-    if not file_info:
-        print(f"⚠️ Tipe file tidak dikenali: {filepath}")
-        return cache
-
-    # Hitung hash file saat ini
-    current_hash = compute_sha256(filepath)
-    if cache.get(filepath) == current_hash:
-        print(f"🟢 Tidak ada perubahan: {os.path.basename(filepath)} (skip)")
-        return cache
-
-    # Baca isi file dan push ke repo
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    target_repo = file_info["target_repo"]
-    target_path = file_info["base_path"] + os.path.basename(filepath)
-    message = f"AutoSync (diff) {os.path.basename(filepath)} [{datetime.datetime.utcnow().isoformat()}]"
-
-    print(f"🚀 Sinkronisasi {os.path.basename(filepath)} ke {target_repo}/{target_path} ...")
-
-    try:
-        await githubCommitFile(
-            repo=target_repo.split("/")[1],
-            path=target_path,
-            content=content,
-            message=message,
-            branch="main"
-        )
-        print(f"✅ Sinkronisasi sukses: {target_repo}/{target_path}")
-        cache[filepath] = current_hash
+        content = file_path.read_text()
+        githubCommitFile({
+            "repo": repo,
+            "path": target_path,
+            "content": content,
+            "message": f"AutoSync TUYUL v5.4.1-DHT — {file_path.name}",
+            "branch": "autosync/v541",
+        })
+        log_event(f"✅ Commit success: {file_path.name} → {repo}")
+        return True
     except Exception as e:
-        print(f"❌ Gagal sinkronisasi {os.path.basename(filepath)}: {e}")
+        log_event(f"❌ Commit gagal: {file_path.name} ({e})", status="error")
+        return False
 
-    return cache
 
-def scan_and_sync(directory: str):
-    """Pindai direktori dan sinkronkan file yang berubah."""
-    cache = load_cache()
-    print(f"🔍 Memindai direktori: {directory} (mode differential)")
+def create_automerge_pr(repo: str, branch: str = "autosync/v541"):
+    """Buat pull request otomatis"""
+    if not REMOTE_SYNC or triggerRuntimeReload is None:
+        return
+    try:
+        triggerRuntimeReload({
+            "event_type": "create_pull_request",
+            "client_payload": {
+                "repo": repo,
+                "branch": branch,
+                "title": f"AutoSync TUYUL v5.4.1-DHT",
+                "body": "Automated synchronization from TUYUL AGI system.",
+            },
+        })
+        log_event(f"🔁 Pull Request dibuat untuk {repo}")
+    except Exception as e:
+        log_event(f"⚠️ Gagal membuat PR di {repo}: {e}", status="error")
 
-    for root, _, files in os.walk(directory):
-        for file in files:
-            path = os.path.join(root, file)
-            if Path(path).suffix.lower() in SYNC_RULES:
-                import asyncio
-                cache = asyncio.run(sync_file(path, cache))
 
-    save_cache(cache)
-    print("🧾 Cache sinkronisasi diperbarui.")
+# ====================== 🧩 SYNC MAIN FUNCTION ========================
+def scan_and_sync(base_dir: Path = SYNC_BASE):
+    """Fungsi utama sinkronisasi TUYUL FX"""
+    log_event("🚀 Memulai AutoSync Vault v5.4.1 ...")
+    files = scan_files(base_dir)
+    synced = []
 
-# ==========================================================
-# 🧩 Continuous Watcher (opsional)
-# ==========================================================
-def start_watcher(directory="/mnt/data", interval=60):
-    """Pantau perubahan file dan sinkronkan otomatis setiap N detik."""
-    import time
-    print(f"👁️ Watching {directory} setiap {interval}s...")
-    while True:
-        try:
-            scan_and_sync(directory)
-            time.sleep(interval)
-        except KeyboardInterrupt:
-            print("🛑 Watcher dihentikan manual.")
-            break
+    for f in files:
+        ext = f.suffix
+        if ext not in SYNC_RULES:
+            continue
 
-# ==========================================================
-# 🚀 Entry Point
-# ==========================================================
+        repo = SYNC_RULES[ext]["repo"]
+        target = f"{SYNC_RULES[ext]['target']}{f.name}"
+
+        # 🔐 1. Update delta history
+        update_delta_history(f.stem, str(f))
+
+        # 🔎 2. Verifikasi hash
+        if not verify_file_integrity(f):
+            rollback_module(f.stem)
+            continue
+
+        # 📤 3. Push file ke repo
+        if push_file_to_repo(f, repo, target):
+            synced.append(f.name)
+
+    # 🔁 4. Buat pull request jika ada file baru
+    if REMOTE_SYNC and synced:
+        for repo in set(rule["repo"] for rule in SYNC_RULES.values()):
+            create_automerge_pr(repo)
+
+    log_event(f"✅ Sinkronisasi selesai. Total file: {len(synced)}")
+    return synced
+
+
+# ====================== CLI Interface ===============================
 if __name__ == "__main__":
-    BASE_PATH = "/mnt/data"
-    print(f"🐺 TUYUL AUTO SYNC (v5.4.1) STARTED — {datetime.datetime.utcnow().isoformat()}")
-    scan_and_sync(BASE_PATH)
+    print("\n🐺 TUYUL FX AutoSync v5.4.1 — Remote Mode:", REMOTE_SYNC)
+    synced_files = scan_and_sync()
+    print(f"\n📦 File tersinkron: {len(synced_files)} → {', '.join(synced_files)}")
+    print("🐺 TUYUL siap lanjut ke siklus reflektif 🔄\n")

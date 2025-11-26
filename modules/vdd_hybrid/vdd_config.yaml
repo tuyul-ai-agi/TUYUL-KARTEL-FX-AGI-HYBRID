@@ -1,0 +1,17 @@
+# TUYUL FX ULTRA WOLF v5.4.0 – VDDHybrid Configuration
+
+update_interval: 60   # in seconds
+api_source: "twelvedata"
+features:
+  zscore_period: 21
+  correlation_period: 90
+model:
+  regimes: 3
+  smoothing: true
+risk_map:
+  0: 1.0
+  1: 0.5
+  2: 0.1
+publish_target:
+  - adaptive_risk_engine
+  - wl_wci

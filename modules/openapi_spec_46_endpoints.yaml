@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: "\U0001f43a TUYUL KARTEL FX ULTRA WOLF AGI Hybrid API"
+  title: 🐺 TUYUL KARTEL FX ULTRA WOLF AGI Hybrid API
   version: 5.4.0
   description: |
     Reflex–Fusion–Cognition AGI interface for TUYUL-FX ULTRA WOLF v5.4.0-HYBRID.
@@ -20,7 +20,9 @@ tags:
 paths:
   /fusion/analyze:
     post:
-      tags: [Fusion]
+      operationId: fusionAnalyze
+      tags:
+        - Fusion
       summary: Run full Layer-12 analysis for a given pair & timeframe
       requestBody:
         content:
@@ -28,26 +30,36 @@ paths:
             schema:
               type: object
               properties:
-                pair: { type: string }
-                timeframe: { type: string }
+                pair:
+                  type: string
+                timeframe:
+                  type: string
       responses:
         "200":
           description: Fusion analysis report (CONF₁₂ + WLWCI + RCAdj)
   /fusion/confidence:
     get:
-      tags: [Fusion]
+      operationId: getFusionConfidence
+      tags:
+        - Fusion
       summary: Get latest CONF₁₂ values for all pairs
   /fusion/wlwci:
     get:
-      tags: [Fusion]
+      operationId: getWLWCI
+      tags:
+        - Fusion
       summary: Get WLWCI (Wolf Layer Weighted Coherence Index) data
   /fusion/coherence-map:
     get:
-      tags: [Fusion]
+      operationId: getCoherenceMap
+      tags:
+        - Fusion
       summary: Return coherence map matrix for EMA–Reflex correlation
   /fusion/montecarlo:
     post:
-      tags: [Fusion]
+      operationId: runFusionMonteCarlo
+      tags:
+        - Fusion
       summary: Run Monte Carlo trend simulation (15k iter)
       requestBody:
         content:
@@ -55,26 +67,37 @@ paths:
             schema:
               type: object
               properties:
-                pair: { type: string }
+                pair:
+                  type: string
   /fusion/save-journal:
     post:
-      tags: [Fusion]
+      operationId: fusionSaveJournal
+      tags:
+        - Fusion
       summary: Save Layer-12 result to Journal Vault
   /reflex/analyze:
     post:
-      tags: [Reflex]
+      operationId: reflexAnalyze
+      tags:
+        - Reflex
       summary: Run reflex coherence analysis for a pair
   /reflex/status:
     get:
-      tags: [Reflex]
+      operationId: getReflexStatus
+      tags:
+        - Reflex
       summary: Get reflex system operational status
   /reflex/logs:
     get:
-      tags: [Reflex]
+      operationId: getReflexLogs
+      tags:
+        - Reflex
       summary: Retrieve latest reflex activity log
   /risk/calculate:
     post:
-      tags: [Risk]
+      operationId: riskCalculate
+      tags:
+        - Risk
       summary: Calculate adaptive risk and lot size for given pair
       requestBody:
         content:
@@ -82,63 +105,96 @@ paths:
             schema:
               type: object
               properties:
-                balance: { type: number }
-                sl_pips: { type: number }
-                pair: { type: string }
+                balance:
+                  type: number
+                sl_pips:
+                  type: number
+                pair:
+                  type: string
   /risk/summary:
     get:
-      tags: [Risk]
+      operationId: getRiskSummary
+      tags:
+        - Risk
       summary: Return current exposure, margin, and RR ratio per trade
   /risk/policy:
     get:
-      tags: [Risk]
+      operationId: getRiskPolicy
+      tags:
+        - Risk
       summary: Get current Policy Guardian status and limits
   /vault/sync:
     post:
-      tags: [Vault Sync]
+      operationId: vaultSync
+      tags:
+        - Vault Sync
       summary: Trigger 3-way sync between Hybrid, Knowledge, and Journal Vault
   /vault/status:
     get:
-      tags: [Vault Sync]
+      operationId: getVaultStatus
+      tags:
+        - Vault Sync
       summary: Check last sync status and latency
   /reflective/trigger:
     post:
-      tags: [Reflective]
+      operationId: reflectiveTrigger
+      tags:
+        - Reflective
       summary: Start reflective meta-learning cycle (Layer 8–12)
   /reflective/report:
     get:
-      tags: [Reflective]
+      operationId: getReflectiveReport
+      tags:
+        - Reflective
       summary: Retrieve reflective cycle summary (bias drift & coherence gain)
   /gpt/bridge:
     post:
-      tags: [GPT Bridge]
+      operationId: gptBridge
+      tags:
+        - GPT Bridge
       summary: Send real-time reasoning or instruction to TUYUL Custom GPT
   /system/status:
     get:
-      tags: [System]
+      operationId: getSystemStatus
+      tags:
+        - System
       summary: Get runtime status, uptime, and version info
 components:
   schemas:
     FusionReport:
       type: object
       properties:
-        pair: { type: string }
-        conf12: { type: number }
-        wlwci: { type: number }
-        rcadj: { type: number }
-        bias: { type: string }
-        confidence: { type: number }
+        pair:
+          type: string
+        conf12:
+          type: number
+        wlwci:
+          type: number
+        rcadj:
+          type: number
+        bias:
+          type: string
+        confidence:
+          type: number
     RiskResult:
       type: object
       properties:
-        pair: { type: string }
-        lot: { type: number }
-        risk_pct: { type: number }
-        sl_pips: { type: number }
-        rr_ratio: { type: number }
+        pair:
+          type: string
+        lot:
+          type: number
+        risk_pct:
+          type: number
+        sl_pips:
+          type: number
+        rr_ratio:
+          type: number
     SyncStatus:
       type: object
       properties:
-        hybrid_to_vault: { type: string }
-        vault_to_journal: { type: string }
-        latency_ms: { type: number }
+        hybrid_to_vault:
+          type: string
+        vault_to_journal:
+          type: string
+        latency_ms:
+          type: number

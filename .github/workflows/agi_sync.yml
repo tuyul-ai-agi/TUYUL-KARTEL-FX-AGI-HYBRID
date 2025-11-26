@@ -1,0 +1,35 @@
+name: AGI Hybrid Sync
+on:
+  push:
+    paths:
+      - 'vaults/**'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      
+      - name: Sync Vaults
+        id: sync
+        continue-on-error: true
+        run: |
+          cd tuyul_fx_agi_hybrid
+          python3 core/adapters/vault_bridge_client.py || echo "Sync completed with warnings"
+      
+      - name: Commit Changes
+        continue-on-error: true
+        run: |
+          git config user.name "TUYUL AGI BOT"
+          git config user.email "agi-bot@tuyul.local"
+          git add vaults/* || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🔄 Auto Sync Vaults" || echo "Commit failed"
+            git push || echo "Push failed - may need manual intervention"
+          fi

@@ -1,82 +1,57 @@
 """
-🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.0
-GPT Bridge Handler — Reflex–Cognition Integration Layer
+🐺 TUYUL-KARTEL-FX-HYBRID v5.4.0
+GPT Bridge Executor — Reflex–Cognition Fusion Trigger
 
-Menangani komunikasi antara GPT engine dan sistem AGI internal.
-Pipeline: Fusion → Vault Sync → Meta Reflection
+Menjalankan siklus penuh AGI Hybrid Layer-12 dari GPT engine secara langsung.
+Pipeline: Fusion → Vault Sync → Meta Reflection → Journal Output
 """
 
-from datetime import datetime
-from typing import Any, Dict
-
-from adapters.vault_bridge_client import sync_vaults
-from fusion.hybrid_fusion_orchestrator_v540 import run_full_fusion_cycle
-from reflective.meta_reflector_dispatch import run_meta_reflection
+from gpt_bridge_handler_v540 import GPTBridgeHandler
 
 
-class GPTBridgeHandler:
-    """Bridge handler untuk menjalankan analisa AGI Hybrid penuh (Layer 12)."""
+def run_gpt_hybrid_bridge(pair: str = "XAUUSD", timeframe: str = "H1") -> None:
+    """
+    Jalankan GPT–AGI Hybrid Bridge secara langsung.
+    Args:
+        pair (str): Simbol pair, default XAUUSD.
+        timeframe (str): Timeframe analisa, default H1.
+    """
 
-    def __init__(self) -> None:
-        self.status: str = "Initialized"
-        self.last_sync: str | None = None
+    print("==========================================")
+    print("🐺 TUYUL KARTEL FX HYBRID v5.4.0 — BRIDGE EXECUTOR")
+    print("==========================================")
+    print(f"Pair: {pair} | Timeframe: {timeframe}\n")
 
-    def run_analysis(self, pair: str, timeframe: str) -> Dict[str, Any]:
-        """
-        Jalankan analisa reasoning lengkap untuk sebuah pair trading.
+    try:
+        # Inisialisasi Bridge
+        bridge = GPTBridgeHandler()
+        print("🔗 Inisialisasi GPT Bridge...")
 
-        Args:
-            pair (str): Simbol pasangan trading (contoh: 'XAU/USD')
-            timeframe (str): Timeframe analisa (contoh: 'H1', 'D1')
+        # Jalankan analisa AGI Hybrid penuh
+        result = bridge.run_analysis(pair, timeframe)
 
-        Returns:
-            Dict[str, Any]: Hasil reasoning fusion AGI termasuk CONF₁₂, WLWCI, RCAdj, dsb.
-        """
-        print(f"🐺 [HYBRID] Menjalankan analisa AGI untuk {pair} [{timeframe}]...")
-        fusion_output = run_full_fusion_cycle(pair, timeframe)
+        # Output hasil reasoning
+        print("\n--- ANALISA AGI HYBRID HASIL ---")
+        print(f"Pair: {result['pair']}")
+        print(f"Timeframe: {result['timeframe']}")
+        print(f"Bridge Status: {result['bridge_status']}")
+        print(f"Last Sync: {result['last_sync']}")
+        print(f"Fusion Output Keys: {list(result['fusion_output'].keys()) if isinstance(result['fusion_output'], dict) else 'Non-dict Output'}")
+        print("------------------------------------------\n")
 
-        print("📦 Sinkronisasi Vault...")
-        sync_vaults()  # Simpan hasil ke Vault Knowledge + Journal
+        print("🐺✅ AGI Fusion selesai dan disinkronisasi ke Vault.")
+        print("📘 Hasil reasoning telah dicatat ke Journal Vault Boss.\n")
 
-        print("🧠 Jalankan Meta Reflection...")
-        run_meta_reflection(fusion_output)
+    except Exception as e:
+        print("❌ Terjadi error saat menjalankan bridge:")
+        print(e)
 
-        self.status = "Completed"
-        self.last_sync = datetime.utcnow().isoformat()
+    print("==========================================")
+    print("Selesai — GPT Bridge Reflexive Mode [OK]")
+    print("==========================================\n")
 
-        print("✅ Analisa AGI Hybrid selesai.\n")
-    """Bridge handler for GPT commands to trigger full hybrid reasoning cycles."""
 
-    def __init__(self) -> None:
-        self.status = "Initialized"
-        self.last_sync = None
-
-    def run_analysis(self, pair: str, timeframe: str) -> Dict[str, Any]:
-        """
-        Execute complete reasoning analysis for a trading pair.
-        Includes fusion cycle, vault sync, and meta reflection.
-        """
-        print(f"🐺 Running hybrid fusion analysis for {pair} [{timeframe}]...")
-        fusion_output = run_full_fusion_cycle(pair, timeframe)
-
-        sync_vaults()  # Synchronize results to vault
-        run_meta_reflection(fusion_output)
-
-        self.last_sync = datetime.utcnow().isoformat()
-        self.status = "Completed"
-
-        return {
-            "pair": pair,
-            "timeframe": timeframe,
-            "fusion_output": fusion_output,
-            "bridge_status": self.status,
-            "last_sync": self.last_sync,
-        }
-
-    def get_status(self) -> Dict[str, str]:
-        """Ambil status terkini dari bridge GPT–AGI."""
-        """Get current GPT bridge status."""
-        return {
-            "bridge_status": self.status,
-            "last_sync": self.last_sync or "Not synced yet",
-        }
+# Eksekusi langsung saat dijalankan via GPT environment
+if __name__ == "__main__":
+    # Contoh: bisa ubah pair/timeframe sesuai kebutuhan
+    run_gpt_hybrid_bridge(pair="EURUSD", timeframe="H4")

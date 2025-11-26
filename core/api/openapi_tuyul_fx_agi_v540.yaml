@@ -1,0 +1,585 @@
+openapi: 3.1.0
+info:
+  title: GitHub Repo API
+  description: >
+    Access GitHub repositories via the GitHub REST API v3. Endpoint set terintegrasi
+    dengan jaringan TUYUL Hybrid (Reflex, Fusion, Vault, Journal) untuk menjaga
+    konektivitas penuh ke GitHub repo.
+  version: 1.0.0
+servers:
+  - url: https://tuyul-agi-reflector.net/api
+    description: AGI Reflex–Fusion Engine (Layer 8–12)
+  - url: https://api.github.com
+    description: GitHub REST API (for vault sync)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: PAT
+  schemas:
+    ReflexMetrics:
+      type: object
+      properties:
+        rc_value: { type: number }
+        rcadj: { type: number }
+        wlwci: { type: number }
+        conf12: { type: number }
+        bias_delta: { type: number }
+        timestamp: { type: string, format: date-time }
+    RiskOutput:
+      type: object
+      properties:
+        risk_percent: { type: number }
+        lot: { type: number }
+        rr_ratio: { type: string }
+        status: { type: string }
+
+  - url: https://api.github.com
+    description: GitHub REST API (digunakan internal oleh wrapper /github/*)
+security:
+  - bearerAuth: []
+paths:
+  /repos/{owner}/{repo}/contents/{path}:
+    get:
+      operationId: getRepoContents
+      summary: Get file or directory contents from a GitHub repository
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: repo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File object or array of file objects
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/GitFile"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/GitFile"
+        "404":
+          description: Not found
+  /hybrid/runFullFusion:
+    post:
+      operationId: performAgiFullAnalysis
+      summary: Run full Hybrid Fusion analysis
+      responses:
+        "200":
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReflexMetrics"
+  /hybrid/getFusionLayer12:
+    get:
+      operationId: getWolf12Analysis
+      summary: Get CONF12 + WLWCI fusion results
+      responses:
+        "200":
+          description: Fusion results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReflexMetrics"
+  /hybrid/runReflexCoherence:
+    post:
+      operationId: runQuantumReflex
+      summary: Execute Reflex Coherence Engine
+      responses:
+        "200":
+          description: Reflex coherence evaluated
+  /hybrid/getReflexCoherence:
+    get:
+      operationId: getReflexCoherence
+      summary: Retrieve last Reflex Coherence value
+      responses:
+        "200":
+          description: Latest reflex coherence
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReflexMetrics"
+  /risk/calculateAdaptive:
+    post:
+      operationId: calculateAdaptiveRisk
+      summary: Calculate adaptive risk based on fusion metrics
+      responses:
+        "200":
+          description: Risk calculation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskOutput"
+  /journal/pushReasoning:
+    post:
+      operationId: pushReasoningToJournal
+      summary: Push Hybrid reasoning results to Journal Vault
+      responses:
+        "200":
+          description: Accepted by Journal
+  /journal/pullFeedback:
+    get:
+      operationId: pullFromJournal
+      summary: Pull latest reflective feedback from Journal
+      responses:
+        "200":
+          description: Reflective feedback
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReflexMetrics"
+  /journal/saveEmpiricalReward:
+    post:
+      operationId: saveTradeJournal
+      summary: Save empirical reward to vault
+      responses:
+        "200":
+          description: Reward saved
+  /journal/listSessions:
+    get:
+      operationId: listJournalSessions
+      summary: List recent journal sessions
+      responses:
+        "200":
+          description: Session list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalSessionList"
+  /journal/getSession:
+    get:
+      operationId: getJournalSession
+      summary: Get a journal session by ID
+      parameters:
+        - name: session_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalSession"
+  /vault/pullReflectiveFeedback:
+    get:
+      operationId: pullReflectiveFeedback
+      summary: Pull reflective feedback from Journal Vault to Knowledge Vault
+      responses:
+        "200":
+          description: Feedback pulled
+  /vault/pushHeuristicUpdate:
+    post:
+      operationId: pushHeuristicUpdate
+      summary: Push heuristic/meta updates from Vault to Hybrid
+      responses:
+        "200":
+          description: Heuristic updated
+  /vault/triggerMetaLearning:
+    post:
+      operationId: triggerMetaLearning
+      summary: Trigger meta-learning and semantic optimization
+      responses:
+        "200":
+          description: Meta-learning started
+  /vault/runReflectiveCycle:
+    post:
+      operationId: runReflectiveCycle
+      summary: Run full reflective cycle
+      responses:
+        "200":
+          description: Cycle executed
+  /vault/getHeuristicSnapshot:
+    get:
+      operationId: getHeuristicSnapshot
+      summary: Retrieve current heuristic snapshot
+      responses:
+        "200":
+          description: Snapshot returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeuristicSnapshot"
+  /vault/saveHeuristicSnapshot:
+    post:
+      operationId: saveHeuristicSnapshot
+      summary: Save a new heuristic snapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HeuristicSnapshot"
+      responses:
+        "200":
+          description: Snapshot saved
+  /market/getLatestPrice:
+    get:
+      operationId: getLatestPrice
+      summary: Get latest market price for a pair
+      parameters:
+        - name: pair
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Price retrieved
+  /market/scanSetups:
+    get:
+      operationId: scanHighProbabilitySetups
+      summary: Scan for high probability setups
+      responses:
+        "200":
+          description: Setups found
+  /system/getStatus:
+    get:
+      operationId: getSystemStatus
+      summary: Get runtime AGI status
+      responses:
+        "200":
+          description: System status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemStatus"
+  /system/getDiagnostics:
+    get:
+      operationId: getReflexDiagnostics
+      summary: Get reflex and fusion diagnostics
+      responses:
+        "200":
+          description: Diagnostics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Diagnostics"
+  /system/getHealth:
+    get:
+      operationId: getAgiHealthStatus
+      summary: Get AGI health status
+      responses:
+        "200":
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /system/triggerRuntimeReload:
+    post:
+      operationId: triggerRuntimeReload
+      summary: Trigger runtime reload via GitHub dispatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_type:
+                  type: string
+                  example: tuyul_runtime_reload
+                client_payload:
+                  type: object
+                  properties:
+                    layer:
+                      type: string
+                      example: Layer-12 Fusion Reload
+      responses:
+        "204":
+          description: Reload triggered
+  /system/sendTelegramSignal:
+    post:
+      operationId: sendTelegramSignal
+      summary: Send Telegram notification via GitHub dispatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_type:
+                  type: string
+                  example: telegram_notify_signal
+                client_payload:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: BUY EURUSD - CONF12 0.88 WLWCI 0.96
+      responses:
+        "204":
+          description: Notification sent
+  /analytics/getConf12FusionStats:
+    get:
+      operationId: getConf12FusionStats
+      summary: Get CONF12 and WLWCI statistics
+      responses:
+        "200":
+          description: Stats returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conf12FusionStats"
+  /analytics/getAgiConfidenceStats:
+    get:
+      operationId: getAgiConfidenceStats
+      summary: Get AGI confidence statistics across layers
+      responses:
+        "200":
+          description: Stats returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgiConfidenceStats"
+  /analytics/getReflectiveProgress:
+    get:
+      operationId: getReflectiveProgress
+      summary: Get reflective progress metrics
+      responses:
+        "200":
+          description: Progress data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReflectiveProgress"
+  /analytics/getDrawdownStats:
+    get:
+      operationId: getDrawdownStats
+      summary: Get drawdown statistics
+      responses:
+        "200":
+          description: Drawdown stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DrawdownStats"
+  /analytics/getRiskEfficiencyStats:
+    get:
+      operationId: getRiskEfficiencyStats
+      summary: Get risk efficiency statistics
+      responses:
+        "200":
+          description: Risk efficiency stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskEfficiencyStats"
+  /github/commitFile:
+    post:
+      operationId: githubCommitFile
+      summary: Create or update a file in a GitHub repository
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - repo
+                - path
+                - content
+                - message
+              properties:
+                repo:
+                  type: string
+                path:
+                  type: string
+                content:
+                  type: string
+                message:
+                  type: string
+                branch:
+                  type: string
+                  nullable: true
+      responses:
+        "200":
+          description: Commit successful
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: PAT
+  schemas:
+    ReflexMetrics:
+      type: object
+      properties:
+        rc_value:
+          type: number
+        rcadj:
+          type: number
+        wlwci:
+          type: number
+        conf12:
+          type: number
+        bias_delta:
+          type: number
+        timestamp:
+          type: string
+          format: date-time
+    RiskOutput:
+      type: object
+      properties:
+        risk_percent:
+          type: number
+        lot:
+          type: number
+        rr_ratio:
+          type: string
+        status:
+          type: string
+    JournalSession:
+      type: object
+      properties:
+        session_id:
+          type: string
+        pair:
+          type: string
+        timeframe:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        final_output12_path:
+          type: string
+          nullable: true
+        status:
+          type: string
+    JournalSessionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/JournalSession"
+    HeuristicSnapshot:
+      type: object
+      properties:
+        snapshot_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        description:
+          type: string
+        payload:
+          type: object
+          additionalProperties: true
+    GitFile:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        sha:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        download_url:
+          type: string
+          nullable: true
+        content:
+          type: string
+          nullable: true
+        encoding:
+          type: string
+          nullable: true
+        type:
+          type: string
+    DrawdownStats:
+      type: object
+      properties:
+        max_drawdown:
+          type: number
+        avg_drawdown:
+          type: number
+        period:
+          type: string
+    RiskEfficiencyStats:
+      type: object
+      properties:
+        roi_per_risk_unit:
+          type: number
+        win_rate:
+          type: number
+        sample_size:
+          type: integer
+    SystemStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        version:
+          type: string
+        uptime_seconds:
+          type: integer
+    Diagnostics:
+      type: object
+      properties:
+        reflex_latency_ms:
+          type: number
+        fusion_latency_ms:
+          type: number
+        last_error:
+          type: string
+          nullable: true
+    HealthStatus:
+      type: object
+      properties:
+        hybrid_core:
+          type: string
+        journal_vault:
+          type: string
+        knowledge_vault:
+          type: string
+    Conf12FusionStats:
+      type: object
+      properties:
+        avg_conf12:
+          type: number
+        avg_wlwci:
+          type: number
+        samples:
+          type: integer
+    AgiConfidenceStats:
+      type: object
+      properties:
+        layer8_conf:
+          type: number
+        layer12_conf:
+          type: number
+        integrity_score:
+          type: number
+    ReflectiveProgress:
+      type: object
+      properties:
+        coherence_trend:
+          type: string
+        improvement_score:
+          type: number
+        window:
+          type: string

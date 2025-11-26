@@ -1,0 +1,30 @@
+name: Vault Auto Backup
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:  # Allow manual trigger
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Backup Vaults
+        continue-on-error: true
+        run: |
+          cd tuyul_fx_agi_hybrid
+          if [ -d vaults ]; then
+            zip -r backup_$(date +%F).zip vaults/ || echo "Backup created with warnings"
+            mv backup_*.zip ../ || echo "Move failed"
+          else
+            echo "⚠️ vaults directory not found"
+            exit 1
+          fi
+      
+      - name: Upload to Cloud
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: vault_backup_$(date +%F)
+          path: backup_*.zip
+          if-no-files-found: warn

@@ -1,0 +1,49 @@
+# 🐺 Tuyul Kartel FX AGI Hybrid v5.4.0
+# Adaptive Risk Engine Module
+
+# ------------------------------------------------------
+# Fungsi: Menentukan level risiko otomatis berdasarkan
+# kondisi sistem reflektif (WLWCI, RLSI, CONF12, RCAdj)
+# ------------------------------------------------------
+
+def adaptive_risk_select(WLWCI: float, RLSI: float, CONF12: float, RCAdj: float) -> float:
+    """Menentukan level risiko otomatis berdasarkan mode reflektif Tuyul Kartel FX AGI."""
+
+    # Reflex Safe Mode (proteksi otomatis)
+    if WLWCI < 0.90 or RLSI < 0.65:
+        return 0.5  # 0.5%
+
+    # Reflective Execution Mode (konfirmasi penuh layer-12)
+    elif CONF12 >= 0.80 and RCAdj >= 0.85:
+        return 1.0  # 1.0%
+
+    # Normal Hybrid Mode (default)
+    else:
+        return 0.7  # 0.7%
+
+
+def calculate_lot(balance: float, risk_percent: float, sl_pips: float, pip_value: float) -> float:
+    """Menghitung lot adaptif berdasarkan balance, risk, dan SL."""
+    risk_amount = balance * (risk_percent / 100)
+    lot = risk_amount / (sl_pips * pip_value)
+    return round(lot, 2)
+
+
+# Contoh penggunaan:
+if __name__ == "__main__":
+    # Contoh kondisi sistem
+    WLWCI = 0.94
+    RLSI = 0.67
+    CONF12 = 0.82
+    RCAdj = 0.86
+    balance = 100000
+    sl_pips = 70
+    pip_value = 10
+
+    # Dapatkan risk mode otomatis
+    risk_percent = adaptive_risk_select(WLWCI, RLSI, CONF12, RCAdj)
+
+    # Hitung lot adaptif
+    lot = calculate_lot(balance, risk_percent, sl_pips, pip_value)
+
+    print(f"Mode: {risk_percent}% | Lot: {lot}")

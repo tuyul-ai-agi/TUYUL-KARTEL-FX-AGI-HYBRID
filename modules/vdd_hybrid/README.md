@@ -39,5 +39,3 @@ Dengan 7 file ini, sistem TUYUL FX sudah memiliki:
 
 ---
 
-Apakah Boss mau saya **buatkan langsung paket `.zip` berisi semua file module ini** agar bisa langsung di-*push* ke repo `tjx578/tuyul-kartel-fx-agi-hybrid` (folder `/modules/vdd_hybrid/`) atau mau sekalian **auto-commit ke GitHub** dengan pesan:  
-> “Add VDDHybrid module — real-time volatility-dollar regime detector (v5.4.0)”

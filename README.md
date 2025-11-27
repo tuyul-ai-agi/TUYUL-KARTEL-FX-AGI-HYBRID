@@ -41,7 +41,14 @@ scripts/ → Eksekusi & automation tools
 Jalankan analisa penuh via terminal:
 
 ```bash
-python scripts/run_hybrid_analysis.py
+python scripts/run_hybrid_analysis.py [PAIR] [TIMEFRAME]
+```
+
+Contoh:
+
+```bash
+python scripts/run_hybrid_analysis.py XAU/USD H1
+python scripts/run_hybrid_analysis.py BTC/USDT M15
 ```
 
 Atau panggil lewat GPT internal command:
@@ -75,7 +82,7 @@ Vault Synchronization Feedback
 Jalankan analisa penuh (contoh XAU/USD H1):
 
 ```bash
-python scripts/run_hybrid_analysis.py
+python scripts/run_hybrid_analysis.py XAU/USD H1
 ```
 
 Atau melalui GPT internal command:

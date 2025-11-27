@@ -3,6 +3,15 @@
 Execution Runner for Hybrid AGI Analysis
 """
 
+from pathlib import Path
+import sys
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+
 from ai_bridge.gpt_bridge_handler_v540 import GPTBridgeHandler
 
 
@@ -10,25 +19,8 @@ def main() -> None:
     """Main entrypoint untuk menjalankan analisa AGI Hybrid."""
     print("⚡ Initializing TUYUL AGI Hybrid Bridge...")
     bridge = GPTBridgeHandler()
-
-    # Tampilkan status awal
-    status = bridge.get_status()
-    print(f"Status: {status['bridge_status']} | Last Sync: {status['last_sync']}")
-
-    # Jalankan analisa contoh: XAU/USD H1
-    print("\n🚀 Menjalankan analisa XAU/USD [H1]...\n")
-    result = bridge.run_analysis("XAU/USD", "H1")
-
-    # Tampilkan hasil reasoning
-    print("=== HYBRID ANALYSIS OUTPUT ===")
-    for key, value in result.items():
-        print(f"{key}: {value}")
-def main():
-    print("⚡ Initializing TUYUL AGI Hybrid Bridge...")
-    bridge = GPTBridgeHandler()
     print("Bridge Status:", bridge.get_status())
 
-    # Example: Run full analysis for Gold H1
     result = bridge.run_analysis("XAU/USD", "H1")
 
     print("\n=== HYBRID ANALYSIS OUTPUT ===")

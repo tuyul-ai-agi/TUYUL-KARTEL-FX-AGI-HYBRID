@@ -1,5 +1,5 @@
 """
-🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.1-H
+🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.2-H
 AI Bridge Package (Hybrid Edition)
 Menghubungkan GPT Layer dengan sistem AGI Hybrid internal & GitHub Bridge.
 """
@@ -9,7 +9,7 @@ from .gpt_bridge_handler_v540 import GPTBridgeHandler
 from .github_api_bridge import getRepoContents, githubCommitFile, checkRepoAccess
 
 __all__ = ["GPTBridgeHandler", "getRepoContents", "githubCommitFile", "checkRepoAccess"]
-__version__ = "5.4.1-H"
+__version__ = "5.4.2-H"
 __author__ = "TUYUL LAB 🧠⚡"
 
 # === Hybrid Bridge Meta Config ===

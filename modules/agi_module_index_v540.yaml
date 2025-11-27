@@ -26,11 +26,11 @@ modules:
     function: Main reasoning and execution pipeline
     vault_link: knowledge-vault-agi/knowledge_base/tuyul_hybrid_pipeline_v540.md
 
-  - name: risk_engine_v540
+  - name: adaptive_risk_calculator_v540
     repo: tuyul-kartel-fx-agi-hybrid
-    path: /core/risk/adaptive_risk_engine_v_540.py
-    function: Adaptive risk, Monte Carlo simulation, and exposure monitoring
-    vault_link: knowledge-vault-agi/knowledge_base/risk_engine_v540.md
+    path: /core/risk/adaptive_risk_calculator_v540.py
+    function: Adaptive risk selection and lot sizing
+    vault_link: knowledge-vault-agi/knowledge_base/adaptive_risk_calculator_v540.md
 
   - name: vault_sync_v540
     repo: tuyul-kartel-fx-agi-hybrid

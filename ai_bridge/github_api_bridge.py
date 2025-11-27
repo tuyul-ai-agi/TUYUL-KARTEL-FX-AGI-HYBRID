@@ -4,27 +4,49 @@ Bridge handler resmi untuk koneksi dua arah GitHub REST API (v3)
 Didesain untuk integrasi dengan TUYUL HYBRID AGI dan workflow GitHub Actions.
 """
 
-import requests
+import base64
 import json
 import os
-import base64
 import time
+
+import requests
 
 GITHUB_API_URL = "https://api.github.com"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # Token diambil dari environment variable GitHub Action
 
-HEADERS = {
-    "Accept": "application/vnd.github+json",
-    "Authorization": f"Bearer {GITHUB_TOKEN}",
-    "X-GitHub-Api-Version": "2022-11-28"
-}
 
-def performJitCall(method: str, path: str, payload=None, params=None, retries: int = 3, delay: float = 1.5):
+def _build_headers(require_auth: bool = True) -> dict:
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    if GITHUB_TOKEN:
+        headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
+    elif require_auth:
+        raise EnvironmentError("GITHUB_TOKEN is required for authenticated GitHub API calls")
+    return headers
+
+
+def performJitCall(
+    method: str,
+    path: str,
+    payload=None,
+    params=None,
+    retries: int = 3,
+    delay: float = 1.5,
+    require_auth: bool = True,
+):
     """Handler utama komunikasi GitHub API dengan retry logic dan error handling"""
     url = f"{GITHUB_API_URL}{path}"
     for attempt in range(retries):
         try:
-            response = requests.request(method, url, headers=HEADERS, json=payload, params=params)
+            response = requests.request(
+                method,
+                url,
+                headers=_build_headers(require_auth=require_auth),
+                json=payload,
+                params=params,
+            )
             if response.status_code in (200, 201, 204):
                 try:
                     return response.json() if response.text else {}
@@ -41,7 +63,7 @@ def performJitCall(method: str, path: str, payload=None, params=None, retries: i
 # ===== Core GitHub Bridge Functions =====
 def getRepoContents(owner: str, repo: str, path: str = "/"):
     """Ambil isi direktori atau file dari repo GitHub"""
-    return performJitCall("GET", f"/repos/{owner}/{repo}/contents/{path.lstrip('/')}")
+    return performJitCall("GET", f"/repos/{owner}/{repo}/contents/{path.lstrip('/')}", require_auth=False)
 
 def githubCommitFile(owner: str, repo: str, path: str, content: str, message: str, branch: str = "main"):
     """Upload atau update file ke repo GitHub secara aman"""

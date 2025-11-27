@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from ..fusion.hybrid_fusion_orchestrator_v540 import run_full_fusion_cycle
+from ..fushion.hybrid_fushion_orchestrator_v540 import run_full_fusion_cycle
 from ..adapters.vault_bridge_client import sync_vaults
 from ..journal.journal_bridge import log_event
 

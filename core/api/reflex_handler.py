@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from ...fusion.fusion_confidence_core import compute_reflex_coherence
+from ...fushion.fushion_confidence_core import compute_reflex_coherence
 
 router = APIRouter()
 

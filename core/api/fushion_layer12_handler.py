@@ -7,7 +7,7 @@ and reflex coherence adjustments for downstream consumers.
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from ...fusion.tuyul_fusion_engine_v540 import FusionResult, run_fusion_layer12
+from ...fushion.tuyul_fusion_engine_v540 import FusionResult, run_fusion_layer12
 
 router = APIRouter()
 

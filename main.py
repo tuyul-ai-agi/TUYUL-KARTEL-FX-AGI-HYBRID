@@ -6,7 +6,7 @@ FastAPI runtime utama yang menggabungkan router reflektif & GPT bridge AGI Hybri
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.central_router import api_router
+from core.api.api_router import api_router
 
 # ==============================
 # ⚙️ Konfigurasi Aplikasi

@@ -22,7 +22,7 @@ import os
 import json
 import random
 from datetime import datetime
-from wolf_github_bridge import githubCommitFile, getSystemStatus
+from ai_bridge.github_api_bridge import githubCommitFile, getSystemStatus
 
 # ==========================================================
 # ⚙️ KONFIGURASI DASAR

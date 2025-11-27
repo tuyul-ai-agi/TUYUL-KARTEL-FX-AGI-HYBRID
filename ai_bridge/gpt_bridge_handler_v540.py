@@ -1,77 +1,54 @@
 """
-🐺 TUYUL-KARTEL-FX-HYBRID v5.4.0
+🐺 TUYUL-KARTEL-FX-HYBRID v5.4.2-H
 GPT Bridge Handler — Reflex–Cognition–Fusion Orchestrator
-
-Menjalankan pipeline AGI Hybrid Layer-12:
-Fusion → Vault Sync → Reflection → Journal Log
-Auto-run ketika sistem Hybrid start.
 """
 
 import os
 import json
 import time
-from datetime import datetime
 import requests
+from datetime import datetime
+from wolf_github_bridge import githubCommitFile  # pastikan ada bridge ini
 
-# ==============================
-# 🔧 Konfigurasi Bridge
-# ==============================
 API_BASE = os.getenv("AGI_API_URL", "https://api.github.com")
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "ghp_xxx_BOSS_TOKEN_xxx")
-DEFAULT_PAIR = os.getenv("DEFAULT_PAIR", "XAUUSD")
-DEFAULT_TF = os.getenv("DEFAULT_TF", "H1")
+OWNER = os.getenv("GITHUB_USER", "tjx578")
+REPO = os.getenv("GITHUB_REPO", "TUYUL-KARTEL-FX-AGI-HYBRID")
+BRANCH = "main"
+TOKEN = os.getenv("GITHUB_TOKEN")
 
 HEADERS = {
     "Accept": "application/vnd.github+json",
-    "Authorization": f"Bearer {GITHUB_TOKEN}",
+    "Authorization": f"Bearer {TOKEN}",
     "X-GitHub-Api-Version": "2022-11-28"
 }
 
-
 class GPTBridgeHandler:
-    """
-    Handler utama GPT–AGI Hybrid Bridge
-    """
-
+    """Handler utama GPT–AGI Hybrid Bridge"""
     def __init__(self):
         self.status = "initialized"
         self.last_sync = None
-        self.api_url = API_BASE
 
-    def _jit_call(self, method: str, endpoint: str, payload=None):
-        """Helper untuk kirim request ke API Hybrid"""
-        url = f"{self.api_url}{endpoint}"
-        try:
-            response = requests.request(method, url, headers=HEADERS, json=payload)
-            if response.status_code not in (200, 201, 204):
-                raise Exception(f"HTTP {response.status_code}: {response.text}")
-            if response.text.strip():
-                return response.json()
-            return {}
-        except Exception as e:
-            raise Exception(f"[BridgeError] {e}")
+    def _jit_call(self, method: str, endpoint: str, payload=None, retries=3):
+        url = f"{API_BASE}{endpoint}"
+        for attempt in range(retries):
+            resp = requests.request(method, url, headers=HEADERS, json=payload)
+            if resp.status_code in (200, 201, 204):
+                return resp.json() if resp.text.strip() else {}
+            print(f"⚠️ Retry {attempt+1}: {resp.status_code}")
+            time.sleep(1)
+        raise Exception(f"[BridgeError] {resp.status_code}: {resp.text}")
 
     def run_analysis(self, pair: str, timeframe: str):
-        """
-        Jalankan pipeline analisa penuh AGI Hybrid
-        """
-        print(f"🐺 Memulai AGI Hybrid Fusion untuk {pair} ({timeframe})...")
+        print(f"🐺 Hybrid Fusion mulai untuk {pair} ({timeframe})...")
 
-        # Step 1 — Trigger full fusion
         fusion = self._jit_call("POST", "/hybrid/runFullFusion")
-        time.sleep(0.5)
-
-        # Step 2 — Get Layer-12 result
         layer12 = self._jit_call("GET", "/hybrid/getFusionLayer12")
-        time.sleep(0.5)
-
-        # Step 3 — Push ke Journal
         journal = self._jit_call("POST", "/journal/pushReasoning")
 
         self.status = "completed"
         self.last_sync = datetime.utcnow().isoformat()
 
-        return {
+        result = {
             "pair": pair,
             "timeframe": timeframe,
             "bridge_status": self.status,
@@ -80,48 +57,14 @@ class GPTBridgeHandler:
             "journal_ack": journal
         }
 
-# ====================================================
-# 🚀 Auto-Run Section — Aktif saat sistem Hybrid start
-# ====================================================
+        # Simpan hasil refleksi ke repo
+        log_content = json.dumps(result, indent=2)
+        path = f"vaults/logs/bridge_run_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+        githubCommitFile(OWNER, REPO, path, log_content, "🧠 Hybrid Bridge Sync", BRANCH)
 
-def run_gpt_hybrid_bridge(pair: str = DEFAULT_PAIR, timeframe: str = DEFAULT_TF):
-    """
-    Eksekusi langsung pipeline AGI Hybrid saat startup
-    """
-    print("==========================================")
-    print("🐺 TUYUL KARTEL FX HYBRID v5.4.0 — AUTO BRIDGE START")
-    print("==========================================")
-    print(f"Pair Default: {pair} | Timeframe: {timeframe}\n")
-
-    try:
-        bridge = GPTBridgeHandler()
-        print("🔗 Inisialisasi GPT Bridge...")
-        result = bridge.run_analysis(pair, timeframe)
-
-        print("\n--- ANALISA AGI HYBRID OTOMATIS ---")
-        print(f"Pair: {result['pair']}")
-        print(f"Timeframe: {result['timeframe']}")
-        print(f"Bridge Status: {result['bridge_status']}")
-        print(f"Last Sync: {result['last_sync']}")
-        print(f"Fusion Output Keys: {list(result['fusion_output'].keys()) if isinstance(result['fusion_output'], dict) else 'Non-dict Output'}")
-        print("------------------------------------------\n")
-        print("🐺✅ AGI Fusion selesai dan disinkronisasi ke Vault.")
-        print("📘 Hasil reasoning dicatat ke Journal Vault.\n")
-
-        # Optional: simpan hasil ke log file
-        os.makedirs("vaults/logs", exist_ok=True)
-        with open("vaults/logs/bridge_autorun.log", "a") as logf:
-            logf.write(f"[{result['last_sync']}] {pair} {timeframe} → {result['bridge_status']}\n")
-
-    except Exception as e:
-        print("❌ Error saat auto-run Bridge:")
-        print(e)
-
-    print("==========================================")
-    print("Selesai — Reflexive Hybrid Mode [OK]")
-    print("==========================================\n")
+        return result
 
 
-# Jalankan otomatis ketika sistem start
 if __name__ == "__main__":
-    run_gpt_hybrid_bridge()
+    handler = GPTBridgeHandler()
+    handler.run_analysis("XAUUSD", "H1")

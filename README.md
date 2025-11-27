@@ -120,6 +120,23 @@ Melalui `adapters/vault_bridge_client.py`.
 
 ---
 
+## 🔐 Sinkronisasi GitHub via WOLF_KEY
+
+Gunakan helper baru untuk memicu sinkronisasi repo dengan token `WOLF_KEY` atau
+`GITHUB_TOKEN` dari environment:
+
+```bash
+export WOLF_KEY=ghp_xxx   # atau pastikan GITHUB_TOKEN sudah tersedia
+python scripts/sync_hybrid_repo.py --repo tjx578/TUYUL-KARTEL-FX-AGI-HYBRID \
+    --branch main
+```
+
+Script akan mengekspor token ke `GITHUB_TOKEN`, mengambil commit terbaru, lalu
+menyimpan snapshot tarball ke folder `vaults/` agar Fusion Layer dapat melakukan
+reload.
+
+---
+
 ## ✅ Langkah Setelah Ini
 1. Buat folder di repo kamu:
    ```bash

@@ -8,19 +8,22 @@ import json
 import time
 import requests
 from datetime import datetime
-from wolf_github_bridge import githubCommitFile  # pastikan ada bridge ini
+from .github_api_bridge import githubCommitFile
 
-API_BASE = os.getenv("AGI_API_URL", "https://api.github.com")
+API_BASE = os.getenv("AGI_API_URL", "http://localhost:8080/api")
 OWNER = os.getenv("GITHUB_USER", "tjx578")
 REPO = os.getenv("GITHUB_REPO", "TUYUL-KARTEL-FX-AGI-HYBRID")
 BRANCH = "main"
 TOKEN = os.getenv("GITHUB_TOKEN")
 
-HEADERS = {
-    "Accept": "application/vnd.github+json",
-    "Authorization": f"Bearer {TOKEN}",
-    "X-GitHub-Api-Version": "2022-11-28"
-}
+HEADERS = {"Accept": "application/json"}
+if TOKEN:
+    HEADERS.update(
+        {
+            "Authorization": f"Bearer {TOKEN}",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+    )
 
 class GPTBridgeHandler:
     """Handler utama GPT–AGI Hybrid Bridge"""
@@ -41,7 +44,11 @@ class GPTBridgeHandler:
     def run_analysis(self, pair: str, timeframe: str):
         print(f"🐺 Hybrid Fusion mulai untuk {pair} ({timeframe})...")
 
-        fusion = self._jit_call("POST", "/hybrid/runFullFusion")
+        fusion = self._jit_call(
+            "POST",
+            "/hybrid/runFullFusion",
+            {"pair": pair, "timeframe": timeframe},
+        )
         layer12 = self._jit_call("GET", "/hybrid/getFusionLayer12")
         journal = self._jit_call("POST", "/journal/pushReasoning")
 

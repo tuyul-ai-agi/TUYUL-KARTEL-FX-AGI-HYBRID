@@ -2,7 +2,7 @@
 
 from typing import Dict, Any
 
-from ..core.ai_bridge.gpt_command_parser_v540 import GPTCommandParser
+from ai_bridge.gpt_command_parser_v540 import GPTCommandParser
 from ..core.hybrid_reflector import run_hybrid_reflection
 
 

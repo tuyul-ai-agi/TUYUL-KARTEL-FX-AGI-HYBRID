@@ -129,6 +129,7 @@ class GPTBridgeHandler:
 
     def get_status(self) -> Dict[str, Any]:
         return {
+            "bridge_status": self.status,
             "status": self.status,
             "last_sync": self.last_sync,
             "api_base": API_BASE,

@@ -11,6 +11,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+    status = bridge.get_status()
+    print(f"Bridge Status: {status['bridge_status']} | Last Sync: {status['last_sync']}")
+    print(f"API Base: {status['api_base']} | Repo: {status['repo']}")
+
+    print("\n🚀 Menjalankan analisa XAU/USD [H1]...\n")
+    result = bridge.run_analysis("XAU/USD", "H1")
+
+    print("=== HYBRID ANALYSIS OUTPUT ===")
+    for key, value in result.items():
+        print(f"{key}: {value}")
 
 from argparse import ArgumentParser
 

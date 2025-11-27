@@ -19,5 +19,5 @@ AGI_BRIDGE_CONFIG = {
     "owner": os.getenv("GITHUB_USER", "tjx578"),
     "status": "active",
     "bridge_mode": "hybrid-reflective",
-    "description": "Fusion link between GPT reasoning layer and AGI GitHub Vault"
+    "description": "Fusion link between GPT reasoning layer and AGI GitHub Vault",
 }

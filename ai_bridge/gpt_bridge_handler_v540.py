@@ -8,7 +8,7 @@ import json
 import time
 import requests
 from datetime import datetime
-from wolf_github_bridge import githubCommitFile  # pastikan ada bridge ini
+from .github_api_bridge import githubCommitFile
 
 API_BASE = os.getenv("AGI_API_URL", "https://api.github.com")
 OWNER = os.getenv("GITHUB_USER", "tjx578")

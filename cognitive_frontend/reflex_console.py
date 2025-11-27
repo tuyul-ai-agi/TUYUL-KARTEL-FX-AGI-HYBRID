@@ -1,7 +1,7 @@
 """CLI for executing Reflex commands manually."""
 
-from ..core.ai_bridge.gpt_bridge_handler_v540 import GPTBridgeHandler
-from ..core.ai_bridge.gpt_command_parser_v540 import GPTCommandParser
+from ai_bridge.gpt_bridge_handler_v540 import GPTBridgeHandler
+from ai_bridge.gpt_command_parser_v540 import GPTCommandParser
 
 
 def start_console() -> None:

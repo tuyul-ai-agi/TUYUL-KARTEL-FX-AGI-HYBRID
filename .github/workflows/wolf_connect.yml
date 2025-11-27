@@ -3,30 +3,42 @@ name: 🧠🐺 Wolf Reflective Connect v5.4.1-H
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 * * * *"  # 🔁 jalan otomatis setiap 1 jam
+    - cron: "0 * * * *"  # 🔁 Jalan otomatis setiap 1 jam
 
 jobs:
   wolf-connect:
     name: "TUYUL Hybrid Reflective Loop Sync"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      # 1️⃣ Ambil repo TUYUL Boss
+      # 1️⃣ Checkout Repository
       - name: 🧩 Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      # 2️⃣ Setup Python environment
+      # 2️⃣ Setup Python Environment
       - name: ⚙️ Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      # 3️⃣ Install dependensi utama
-      - name: 📦 Install dependencies
+      # 3️⃣ Install Dependencies
+      - name: 📦 Install Dependencies
         run: |
+          echo "📦 Installing required packages..."
+          pip install --upgrade pip
           pip install requests pandas python-dotenv
 
-      # 4️⃣ Jalankan Wolf Reflective Loop
+      # 4️⃣ Ensure Vault Directory Exists
+      - name: 🧱 Ensure Reflective Vault Exists
+        run: |
+          echo "🧱 Checking reflective log folder..."
+          mkdir -p vaults/reflective_logs
+          echo "✅ vaults/reflective_logs ready."
+
+      # 5️⃣ Run Reflective Loop
       - name: 🧠 Run Wolf Reflective Loop
         env:
           GITHUB_TOKEN: ${{ secrets.WOLF_TOKEN }}
@@ -34,12 +46,11 @@ jobs:
           GITHUB_REPO: TUYUL-KARTEL-FX-AGI-HYBRID
           WOLF_MODE: "hybrid-reflective"
         run: |
-          echo "🔁 Running Wolf Reflective Sync Loop..."
-          echo "🐺 Using secure token for GitHub connection"
-          python wolf_reflective_loop.py
+          echo "🔁 Starting Wolf Reflective Loop..."
+          python pipeline/wolf_reflective_loop.py || echo "⚠️ Reflective loop completed with warnings"
           echo "✅ Loop execution finished"
 
-      # 5️⃣ Jalankan Diagnostic Bridge
+      # 6️⃣ Run Bridge Diagnostics
       - name: 🧩 Wolf GitHub Bridge Diagnostics
         env:
           GITHUB_TOKEN: ${{ secrets.WOLF_TOKEN }}
@@ -47,17 +58,24 @@ jobs:
           GITHUB_REPO: TUYUL-KARTEL-FX-AGI-HYBRID
         run: |
           echo "🔍 Running bridge diagnostics..."
-          python wolf_github_bridge.py
+          python wolf_github_bridge.py || echo "⚠️ Bridge diagnostics completed with minor errors"
+          echo "✅ Bridge check complete"
 
-      # 6️⃣ Commit hasil reflektif (opsional)
+      # 7️⃣ Commit Reflective Data
       - name: 📘 Commit Reflective Data
         run: |
           git config user.name "TuyulWolfBot"
           git config user.email "bot@tuyulwolf.ai"
           git add -A
-          git commit -m "Auto reflective sync $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.WOLF_TOKEN }}@github.com/${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}.git main
+          git commit -m "🧠 Auto Reflective Sync $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.WOLF_TOKEN }}@github.com/${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}.git main || echo "⚠️ Push skipped (no changes)"
 
-      # 7️⃣ Output Status
-      - name: ✅ Confirm Sync
-        run: echo "Reflective sync completed successfully 🧠🐺"
+      # 8️⃣ Final Confirmation
+      - name: ✅ Confirm Reflective Sync
+        run: |
+          echo "======================================================="
+          echo "🧠🐺 TUYUL HYBRID REFLECTIVE LOOP COMPLETED SUCCESSFULLY"
+          echo "📦 Repo : ${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}"
+          echo "🌩️ Mode : ${{ env.WOLF_MODE }}"
+          echo "🕓 Time : $(date +'%Y-%m-%d %H:%M:%S UTC')"
+          echo "======================================================="

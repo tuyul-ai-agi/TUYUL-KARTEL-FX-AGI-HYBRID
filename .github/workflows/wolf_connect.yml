@@ -1,0 +1,51 @@
+name: 🧠🐺 Wolf Reflective Connect
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"    # 🔁 jalan otomatis setiap 1 jam
+
+jobs:
+  wolf-connect:
+    name: "TUYUL Hybrid Reflective Loop Sync"
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Ambil repo TUYUL Boss
+      - name: 🧩 Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup Python environment
+      - name: ⚙️ Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      # 3️⃣ Install dependensi (kalau Boss mau tambah modul ke depannya)
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests pandas
+
+      # 4️⃣ Jalankan loop reflektif
+      - name: 🧠 Run Wolf Reflective Loop
+        env:
+          WOLF_TOKEN: ${{ secrets.WOLF_TOKEN }}
+          GITHUB_USER: tjx578
+          GITHUB_REPO: TUYUL-KARTEL-FX-AGI-HYBRID
+        run: |
+          echo "🔁 Running Wolf Reflective Sync Loop..."
+          echo "🐺 Using secret token for authentication"
+          python wolf_reflective_loop.py
+
+      # 5️⃣ Commit hasil reflektif (opsional kalau loop menghasilkan file baru)
+      - name: 📘 Commit Reflective Data
+        run: |
+          git config user.name "TuyulWolfBot"
+          git config user.email "bot@tuyulwolf.ai"
+          git add -A
+          git commit -m "Auto reflective sync $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.WOLF_TOKEN }}@github.com/${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}.git main
+
+      # 6️⃣ Status output
+      - name: ✅ Confirm Sync
+        run: echo "Reflective sync completed successfully 🧠🐺"

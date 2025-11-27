@@ -6,7 +6,7 @@ Menghubungkan GPT Layer dengan sistem AGI Hybrid internal & GitHub Bridge.
 
 import os
 from .gpt_bridge_handler_v540 import GPTBridgeHandler
-from .wolf_github_bridge import getRepoContents, githubCommitFile, checkRepoAccess
+from .github_api_bridge import getRepoContents, githubCommitFile, checkRepoAccess
 
 __all__ = ["GPTBridgeHandler", "getRepoContents", "githubCommitFile", "checkRepoAccess"]
 __version__ = "5.4.1-H"

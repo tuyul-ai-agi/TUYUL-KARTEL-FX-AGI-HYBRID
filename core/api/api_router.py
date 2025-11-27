@@ -18,7 +18,7 @@ from .risk_handler import router as risk_router
 from .vault_sync_handler import router as vault_router
 from .reflective_handler import router as reflective_router
 from .system_handler import router as system_router
-from .gpt_bridge_handler_v540 import GPTBridgeHandler
+from ai_bridge.gpt_bridge_handler_v540 import GPTBridgeHandler
 
 # ==========================
 # ⚙️ Metadata & Diagnostics

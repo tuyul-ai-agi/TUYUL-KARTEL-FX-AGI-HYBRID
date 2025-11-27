@@ -1,130 +1,69 @@
-"""🐺 TUYUL FX ULTRA WOLF AGI HYBRID — MAIN RUNTIME v5.4.1
-Full AGI runtime server combining Reflex, Fusion, Vault, GPT Bridge, and Reflective systems.
-Precision = Survival.
+"""
+🐺 TUYUL FX AGI HYBRID – Main Launcher v5.4.1-H
+FastAPI runtime utama yang menggabungkan router reflektif & GPT bridge AGI Hybrid.
 """
 
-import asyncio
 import uvicorn
-from datetime import datetime
 from fastapi import FastAPI
-from starlette.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from api.central_router import api_router
 
-# === Core Routers ===
-from core.main_router import api_router
-
-# === Adapters / Subsystems ===
-from adapters.vault_bridge_client import sync_vaults
-from fusion.hybrid_fusion_orchestrator_v540 import run_full_fusion_cycle
-from reflective.meta_reflector_dispatch import run_meta_reflection
-from ai_bridge.gpt_bridge_handler_v540 import GPTBridgeHandler
-
-# === Initialize ===
+# ==============================
+# ⚙️ Konfigurasi Aplikasi
+# ==============================
 app = FastAPI(
-    title="🐺 TUYUL FX ULTRA WOLF AGI HYBRID",
-    version="5.4.1",
-    description=(
-        "Fusion–Reflex–Cognition Hybrid System integrating AGI reasoning, "
-        "Vault synchronization, and Reflective learning. "
-        "Built for precision, not speculation."
-    ),
+    title="TUYUL FX AGI HYBRID 🧠🐺",
+    description="Reflex–Fusion–Vault–GPT unified orchestrator v5.4.1-H",
+    version="5.4.1-H",
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
-gpt_bridge = GPTBridgeHandler()
+# ==============================
+# 🌐 CORS Policy
+# ==============================
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "https://tuyulwolf.ai",
+    "https://tjx578.github.io",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# ======================================================
-# ⚙️ STARTUP EVENT
-# ======================================================
-@app.on_event("startup")
-async def startup_event():
-    print("🔄 [Startup] Initializing TUYUL FX AGI Hybrid Environment...")
-    try:
-        sync_vaults()
-        print("✅ Vaults synchronized successfully.")
-    except Exception as e:
-        print(f"⚠️ Vault sync failed: {e}")
+# ==============================
+# 🧩 Router AGI Hybrid
+# ==============================
+app.include_router(api_router, prefix="/api")
 
-    # Optional: run system self-check
-    print("🧠 Running internal Reflex Coherence warm-up...")
-    try:
-        _ = run_full_fusion_cycle("EURJPY", "H1")
-        print("✅ Reflex coherence initialization complete.")
-    except Exception as e:
-        print(f"⚠️ Fusion warm-up failed: {e}")
+# ==============================
+# 🧠 Root Diagnostic
+# ==============================
+@app.get("/")
+async def root():
+    return {
+        "status": "🧠 TUYUL FX AGI HYBRID aktif",
+        "version": "v5.4.1-H",
+        "modules": [
+            "Fusion",
+            "Reflex",
+            "Risk",
+            "Vault",
+            "Reflective",
+            "GPT Bridge",
+            "System",
+        ],
+        "sync_state": "Online",
+    }
 
-    print("🧩 Launching Reflective Meta-Learning Bootstrap...")
-    try:
-        await asyncio.sleep(3)
-        run_meta_reflection({"boot": True})
-        print("✅ Reflective system initialized.")
-    except Exception as e:
-        print(f"⚠️ Reflective initialization failed: {e}")
-
-    print(f"🚀 TUYUL FX AGI HYBRID v5.4.1 ONLINE — {datetime.utcnow().isoformat()}\n")
-
-
-# ======================================================
-# 🧩 SHUTDOWN EVENT
-# ======================================================
-@app.on_event("shutdown")
-async def shutdown_event():
-    print("🛑 [Shutdown] Stopping TUYUL FX AGI Hybrid services...")
-    print("💾 All pending operations flushed.")
-    print("🧠 Reflective session terminated.\n")
-
-
-# ======================================================
-# 🔗 ROUTER REGISTRATION
-# ======================================================
-app.include_router(api_router)
-
-
-# ======================================================
-# 📡 ROOT HEALTH CHECK
-# ======================================================
-@app.get("/", tags=["System"])
-async def root_status():
-    return JSONResponse(
-        {
-            "system": "TUYUL FX ULTRA WOLF AGI HYBRID",
-            "version": "v5.4.1",
-            "status": "✅ Online and synchronized",
-            "timestamp": datetime.utcnow().isoformat(),
-            "modules": [
-                "Fusion Layer 12",
-                "Reflex Engine",
-                "Risk Management",
-                "Vault Sync",
-                "Reflective Meta-Cycle",
-                "GPT Bridge",
-                "System Diagnostics",
-            ],
-        }
-    )
-
-
-# ======================================================
-# 🧠 GPT COMMAND BRIDGE (Optional Direct Route)
-# ======================================================
-@app.post("/gpt/run", tags=["GPT Bridge"])
-async def run_gpt_analysis(payload: dict):
-    """Trigger GPT → Fusion → Reflection full analysis pipeline."""
-    pair = payload.get("pair", "XAUUSD")
-    timeframe = payload.get("timeframe", "H1")
-
-    print(f"⚙️ GPT Bridge triggered for {pair}-{timeframe}")
-    result = gpt_bridge.run_analysis(pair, timeframe)
-    return JSONResponse(result)
-
-
-# ======================================================
-# 🔥 RUNTIME ENTRYPOINT
-# ======================================================
+# ==============================
+# 🚀 Runtime Entry
+# ==============================
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=5400,
-        reload=True,
-        log_level="info",
-    )
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)

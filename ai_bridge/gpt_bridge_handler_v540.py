@@ -3,10 +3,11 @@
 GPT Bridge Handler — Reflex–Cognition–Fusion Orchestrator
 """
 
-import os
 import json
+import os
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import requests
@@ -18,6 +19,7 @@ OWNER = os.getenv("GITHUB_USER", "tjx578")
 REPO = os.getenv("GITHUB_REPO", "TUYUL-KARTEL-FX-AGI-HYBRID")
 BRANCH = "main"
 TOKEN = os.getenv("GITHUB_TOKEN")
+VAULT_LOG_DIR = Path("vaults/logs")
 
 
 def _build_headers() -> Dict[str, str]:
@@ -30,6 +32,12 @@ def _build_headers() -> Dict[str, str]:
             }
         )
     return headers
+
+
+def _ensure_vault_dir() -> Path:
+    VAULT_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    return VAULT_LOG_DIR
+
 
 class GPTBridgeHandler:
     """Handler utama GPT–AGI Hybrid Bridge"""
@@ -61,31 +69,61 @@ class GPTBridgeHandler:
         error_text = resp.text if "resp" in locals() else "no response"
         raise Exception(f"[BridgeError] {status_code}: {error_text}")
 
+    def _fallback_result(self, pair: str, timeframe: str, error: Exception) -> Dict[str, Any]:
+        timestamp = datetime.utcnow().isoformat()
+        self.status = "offline"
+        self.last_sync = timestamp
+        return {
+            "pair": pair,
+            "timeframe": timeframe,
+            "bridge_status": self.status,
+            "last_sync": self.last_sync,
+            "fusion_output": {
+                "summary": "Bridge offline — using fallback synthesis",
+                "confidence": 0.0,
+                "notes": str(error),
+            },
+            "journal_ack": {"status": "skipped", "reason": "Bridge offline"},
+        }
+
     def run_analysis(self, pair: str, timeframe: str):
         print(f"🐺 Hybrid Fusion mulai untuk {pair} ({timeframe})...")
 
         payload = {"pair": pair, "timeframe": timeframe}
 
-        fusion = self._jit_call("POST", "/hybrid/runFullFusion", payload)
-        layer12 = self._jit_call("GET", "/hybrid/getFusionLayer12", payload)
-        journal = self._jit_call("POST", "/journal/pushReasoning", payload)
+        try:
+            fusion = self._jit_call("POST", "/hybrid/runFullFusion", payload)
+            layer12 = self._jit_call("GET", "/hybrid/getFusionLayer12", payload)
+            journal = self._jit_call("POST", "/journal/pushReasoning", payload)
+            self.status = "completed"
+            self.last_sync = datetime.utcnow().isoformat()
 
-        self.status = "completed"
-        self.last_sync = datetime.utcnow().isoformat()
+            result = {
+                "pair": pair,
+                "timeframe": timeframe,
+                "bridge_status": self.status,
+                "last_sync": self.last_sync,
+                "fusion_request": fusion,
+                "fusion_output": layer12,
+                "journal_ack": journal,
+            }
+        except Exception as exc:  # pragma: no cover - network dependent
+            print(f"⚠️ Bridge offline, falling back to local synthesis: {exc}")
+            result = self._fallback_result(pair, timeframe, exc)
 
-        result = {
-            "pair": pair,
-            "timeframe": timeframe,
-            "bridge_status": self.status,
-            "last_sync": self.last_sync,
-            "fusion_output": layer12,
-            "journal_ack": journal
-        }
-
-        # Simpan hasil refleksi ke repo
         log_content = json.dumps(result, indent=2)
-        path = f"vaults/logs/bridge_run_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
-        githubCommitFile(OWNER, REPO, path, log_content, "🧠 Hybrid Bridge Sync", BRANCH)
+        log_dir = _ensure_vault_dir()
+        file_path = log_dir / f"bridge_run_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+        file_path.write_text(log_content)
+        print(f"📥 Bridge log stored locally at {file_path}")
+
+        if TOKEN:
+            try:
+                githubCommitFile(OWNER, REPO, str(file_path), log_content, "🧠 Hybrid Bridge Sync", BRANCH)
+            except Exception as exc:  # pragma: no cover - external service
+                print(f"⚠️ Skipping GitHub sync: {exc}")
+        else:
+            print("ℹ️ GITHUB_TOKEN not set, skipping remote sync.")
 
         return result
 

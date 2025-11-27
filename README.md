@@ -41,7 +41,14 @@ scripts/ → Eksekusi & automation tools
 Jalankan analisa penuh via terminal:
 
 ```bash
-python scripts/run_hybrid_analysis.py
+python scripts/run_hybrid_analysis.py [PAIR] [TIMEFRAME]
+```
+
+Contoh:
+
+```bash
+python scripts/run_hybrid_analysis.py XAU/USD H1
+python scripts/run_hybrid_analysis.py BTC/USDT M15
 ```
 
 Atau panggil lewat GPT internal command:
@@ -75,7 +82,7 @@ Vault Synchronization Feedback
 Jalankan analisa penuh (contoh XAU/USD H1):
 
 ```bash
-python scripts/run_hybrid_analysis.py
+python scripts/run_hybrid_analysis.py XAU/USD H1
 ```
 
 Atau melalui GPT internal command:
@@ -110,6 +117,23 @@ Melalui `adapters/vault_bridge_client.py`.
 
 > “Reflex defines Survival, Coherence defines Mastery.”
 > — TUYUL WOLF 🐺⚡
+
+---
+
+## 🔐 Sinkronisasi GitHub via WOLF_KEY
+
+Gunakan helper baru untuk memicu sinkronisasi repo dengan token `WOLF_KEY` atau
+`GITHUB_TOKEN` dari environment:
+
+```bash
+export WOLF_KEY=ghp_xxx   # atau pastikan GITHUB_TOKEN sudah tersedia
+python scripts/sync_hybrid_repo.py --repo tjx578/TUYUL-KARTEL-FX-AGI-HYBRID \
+    --branch main
+```
+
+Script akan mengekspor token ke `GITHUB_TOKEN`, mengambil commit terbaru, lalu
+menyimpan snapshot tarball ke folder `vaults/` agar Fusion Layer dapat melakukan
+reload.
 
 ---
 

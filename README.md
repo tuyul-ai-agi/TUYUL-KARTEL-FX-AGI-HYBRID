@@ -118,6 +118,22 @@ Melalui `adapters/vault_bridge_client.py`.
 > “Reflex defines Survival, Coherence defines Mastery.”
 > — TUYUL WOLF 🐺⚡
 
+### 🔐 Sinkronisasi Repo dengan WOLF_KEY
+
+Gunakan helper script untuk menyamakan repo GitHub dengan Vault AGI-Hybrid memakai token
+`WOLF_KEY`:
+
+```bash
+export WOLF_KEY="<token>"
+bash scripts/sync_hybrid_repo.sh
+```
+
+Opsi yang dapat dioverride:
+
+- `REPO_SLUG` (default: `tjx578/TUYUL-KARTEL-FX-AGI-HYBRID`)
+- `BRANCH_NAME` (default: `main`)
+- `TARGET_DIR` (default: `vaults/hybrid_repo`)
+
 ---
 
 ## ✅ Langkah Setelah Ini

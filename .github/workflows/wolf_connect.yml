@@ -1,4 +1,4 @@
-name: 🧠🐺 Wolf Reflective Connect v5.4.1-H
+name: 🧠🐺 Wolf Reflective Connect v5.4.2-H (Stable)
 
 on:
   workflow_dispatch:
@@ -31,14 +31,24 @@ jobs:
           pip install --upgrade pip
           pip install requests pandas python-dotenv
 
-      # 4️⃣ Ensure Vault Directory Exists
+      # 4️⃣ Verify Environment Secrets
+      - name: 🔐 Verify Secrets Environment
+        run: |
+          echo "🔎 Checking essential environment variables..."
+          if [ -z "${{ secrets.WOLF_TOKEN }}" ]; then
+            echo "❌ WOLF_TOKEN is missing. Please set it in GitHub Secrets."; exit 1;
+          fi
+          echo "✅ WOLF_TOKEN available"
+          echo "🧠 Environment ready for reflective sync"
+
+      # 5️⃣ Ensure Vault Directory Exists
       - name: 🧱 Ensure Reflective Vault Exists
         run: |
           echo "🧱 Checking reflective log folder..."
           mkdir -p vaults/reflective_logs
           echo "✅ vaults/reflective_logs ready."
 
-      # 5️⃣ Run Reflective Loop
+      # 6️⃣ Run Reflective Loop
       - name: 🧠 Run Wolf Reflective Loop
         env:
           GITHUB_TOKEN: ${{ secrets.WOLF_TOKEN }}
@@ -49,8 +59,9 @@ jobs:
           echo "🔁 Starting Wolf Reflective Loop..."
           python pipeline/wolf_reflective_loop.py || echo "⚠️ Reflective loop completed with warnings"
           echo "✅ Loop execution finished"
+          echo "🧠 Output stored in vaults/reflective_logs/"
 
-      # 6️⃣ Run Bridge Diagnostics
+      # 7️⃣ Run Bridge Diagnostics
       - name: 🧩 Wolf GitHub Bridge Diagnostics
         env:
           GITHUB_TOKEN: ${{ secrets.WOLF_TOKEN }}
@@ -58,19 +69,19 @@ jobs:
           GITHUB_REPO: TUYUL-KARTEL-FX-AGI-HYBRID
         run: |
           echo "🔍 Running bridge diagnostics..."
-          python wolf_github_bridge.py || echo "⚠️ Bridge diagnostics completed with minor errors"
+          python core/wolf_github_bridge.py > vaults/reflective_logs/bridge_diagnostic_$(date +'%Y%m%d_%H%M%S').log || echo "⚠️ Bridge diagnostics completed with minor errors"
           echo "✅ Bridge check complete"
 
-      # 7️⃣ Commit Reflective Data
+      # 8️⃣ Commit Reflective Data
       - name: 📘 Commit Reflective Data
         run: |
           git config user.name "TuyulWolfBot"
           git config user.email "bot@tuyulwolf.ai"
           git add -A
-          git commit -m "🧠 Auto Reflective Sync $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git commit -m "🧠 Reflective Sync ✅ $(date +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
           git push https://x-access-token:${{ secrets.WOLF_TOKEN }}@github.com/${{ env.GITHUB_USER }}/${{ env.GITHUB_REPO }}.git main || echo "⚠️ Push skipped (no changes)"
 
-      # 8️⃣ Final Confirmation
+      # 9️⃣ Final Confirmation
       - name: ✅ Confirm Reflective Sync
         run: |
           echo "======================================================="

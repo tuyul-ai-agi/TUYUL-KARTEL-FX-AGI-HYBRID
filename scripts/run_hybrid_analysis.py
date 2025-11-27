@@ -12,16 +12,18 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
+from argparse import ArgumentParser
+
 from ai_bridge.gpt_bridge_handler_v540 import GPTBridgeHandler
 
 
-def main() -> None:
+def main(pair: str = "XAU/USD", timeframe: str = "H1") -> None:
     """Main entrypoint untuk menjalankan analisa AGI Hybrid."""
     print("⚡ Initializing TUYUL AGI Hybrid Bridge...")
     bridge = GPTBridgeHandler()
     print("Bridge Status:", bridge.get_status())
 
-    result = bridge.run_analysis("XAU/USD", "H1")
+    result = bridge.run_analysis(pair, timeframe)
 
     print("\n=== HYBRID ANALYSIS OUTPUT ===")
     for key, val in result.items():
@@ -32,4 +34,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser(description="Run TUYUL AGI Hybrid analysis")
+    parser.add_argument("pair", nargs="?", default="XAU/USD", help="Symbol pair to analyze")
+    parser.add_argument(
+        "timeframe", nargs="?", default="H1", help="Timeframe for the analysis (e.g. H1)"
+    )
+    args = parser.parse_args()
+
+    main(pair=args.pair, timeframe=args.timeframe)

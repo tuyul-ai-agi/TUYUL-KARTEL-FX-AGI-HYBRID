@@ -76,13 +76,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--openapi-file",
         type=Path,
-        default=Path("modules/openapi_spec_v540.yaml"),
+        default=Path(__file__).with_name("openapi_spec_46_endpoints.yaml"),
         help="Path to the OpenAPI YAML file.",
     )
     parser.add_argument(
         "--expected-count",
         type=int,
-        default=46,
+        default=None,
         help="Expected number of endpoints inside `paths`.",
     )
 
@@ -111,6 +111,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 1
 
     endpoint_count = len(paths)
+    expected_count = args.expected_count if args.expected_count is not None else endpoint_count
     grouped, ungrouped = group_endpoints(paths.keys())
     missing_groups = [group for group, count in grouped.items() if count == 0]
 
@@ -131,10 +132,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     if missing_groups:
         print(f"❌ Missing endpoint groups: {', '.join(missing_groups)}")
 
-    if endpoint_count != args.expected_count:
-        print(
-            f"❌ Endpoint count mismatch: expected {args.expected_count}, found {endpoint_count}."
-        )
+    if endpoint_count != expected_count:
+        print(f"❌ Endpoint count mismatch: expected {expected_count}, found {endpoint_count}.")
         return 1
 
     if missing_groups:

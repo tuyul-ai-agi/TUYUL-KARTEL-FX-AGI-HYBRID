@@ -1,22 +1,26 @@
 """
-🧠 TUYUL FX — Reflex Core v5.4.0
-===============================
-Menggabungkan Reflex Coherence Index (RCI) dan RLSI Analyzer.
+Reflex Core v5.4.0
+------------------
+Reflex Layer — sistem reaksi cepat terhadap dinamika harga & momentum pasar.
 """
 
-from tuyul_fx_agi_hybrid.modules.rlsi_module_v_540 import RLSIModuleV540
+import pandas as pd
+from core.fushion.rlsi_module_v540 import RLSIModule
 
-class ReflexCoreV540:
+
+class ReflexCore:
     def __init__(self):
-        self.rlsi = RLSIModuleV540()
+        self.rlsi = RLSIModule()
 
-    def analyze(self, pair):
-        print(f"🔎 Analyzing Reflex Layer for {pair}")
-        rlsi_data = self.rlsi.compute(pair)
-        rc_value = round((rlsi_data.get("vol_shift", 0.75) + 0.8) / 2, 3)
-        print(f"RC (Reflex Coherence) = {rc_value}")
-        return {"RC": rc_value, "RLSI": rlsi_data}
+    def analyze(self, df: pd.DataFrame):
+        """Analisa reaksi cepat berdasarkan RLSI & candle pattern"""
+        rlsi_val = self.rlsi.calculate(df)
+        candle = df.tail(1).iloc[0]
+        signal = "BUY" if rlsi_val < 40 else "SELL" if rlsi_val > 60 else "WAIT"
 
-if __name__ == "__main__":
-    reflex = ReflexCoreV540()
-    print(reflex.analyze("EURUSD"))
+        return {
+            "RLSI": rlsi_val,
+            "CandleClose": candle["close"],
+            "Signal": signal,
+            "Strength": round(abs(rlsi_val - 50) / 50, 3),
+        }

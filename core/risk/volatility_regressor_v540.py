@@ -1,19 +1,25 @@
-"""Volatility deviation detection utilities."""
+"""
+Volatility Regressor v5.4.0
+---------------------------
+Regressor sederhana untuk estimasi volatilitas pasar.
+"""
 
-import random
-from typing import Dict
-
-
-def detect_volatility_deviation(data) -> Dict[str, float]:
-    """Analyze volatility and detect anomaly deviation index."""
-
-    volatility = round(random.uniform(0.1, 0.9), 3)
-    return {"DVG": volatility, "status": "High" if volatility > 0.7 else "Normal"}
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+import numpy as np
 
 
-def estimate_volatility(pair: str, timeframe: str) -> float:
-    """Estimate volatility based on pair and timeframe."""
+class VolatilityRegressor:
+    def __init__(self):
+        self.model = LinearRegression()
 
-    base_volatility = random.uniform(0.5, 1.5)
-    timeframe_adjustment = 0.8 if timeframe.lower().startswith("h") else 1.0
-    return round(base_volatility * timeframe_adjustment, 3)
+    def train(self, df: pd.DataFrame):
+        df["range"] = df["high"] - df["low"]
+        X = np.arange(len(df)).reshape(-1, 1)
+        y = df["range"].values
+        self.model.fit(X, y)
+
+    def predict_next(self, steps=1):
+        X_pred = np.array([[i] for i in range(100, 100 + steps)])
+        preds = self.model.predict(X_pred)
+        return round(float(preds[-1]), 4)

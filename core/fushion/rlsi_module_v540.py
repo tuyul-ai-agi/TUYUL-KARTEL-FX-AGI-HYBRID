@@ -106,3 +106,19 @@ def latest_rlsi_signal(df: pd.DataFrame) -> Tuple[float, str, str]:
     interpretation = str(latest_row["RLSI_Interpretation"])
     status = str(latest_row["RLSI_Status"])
     return latest_value, interpretation, status
+
+
+class RLSIModule:
+    """RLSI helper with simple RSI-style calculation for reflex layer."""
+
+    def calculate(self, df: pd.DataFrame) -> float:
+        closes = df.get("close")
+        if closes is None or len(closes) < 2:
+            return 50.0
+
+        delta = closes.diff().dropna()
+        up = delta.clip(lower=0).rolling(window=14, min_periods=1).mean()
+        down = (-delta.clip(upper=0)).rolling(window=14, min_periods=1).mean()
+        rs = up / (down.replace(0, np.nan)).fillna(0.0001)
+        rsi = 100 - (100 / (1 + rs))
+        return float(rsi.iloc[-1])

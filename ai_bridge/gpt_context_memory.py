@@ -1,34 +1,38 @@
+"""
+GPT Context Memory v5.4.0
+-------------------------
+Simpan dan ambil memori reasoning GPT antar sesi.
+"""
+
 import json
-from datetime import datetime, timezone
-from pathlib import Path
+import os
+from datetime import datetime
 
 
-class GPTContextMemory:
-    def __init__(self, path="vaults/context_memory.json"):
-        self.path = Path(path)
-        self.memory = self._load_memory()
+class ContextMemory:
+    def __init__(self, file_path="vaults/journal_vault/context_memory.json"):
+        self.file_path = file_path
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        if not os.path.exists(file_path):
+            with open(file_path, "w") as f:
+                json.dump([], f)
 
-    def _load_memory(self):
-        try:
-            with self.path.open("r", encoding="utf-8") as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return {"sessions": []}
-        except json.JSONDecodeError:
-            return {"sessions": []}
-
-    def save_context(self, pair, timeframe, conf12, rcadj):
-        entry = {
-            "timestamp": datetime.now(tz=timezone.utc).isoformat(),
-            "pair": pair,
-            "timeframe": timeframe,
-            "conf12": conf12,
-            "rcadj": rcadj,
+    def save(self, role, prompt, result):
+        memory_entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "role": role,
+            "prompt": prompt,
+            "result": result,
         }
-        self.memory["sessions"].append(entry)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("w", encoding="utf-8") as f:
-            json.dump(self.memory, f, indent=2)
+        data = self.load()
+        data.append(memory_entry)
+        with open(self.file_path, "w") as f:
+            json.dump(data, f, indent=2)
 
-    def last_context(self):
-        return self.memory["sessions"][-1] if self.memory["sessions"] else None
+    def load(self):
+        with open(self.file_path, "r") as f:
+            return json.load(f)
+
+    def clear(self):
+        with open(self.file_path, "w") as f:
+            json.dump([], f)

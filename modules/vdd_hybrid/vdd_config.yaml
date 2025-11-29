@@ -1,17 +1,22 @@
-# TUYUL FX ULTRA WOLF v5.4.0 – VDDHybrid Configuration
+## **4️⃣ `vdd_config.yaml`**
+### 🧠 Fungsi:
+> Konfigurasi utama VDD Hybrid — mengatur parameter deteksi rezim dan bobot reasoning.
 
-update_interval: 60   # in seconds
-api_source: "twelvedata"
+```yaml
+# VDD Hybrid Configuration v5.4.3
+
+thresholds:
+  tranquil: 0.85
+  stressed: 0.75
+  crisis: 0.6
+
+weights:
+  reflex: 0.4
+  fusion: 0.4
+  coherence: 0.2
+
 features:
-  zscore_period: 21
-  correlation_period: 90
-model:
-  regimes: 3
-  smoothing: true
-risk_map:
-  0: 1.0
-  1: 0.5
-  2: 0.1
-publish_target:
-  - adaptive_risk_engine
-  - wl_wci
+  - volatility
+  - bias_strength
+  - coherence_index
+  - reflex_signal

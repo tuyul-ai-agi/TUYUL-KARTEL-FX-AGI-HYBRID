@@ -1,0 +1,24 @@
+vault_name: Kartel_Vault
+description: >
+  Collective market bias vault — stores sentiment data, liquidity maps,
+  and institutional flow coherence derived from AGI fusion reasoning.
+
+endpoint:
+  base_url: "https://api.kartelvault.tuyulkartel.ai"
+  auth_token: "${KARTEL_VAULT_TOKEN}"
+  timeout: 45
+
+data_paths:
+  liquidity_map: "vaults/kartel_vault/liquidity_heatmap.json"
+  sentiment_stream: "vaults/kartel_vault/sentiment_stream.json"
+  fusion_output: "vaults/kartel_vault/fusion_output.json"
+
+sync_policy:
+  auto_sync: true
+  interval_minutes: 120
+  sync_method: "push-only"
+
+backup:
+  enabled: true
+  location: "backups/kartel_vault/"
+  retention_days: 10

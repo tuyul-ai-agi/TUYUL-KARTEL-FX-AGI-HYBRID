@@ -1,0 +1,29 @@
+profile_name: Tuyul_AGI_Bridge
+description: >
+  Configuration for GPT model and parameters used in AGI reasoning bridge.
+  Controls temperature, max_tokens, and reasoning style for each AGI layer.
+
+provider: "openai"
+model: "gpt-5-turbo"
+api_key: "${OPENAI_API_KEY}"
+
+defaults:
+  temperature: 0.3
+  max_tokens: 4096
+  top_p: 0.9
+  frequency_penalty: 0.0
+  presence_penalty: 0.0
+
+modes:
+  reflex_mode:
+    temperature: 0.2
+    reasoning_depth: "shallow"
+    description: "Quick reflex responses for pattern recognition"
+  fusion_mode:
+    temperature: 0.4
+    reasoning_depth: "intermediate"
+    description: "Combines reflex + smart money + coherence models"
+  reflective_mode:
+    temperature: 0.6
+    reasoning_depth: "deep"
+    description: "Meta-learning reflection and bias introspection"

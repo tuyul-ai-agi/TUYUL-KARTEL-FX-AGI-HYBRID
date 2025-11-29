@@ -1,0 +1,23 @@
+default_env: "prod"
+
+profiles:
+  dev:
+    description: "Development sandbox environment for AGI hybrid testing"
+    branch: "dev"
+    debug_mode: true
+    sync_interval: 15
+    enable_telemetry: false
+
+  stage:
+    description: "Staging environment for QA and internal testing"
+    branch: "staging"
+    debug_mode: false
+    sync_interval: 30
+    enable_telemetry: true
+
+  prod:
+    description: "Production environment for active AGI operations"
+    branch: "main"
+    debug_mode: false
+    sync_interval: 60
+    enable_telemetry: true

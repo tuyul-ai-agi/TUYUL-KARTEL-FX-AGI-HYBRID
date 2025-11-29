@@ -1,23 +1,34 @@
-"""Interpreter converting natural language input into system actions."""
+"""
+Context Interpreter
+-------------------
+Modul yang menterjemahkan input manusia (bahasa natural)
+menjadi perintah AGI Hybrid (Reflex–Fusion–Reflective Command).
+"""
 
-from typing import Dict, Any
-
-from ..core.ai_bridge.gpt_command_parser_v540 import GPTCommandParser
-from ..core.hybrid_reflector import run_hybrid_reflection
+import re
+from typing import Dict
 
 
-def interpret_context(user_input: str) -> Dict[str, Any]:
-    """Interpret user input and execute appropriate system actions.
-    
-    Args:
-        user_input: Natural language command from user.
-        
-    Returns:
-        Dictionary with analysis results or error message.
-    """
-    parser = GPTCommandParser()
-    result = parser.parse(user_input)
-    if result["command"] == "run_analysis":
-        pair, timeframe = result["args"]
-        return run_hybrid_reflection(pair, timeframe)
-    return {"error": "unknown command"}
+class ContextInterpreter:
+    def __init__(self) -> None:
+        self.patterns: Dict[str, str] = {
+            r"analisa\s+(\w+)\s+(\w+)": "gas kan analisa {pair} {tf}",
+            r"risiko\s+(\d+)": "calculate risk {balance}",
+            r"sync\s+vault": "journal trade",
+            r"refleksi": "reflective cycle",
+        }
+
+    def interpret(self, text: str) -> str:
+        """
+        Mengubah kalimat alami menjadi perintah AGI formal.
+        """
+
+        for pattern, command in self.patterns.items():
+            match = re.search(pattern, text.lower())
+            if match:
+                groups = match.groups()
+                if "analisa" in pattern:
+                    return command.format(pair=groups[0].upper(), tf=groups[1].upper())
+                if "risiko" in pattern:
+                    return command.format(balance=groups[0])
+        return text

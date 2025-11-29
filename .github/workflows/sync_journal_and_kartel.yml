@@ -1,0 +1,24 @@
+name: "\U0001F517 Sync Journal ↔ Kartel Vault"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"  # Setiap 12 jam
+
+jobs:
+  sync-vaults:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run TriVault Sync
+        run: python pipeline/tri_vault_sync_loop.py
+      - name: Commit Journal–Kartel sync
+        run: |
+          git add vaults/journal_vault/ vaults/kartel_vault/
+          git commit -m "\U0001F517 Synced Journal ↔ Kartel Vault"
+          git push

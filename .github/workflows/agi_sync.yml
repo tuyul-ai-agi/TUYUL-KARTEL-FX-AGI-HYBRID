@@ -1,4 +1,4 @@
-name: 🧠 AGI Hybrid Sync
+name: "\U0001F9E0 AGI Hybrid Sync"
 
 on:
   push:
@@ -30,5 +30,5 @@ jobs:
           git config user.name "AGI Sync Bot"
           git config user.email "agi@tuyulkartel.ai"
           git add vaults/ logs/
-          git commit -m "🤖 Auto-sync AGI Hybrid Vaults"
+          git commit -m "\U0001F916 Auto-sync AGI Hybrid Vaults"
           git push

@@ -1,20 +1,22 @@
-"""Adaptive risk calculation API handler."""
+"""
+Risk Handler
+------------
+Endpoint untuk kalkulasi risiko adaptif AGI berdasarkan parameter reflektif.
+"""
 
 from fastapi import APIRouter
-from pydantic import BaseModel
-
-from ...risk.adaptive_risk_calculator_v540 import RiskResult, calculate_risk
 
 router = APIRouter()
 
 
-class RiskRequest(BaseModel):
-    balance: float
-    sl_pips: float
-
-
-@router.post("/calculate", response_model=RiskResult)
-def risk_calc(req: RiskRequest) -> RiskResult:
-    """Calculate adaptive risk metrics based on account balance and stop-loss size."""
-
-    return calculate_risk(req.balance, req.sl_pips)
+@router.get("/calculate")
+def calculate_risk(balance: float = 10000, conf12: float = 0.9, rcadj: float = 0.88):
+    risk_pct = round((1 - ((conf12 + rcadj) / 2)) * 5, 2)
+    lot_size = round((balance * (risk_pct / 100)) / 1000, 2)
+    return {
+        "balance": balance,
+        "conf12": conf12,
+        "rcadj": rcadj,
+        "risk_percent": f"{risk_pct}%",
+        "recommended_lot": lot_size
+    }

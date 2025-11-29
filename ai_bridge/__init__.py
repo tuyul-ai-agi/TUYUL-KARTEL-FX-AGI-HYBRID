@@ -1,23 +1,26 @@
 """
-🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.2-H
-AI Bridge Package (Hybrid Edition)
-Menghubungkan GPT Layer dengan sistem AGI Hybrid internal & GitHub Bridge.
+ai_bridge package
+-----------------
+Lapisan integrasi antara AGI Hybrid (Reflex–Fusion–Reflective) dengan GPT, Vault, dan GitHub API.
+
+Version: v5.4.4-TriVault
 """
 
-import os
-from .gpt_bridge_handler_v540 import GPTBridgeHandler
-from .github_api_bridge import getRepoContents, githubCommitFile, checkRepoAccess
+__version__ = "5.4.4"
+__author__ = "Tuyul Kartel FX Hybrid Team"
 
-__all__ = ["GPTBridgeHandler", "getRepoContents", "githubCommitFile", "checkRepoAccess"]
-__version__ = "5.4.2-H"
-__author__ = "TUYUL LAB 🧠⚡"
+from .gpt_bridge_handler_v540 import GPTBridge
+from .gpt_command_parser_v540 import CommandParser
+from .gpt_context_memory import ContextMemory
+from .github_api_bridge import GitHubBridge
+from .vault_autosync_v541 import VaultAutoSync
+from .bridge_observer_v543 import BridgeObserver
 
-# === Hybrid Bridge Meta Config ===
-AGI_BRIDGE_CONFIG = {
-    "version": __version__,
-    "connected_repo": os.getenv("GITHUB_REPO", "TUYUL-KARTEL-FX-AGI-HYBRID"),
-    "owner": os.getenv("GITHUB_USER", "tjx578"),
-    "status": "active",
-    "bridge_mode": "hybrid-reflective",
-    "description": "Fusion link between GPT reasoning layer and AGI GitHub Vault"
-}
+__all__ = [
+    "GPTBridge",
+    "CommandParser",
+    "ContextMemory",
+    "GitHubBridge",
+    "VaultAutoSync",
+    "BridgeObserver",
+]

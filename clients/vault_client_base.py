@@ -1,48 +1,133 @@
 """
-Vault Base Client
------------------
-Kelas dasar untuk komunikasi HTTP antar Vault AGI Hybrid.
-Menangani autentikasi, headers, dan koneksi API standar.
+vault_client_base.py
+====================
+
+Interface Standar untuk Semua Vault Client di Ekosistem TUYUL AGI Hybrid 🧠⚡
+
+Digunakan oleh:
+- FXVaultClient        (repo: TUYUL-FX-KNOWLEDGE-VAULT-AGI)
+- KartelVaultClient    (repo: TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI)
+- JournalVaultClient   (repo: TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI)
+
+Desain oleh: 🐺 TUYUL KARTEL FX ULTRA WOLF AGI-HYBRID v5.4.4
+Fungsi:
+---------
+- Menyediakan *kontrak* generik untuk setiap Vault Client
+- Mengatur lifecycle, CRUD, dan query semantik antar Vault
+- Memastikan semua vault sinkron, sehat, dan terukur (statistik + integritas)
+
 """
 
-import requests
-import os
-import time
+from __future__ import annotations
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Protocol, runtime_checkable
 
-class VaultBaseClient:
-    def __init__(self, base_url: str, api_key_env: str):
-        self.base_url = base_url.rstrip("/")
-        self.api_key = os.getenv(api_key_env, "")
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "TuyulKartel-FX-AGI/5.4.4"
+
+# =====================================================================
+# 🧩 BaseVaultClient Interface
+# =====================================================================
+
+@runtime_checkable
+class BaseVaultClient(Protocol):
+    """
+    Interface generik yang wajib diimplementasikan tiap Vault Client.
+
+    Kontrak minimum:
+    ----------------
+    - lifecycle: connect, health_check
+    - CRUD dokumen: load_document, save_document, list_documents
+    - query semantik: semantic_search
+    - monitoring: get_stats
+    """
+
+    # ---- lifecycle ----
+    def connect(self) -> None:
+        """Inisialisasi koneksi ke vault (misal via REST, WebSocket, atau Local I/O)."""
+        ...
+
+    def health_check(self) -> bool:
+        """Cek status koneksi dan kredensial ke Vault."""
+        ...
+
+    # ---- CRUD utama ----
+    def load_document(self, doc_id: str) -> Dict[str, Any]:
+        """Ambil satu dokumen berdasarkan ID."""
+        ...
+
+    def save_document(self, payload: Dict[str, Any]) -> str:
+        """Simpan dokumen baru ke Vault dan kembalikan ID-nya."""
+        ...
+
+    def list_documents(
+        self,
+        *,
+        limit: int = 50,
+        cursor: Optional[str] = None,
+        filters: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """Ambil daftar dokumen dengan pagination dan optional filter."""
+        ...
+
+    # ---- Query semantik / metadata ----
+    def semantic_search(
+        self,
+        query: str,
+        *,
+        top_k: int = 10,
+        filters: Optional[Dict[str, Any]] = None,
+    ) -> List[Dict[str, Any]]:
+        """Cari dokumen dengan query semantik atau metadata tertentu."""
+        ...
+
+    # ---- Monitoring ----
+    def get_stats(self) -> Dict[str, Any]:
+        """Ambil statistik Vault (jumlah dokumen, integritas, dsb)."""
+        ...
+
+
+# =====================================================================
+# 💾 VaultSyncResult DataClass
+# =====================================================================
+
+@dataclass
+class VaultSyncResult:
+    """
+    Hasil operasi sinkronisasi lintas-vault.
+
+    Contoh isi:
+    -----------
+    {
+        "synced_count": 12,
+        "skipped_count": 2,
+        "errors": ["journal_vault timeout"],
+        "details": [
+            {"doc_id": "fusion_2025_11_29", "status": "synced"},
+            {"doc_id": "bias_audit_2025_11_28", "status": "skipped"}
+        ]
+    }
+
+    Digunakan oleh:
+    - TriVaultSyncLoop (pipeline/tri_vault_sync_loop.py)
+    - VaultDiffSync (core/vaults/vault_diff_sync.py)
+    - vault_integrity_audit.yml (GitHub Action CI/CD)
+    """
+
+    synced_count: int
+    skipped_count: int = 0
+    errors: Optional[List[str]] = None
+    details: Optional[List[Dict[str, Any]]] = None
+
+    def __post_init__(self) -> None:
+        if self.errors is None:
+            self.errors = []
+        if self.details is None:
+            self.details = []
+
+    def summary(self) -> Dict[str, Any]:
+        """Ringkasan hasil sinkronisasi dalam format JSON-ready."""
+        return {
+            "synced": self.synced_count,
+            "skipped": self.skipped_count,
+            "error_count": len(self.errors),
+            "details_count": len(self.details),
         }
-
-    def _request(self, method: str, endpoint: str, **kwargs):
-        url = f"{self.base_url}/{endpoint.lstrip('/')}"
-        retries = 3
-        for attempt in range(retries):
-            try:
-                response = requests.request(method, url, headers=self.headers, timeout=10, **kwargs)
-                response.raise_for_status()
-                return response.json()
-            except requests.RequestException as e:
-                if attempt < retries - 1:
-                    time.sleep(1.5)
-                else:
-                    raise e
-
-    def get(self, endpoint: str, params=None):
-        return self._request("GET", endpoint, params=params)
-
-    def post(self, endpoint: str, data=None, json=None):
-        return self._request("POST", endpoint, json=json or data)
-
-    def ping(self):
-        """Tes koneksi ke Vault"""
-        try:
-            r = self.get("status")
-            return {"status": "connected", "response": r}
-        except Exception as e:
-            return {"status": "error", "error": str(e)}

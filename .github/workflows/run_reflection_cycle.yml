@@ -1,0 +1,24 @@
+name: "\U0001F52E Run Reflection Cycle"
+
+on:
+  schedule:
+    - cron: "15 */2 * * *"  # Setiap 2 jam
+  workflow_dispatch:
+
+jobs:
+  reflection-cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run Reflective Meta Cycle
+        run: python pipeline/reflective_meta_cycle.py
+      - name: Commit Reflection Outputs
+        run: |
+          git add vaults/journal_vault/ logs/
+          git commit -m "\U0001F52E Reflection cycle meta-learning update"
+          git push

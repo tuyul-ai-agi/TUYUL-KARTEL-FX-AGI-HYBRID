@@ -1,37 +1,26 @@
-# 🧠 Tuyul Kartel FX AGI Hybrid – OpenAPI Spec Validator Workflow
-# Version: v5.4.0-HYBRID
-# Purpose: Automatically validate the 46-endpoint OpenAPI spec on each commit
-
-name: Validate-OpenAPI-v540
+name: "✅ Validate OpenAPI Schemas"
 
 on:
   push:
+    branches: [ main, dev ]
     paths:
-      - 'modules/*.yaml'
-      - 'modules/*.yml'
+      - "core/api/openapi_*.yaml"
+      - "core/api/openapi_*.yml"
   workflow_dispatch:
 
 jobs:
   validate-openapi:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Install Dependencies
-      run: |
-        pip install pyyaml
-
-    - name: Run OpenAPI Validator
-      run: |
-        echo '🚀 Running OpenAPI Validation...'
-        python modules/validate_openapi_v540.py || exit 1
-
-    - name: Validation Completed
-      run: echo '✅ OpenAPI validation completed successfully for Tuyul FX AGI Hybrid v5.4.0.'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install openapi-spec-validator
+      - name: Validate OpenAPI specs
+        run: |
+          for file in core/api/openapi_*.yaml; do
+            echo "Validating $file..."
+            openapi-spec-validator "$file"
+          done

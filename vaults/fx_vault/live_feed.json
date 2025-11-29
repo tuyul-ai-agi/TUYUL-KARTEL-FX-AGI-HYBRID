@@ -1,0 +1,14 @@
+{
+  "pair": "XAUUSD",
+  "source": "fxvault_stream",
+  "data": [
+    {"time": "2025-11-29T10:00:00Z", "open": 2033.4, "high": 2037.2, "low": 2032.1, "close": 2036.8, "volume": 1432},
+    {"time": "2025-11-29T10:05:00Z", "open": 2036.8, "high": 2039.5, "low": 2034.8, "close": 2038.7, "volume": 1299},
+    {"time": "2025-11-29T10:10:00Z", "open": 2038.7, "high": 2041.2, "low": 2037.9, "close": 2040.4, "volume": 1521}
+  ],
+  "metadata": {
+    "interval": "5m",
+    "provider": "HybridStream",
+    "update_cycle": "realtime"
+  }
+}

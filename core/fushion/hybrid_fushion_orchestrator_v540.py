@@ -1,74 +1,39 @@
 """
-🐺 TUYUL FX ULTRA WOLF v5.4.1 — Hybrid Fusion Orchestrator
-Integrates RLSI, VDDHybrid, Reflex, and Risk Engine in unified Fusion pipeline.
+Hybrid Fusion Orchestrator v5.4.0
+---------------------------------
+Orkestrasi reasoning antara Reflex, Smart Money, dan WLWCI → Final Fusion.
 """
 
-import asyncio
-import json
-import datetime
-import redis
+from __future__ import annotations
 
-from modules.vddhybrid_module_v540 import VDDHybridModule
-from modules.rlsi_module_v540 import ReflexLiquidityShiftIndex
-from modules.bridge_module_v540 import TuyulAgiBridgeV540
-from modules.vault_autosync_v541 import VaultAutoSync
+from typing import Any, Dict
+
+from core.fushion.fusion_confidence_core import FusionConfidenceCore
+from core.analytics.smart_money_detector import SmartMoneyDetector
 
 
 class HybridFusionOrchestrator:
-    def __init__(self):
-        self.redis_client = redis.Redis(host="localhost", port=6379, db=0)
-        self.vdd = VDDHybridModule()
-        self.rlsi = ReflexLiquidityShiftIndex()
-        self.bridge = TuyulAgiBridgeV540()
-        self.vault = VaultAutoSync()
-        self.last_output = None
+    """Kombinasikan input Reflex, Smart Money, dan WLWCI menjadi metrik fusion."""
 
-    async def fuse(self, market_data: dict):
-        """Main Fusion logic combining VDDHybrid, RLSI, and Reflex data."""
-        # 1️⃣ Regime Detection (Macro)
-        vdd_signal = await self.vdd.detect_regime()
+    def __init__(self) -> None:
+        self.conf_core = FusionConfidenceCore()
+        self.smart_detector = SmartMoneyDetector()
 
-        # 2️⃣ RLSI Calculation (Micro)
-        rlsi_value = await self.rlsi.calculate(market_data)
+    def orchestrate(self, reflex_conf: float, wl_wci: float, df) -> Dict[str, Any]:
+        """Jalankan orkestrasi fusion sederhana.
 
-        # 3️⃣ Adaptive Fusion Weighting
-        weights = {0: (0.8, 0.2), 1: (0.4, 0.6), 2: (0.1, 0.9)}
-        w_micro, w_macro = weights[vdd_signal["RegimeState"]]
-        conf12 = round(
-            w_micro * rlsi_value + w_macro * vdd_signal["Probabilities"].get(vdd_signal["RegimeState"], 0.5),
-            3,
-        )
+        Args:
+            reflex_conf: Confidence dari Reflex layer.
+            wl_wci: Weighted layer-wise coherence index.
+            df: DataFrame atau objek data yang dapat dianalisis Smart Money.
 
-        # 4️⃣ Create Fusion Output
-        timestamp = datetime.datetime.utcnow().isoformat()
-        fusion_output = {
-            "FusionConfidence": conf12,
-            "RLSI": rlsi_value,
-            "RegimeState": vdd_signal["RegimeState"],
-            "RegimeName": vdd_signal["RegimeName"],
-            "VIX_DXY_Prob": vdd_signal["Probabilities"],
-            "Timestamp": timestamp,
-        }
+        Returns:
+            Dictionary dengan CONF12, RCAdj, detail Smart Money, dan WLWCI.
+        """
 
-        # 5️⃣ Save to Redis + Journal + Vault
-        self.last_output = fusion_output
-        self.redis_client.publish("fusion_output", json.dumps(fusion_output))
-        await self.bridge.fusion_save_journal(fusion_output)
-        self.vault.save(fusion_output)
-
-        return fusion_output
-
-
-# ===============================================================
-# 🔬 TEST MODE
-# ===============================================================
-async def run_fusion_cycle(market_data):
-    orchestrator = HybridFusionOrchestrator()
-    result = await orchestrator.fuse(market_data)
-    print("Fusion Output:", json.dumps(result, indent=2))
-    return result
-
-
-if __name__ == "__main__":
-    sample_data = {"VIX": [16.5, 18.2, 21.0], "DXY": [103.2, 104.1, 104.8]}
-    asyncio.run(run_fusion_cycle(sample_data))
+        smart = self.smart_detector.summarize_bias(df)
+        fusion_score = 0.8 if smart.get("bias") == "BUY" else 0.7
+        result = self.conf_core.compute_confidence(reflex_conf, fusion_score)
+        result["SmartMoney"] = smart
+        result["WLWCI"] = wl_wci
+        return result

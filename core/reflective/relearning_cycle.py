@@ -1,38 +1,36 @@
-"""Relearning cycle for adaptive threshold adjustment."""
+"""
+Relearning Cycle
+----------------
+Menjalankan update meta-parameter saat AGI kehilangan stabilitas reasoning.
+"""
 
-import sys
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
-# Add parent directory to path for standalone execution
-if __name__ == "__main__":
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-    from core.adapters.vault_bridge_client import load_vault_feedback
-else:
-    from ..adapters.vault_bridge_client import load_vault_feedback
+import yaml
 
 
-def relearn_from_vault() -> Dict[str, Any]:
-    """Retrieve reasoning feedback and adjust adaptive thresholds.
-    
-    Returns:
-        Dictionary with status and adjusted threshold values.
-    """
-    feedback = load_vault_feedback()
-    adjustments = {
-        "ema_weight": round(0.9 + feedback.get("ema_bias", 0) * 0.05, 3),
-        "rc_threshold": round(0.75 + feedback.get("rc_delta", 0) * 0.05, 3),
-    }
-    return {"status": "updated", "adjustments": adjustments}
+class RelearningCycle:
+    """Perbarui parameter reflektif berdasarkan hasil evaluasi."""
 
+    def __init__(self, config_path: str | Path = "configs/reflective_params.yaml") -> None:
+        self.config_path = Path(config_path)
 
-if __name__ == "__main__":
-    """Run meta learning cycle when executed as a script."""
-    print("🧠 Starting meta learning cycle...")
-    try:
-        result = relearn_from_vault()
-        print(f"✅ Meta learning completed: {result['status']}")
-        print(f"📊 Adjustments: {result['adjustments']}")
-    except Exception as e:
-        print(f"❌ Meta learning failed: {e}")
-        exit(1)
+    def execute(self, reflection: Dict[str, Any]) -> Dict[str, Any]:
+        """Terapkan penyesuaian meta-learning jika integritas menurun."""
+
+        if not self.config_path.exists():
+            return {}
+
+        with self.config_path.open(encoding="utf-8") as file:
+            cfg = yaml.safe_load(file)
+
+        if reflection.get("IntegrityIndex", 1.0) < cfg["reflection_cycle"]["coherence_threshold"]:
+            cfg["meta_learning"]["learning_rate"] *= 1.05
+            cfg["reflection_cycle"]["reflective_intensity"] *= 1.1
+
+        with self.config_path.open("w", encoding="utf-8") as file:
+            yaml.dump(cfg, file)
+        return cfg

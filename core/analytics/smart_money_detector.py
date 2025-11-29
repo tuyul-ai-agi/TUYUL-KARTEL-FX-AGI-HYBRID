@@ -11,11 +11,30 @@
 
 import datetime
 import math
+from typing import Any, Dict
+
+import pandas as pd
+
 
 class SmartMoneyDetector:
     def __init__(self):
         self.version = "v5.4.1-HYBRID"
         self.last_signal = None
+
+    def summarize_bias(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """Ringkasan bias sederhana berbasis pergerakan harga.
+
+        Jika DataFrame kosong atau kolom penting tidak ada, fallback ke bias WAIT.
+        """
+
+        if df is None or df.empty or "close" not in df.columns:
+            return {"bias": "WAIT", "confidence": 0.5}
+
+        delta = df["close"].iloc[-1] - df["close"].iloc[0]
+        bias = "BUY" if delta >= 0 else "SELL"
+        volatility = df["close"].diff().std() or 0.0
+        confidence = max(0.5, min(0.95, 1 - (volatility * 0.01)))
+        return {"bias": bias, "confidence": round(confidence, 3)}
 
     def detect_institutional_flow(self, pair, price, vwap, atr, rsi, mfi, cci50, rsi_h4, rc=0.85, conf12=0.82):
         """

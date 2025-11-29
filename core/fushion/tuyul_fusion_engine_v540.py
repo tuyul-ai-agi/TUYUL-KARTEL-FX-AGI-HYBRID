@@ -1,108 +1,43 @@
-"""Reflex Liquidity Shift Index (RLSI) module for Tuyul Hybrid Fusion pipeline."""
+"""
+Tuyul Fusion Engine v5.4.0
+--------------------------
+Engine utama untuk reasoning fusion AGI Hybrid.
+"""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Tuple
+import json
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict
 
-import numpy as np
-import pandas as pd
-
-
-@dataclass
-class ReflexLiquidityShiftIndex:
-    """Compute and interpret the Reflex Liquidity Shift Index.
-
-    Attributes:
-        macd_hist: MACD histogram series.
-        cci50: Commodity Channel Index (50-period) series.
-        mfi: Money Flow Index series.
-        equilibrium_zone_width: Width of the equilibrium band used to scale the shift.
-    """
-
-    macd_hist: pd.Series
-    cci50: pd.Series
-    mfi: pd.Series
-    equilibrium_zone_width: pd.Series
-
-    def calculate_rlsi(self) -> pd.Series:
-        """Calculate normalized RLSI values between -1.0 and +1.0."""
-
-        delta_macd = np.gradient(self.macd_hist)
-        distance = np.abs(self.cci50 - self.mfi)
-        raw_rlsi = (delta_macd * distance) / (self.equilibrium_zone_width + 1)
-        return np.tanh(raw_rlsi)
-
-    @staticmethod
-    def interpret_rlsi(rlsi_value: float) -> str:
-        """Provide a textual interpretation for an RLSI reading."""
-
-        if rlsi_value > 0.75:
-            return "Smart Money Accumulation (BUY Bias)"
-        if rlsi_value < -0.75:
-            return "Smart Money Distribution (SELL Bias)"
-        if abs(rlsi_value) < 0.4:
-            return "Equilibrium / Neutral Zone"
-        return "Transition Phase"
-
-    def integrate_with_pipeline(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Append RLSI metrics and statuses to the provided DataFrame."""
-
-        df = df.copy()
-        df["RLSI"] = ReflexLiquidityShiftIndex(
-            df["MACD_Hist"], df["CCI50"], df["MFI"], df["EZ_Width"]
-        ).calculate_rlsi()
-
-        df["RLSI_Interpretation"] = df["RLSI"].apply(self.interpret_rlsi)
-        df["RLSI_Status"] = np.where(
-            df["RLSI"] > 0.75,
-            "BUY",
-            np.where(df["RLSI"] < -0.75, "SELL", "WAIT"),
-        )
-        return df
+from core.fushion.hybrid_fushion_orchestrator_v540 import HybridFusionOrchestrator
 
 
-def _seed_from_pair_timeframe(pair: str, timeframe: str) -> int:
-    """Generate a deterministic seed from the pair and timeframe for reproducibility."""
+class TuyulFusionEngine:
+    """Wrapper eksekusi Fusion Layer dan penyimpanan hasil."""
 
-    return (sum(ord(ch) for ch in f"{pair}-{timeframe}") % 10000) + 1
+    def __init__(self) -> None:
+        self.orchestrator = HybridFusionOrchestrator()
+        self.output_path = Path("vaults/fx_vault/fusion_journal.json")
+        self.output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    def run(self, reflex_conf: float, wl_wci: float, df) -> Dict[str, Any]:
+        """Jalankan orchestrator lalu simpan ke vault.
 
-def generate_rlsi_demo_frame(pair: str, timeframe: str, length: int = 96) -> pd.DataFrame:
-    """Create a synthetic market frame used to illustrate RLSI integration."""
+        Args:
+            reflex_conf: Confidence Reflex layer.
+            wl_wci: Weighted layer-wise coherence index.
+            df: Data data-frame untuk analisis Smart Money.
 
-    rng = np.random.default_rng(_seed_from_pair_timeframe(pair, timeframe))
-    phase = np.linspace(0, np.pi * 2.2, length)
+        Returns:
+            Dictionary hasil fusion lengkap dengan timestamp.
+        """
 
-    macd_hist = np.sin(phase) * 0.8 + rng.normal(0, 0.05, length)
-    cci50 = 100 + np.cos(phase * 0.5) * 60 + rng.normal(0, 8, length)
-    mfi = 85 + np.sin(phase * 0.7) * 50 + rng.normal(0, 7, length)
-    equilibrium_width = rng.uniform(1.0, 4.0, length)
+        result = self.orchestrator.orchestrate(reflex_conf, wl_wci, df)
+        result["timestamp"] = datetime.utcnow().isoformat()
 
-    return pd.DataFrame(
-        {
-            "MACD_Hist": macd_hist,
-            "CCI50": cci50,
-            "MFI": mfi,
-            "EZ_Width": equilibrium_width,
-        }
-    )
+        with self.output_path.open("w", encoding="utf-8") as file:
+            json.dump(result, file, indent=2)
 
-
-def tuyul_rlsi_pipeline(df: pd.DataFrame) -> pd.DataFrame:
-    """Integrate RLSI metrics into the Tuyul Hybrid pipeline frame."""
-
-    rlsi_engine = ReflexLiquidityShiftIndex(
-        df["MACD_Hist"], df["CCI50"], df["MFI"], df["EZ_Width"]
-    )
-    return rlsi_engine.integrate_with_pipeline(df)
-
-
-def latest_rlsi_signal(df: pd.DataFrame) -> Tuple[float, str, str]:
-    """Return the latest RLSI value, interpretation, and status."""
-
-    latest_row = df.iloc[-1]
-    latest_value = float(latest_row["RLSI"])
-    interpretation = str(latest_row["RLSI_Interpretation"])
-    status = str(latest_row["RLSI_Status"])
-    return latest_value, interpretation, status
+        return result

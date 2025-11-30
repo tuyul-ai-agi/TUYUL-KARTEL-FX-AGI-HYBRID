@@ -6,6 +6,7 @@ Simulasi risiko (Monte Carlo style) untuk memproyeksikan skenario outcome.
 
 import random
 
+
 class RiskScenarioSimulator:
     def __init__(self, iterations=1000):
         self.iterations = iterations
@@ -21,5 +22,6 @@ class RiskScenarioSimulator:
         return {
             "SimulatedMeanBalance": round(avg_outcome, 2),
             "ExpectedGainLoss(%)": round(((avg_outcome - balance) / balance) * 100, 2),
+            "Iterations": self.iterations,
             "Iterations": self.iterations
         }

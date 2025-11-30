@@ -4,6 +4,7 @@ Regime State Detector
 Mendeteksi state pasar berdasarkan volatilitas & coherence index.
 """
 
+
 class RegimeStateDetector:
     def detect(self, volatility: float, coherence_index: float):
         if volatility < 0.5 and coherence_index > 0.85:

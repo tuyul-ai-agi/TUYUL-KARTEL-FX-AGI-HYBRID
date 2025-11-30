@@ -7,6 +7,7 @@ Reflex Layer — sistem reaksi cepat terhadap dinamika harga & momentum pasar.
 import pandas as pd
 from core.fushion.rlsi_module_v540 import RLSIModule
 
+
 class ReflexCore:
     def __init__(self):
         self.rlsi = RLSIModule()
@@ -21,5 +22,6 @@ class ReflexCore:
             "RLSI": rlsi_val,
             "CandleClose": candle["close"],
             "Signal": signal,
+            "Strength": round(abs(rlsi_val - 50) / 50, 3),
             "Strength": round(abs(rlsi_val - 50) / 50, 3)
         }

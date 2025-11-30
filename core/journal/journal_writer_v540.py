@@ -8,6 +8,13 @@ import json
 from datetime import datetime
 import os
 
+
+class JournalWriter:
+    def __init__(self, vault_path="vaults/journal_vault/"):
+        self.vault_path = vault_path
+        os.makedirs(vault_path, exist_ok=True)
+
+
 class JournalWriter:
     def __init__(self, vault_path="vaults/journal_vault/"):
         self.vault_path = vault_path

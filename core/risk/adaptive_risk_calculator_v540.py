@@ -4,6 +4,7 @@ Adaptive Risk Calculator v5.4.0
 Menghitung risiko adaptif AGI berdasarkan kepercayaan reasoning & volatilitas.
 """
 
+
 class AdaptiveRiskCalculator:
     def __init__(self, base_risk=1.0):
         self.base_risk = base_risk
@@ -18,5 +19,6 @@ class AdaptiveRiskCalculator:
             "RiskPercent": f"{risk_pct}%",
             "LotSize": lot,
             "ConfidenceAvg": round(avg_conf, 3),
+            "Volatility": volatility,
             "Volatility": volatility
         }

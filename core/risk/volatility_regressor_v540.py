@@ -12,6 +12,16 @@ class VolatilityRegressor:
     def __init__(self):
         self.model = LinearRegression()
 
+class VolatilityRegressor:
+    def __init__(self):
+        self.model = LinearRegression()
+
+    def train(self, df: pd.DataFrame):
+        df["range"] = df["high"] - df["low"]
+        X = np.arange(len(df)).reshape(-1, 1)
+        y = df["range"].values
+        self.model.fit(X, y)
+
     def train(self, df: pd.DataFrame):
         df["range"] = df["high"] - df["low"]
         X = np.arange(len(df)).reshape(-1, 1)

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-11-29T10:25:00Z",
+  "pair": "XAUUSD",
+  "reflection_score": 0.93,
+  "integrity_index": 0.95,
+  "bias_delta": -0.02,
+  "notes": "Reflex and Fusion coherence aligned; risk model stable.",
+  "next_action": "Maintain BUY bias with reduced lot size",
+  "meta_update": {
+    "learning_rate": 0.05,
+    "threshold_adjustment": -0.01
+  }
+}

@@ -1,27 +1,43 @@
-version: "3.9"
+version: '3.9'
 
 services:
-  tuyul_agi_hybrid:
-    build: .
-    container_name: tuyul-agi-hybrid
-    command: ["python", "main.py"]
-    volumes:
-      - .:/app
-      - ./vaults:/app/vaults
-      - ./logs:/app/logs
-      - ./data:/app/data
-    environment:
-      - ENV=production
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - FX_VAULT_KEY=${FX_VAULT_KEY}
-      - KARTEL_VAULT_KEY=${KARTEL_VAULT_KEY}
-      - JOURNAL_VAULT_KEY=${JOURNAL_VAULT_KEY}
+  hybrid-core:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyul_hybrid_core
+    command: python main.py
     ports:
       - "8000:8000"
-    restart: always
-    networks:
-      - tuyul_net
+    volumes:
+      - .:/app
+    environment:
+      - ENV_PROFILE=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - reflective-loop
 
-networks:
-  tuyul_net:
-    driver: bridge
+  reflective-loop:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyul_reflective_loop
+    command: python pipeline/reflective_meta_cycle.py
+    restart: always
+    volumes:
+      - .:/app
+    environment:
+      - REFLECTIVE_MODE=true
+      - ENABLE_VAULT_SYNC=true
+    ports:
+      - "8501:8501"
+
+  redis:
+    image: redis:7
+    container_name: tuyul_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  tuyul_data:

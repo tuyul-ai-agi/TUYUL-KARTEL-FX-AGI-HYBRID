@@ -1,17 +1,15 @@
-# 🐺 TUYUL FX AGI HYBRID DOCKERFILE
-FROM python:3.10-slim
+# Dockerfile — TUYUL-KARTEL-FX-AGI-HYBRID
 
-# 1️⃣ Set working directory
+FROM python:3.11-slim
+
 WORKDIR /app
 
-# 2️⃣ Copy project files
-COPY . .
-
-# 3️⃣ Install dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4️⃣ Expose port
-EXPOSE 8080
+COPY . .
 
-# 5️⃣ Runtime command
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+EXPOSE 8000
+
+ENV ENV=production
+CMD ["python", "main.py"]

@@ -1,30 +1,40 @@
 """
-🐺 TUYUL FX ULTRA WOLF — Hybrid AGI Pipeline v5.4.0
-====================================================
-Pipeline utama mengatur aliran analisis dari Reflex → Fusion → Risk → Reflective.
+Tuyul Hybrid Pipeline v5.4.0
+----------------------------
+Pipeline utama untuk reasoning Reflex → Fusion → Reflective dan sinkronisasi Vault.
 """
 
-from tuyul_fx_agi_hybrid.core.reflex.reflex_core_v540 import ReflexCoreV540
-from tuyul_fx_agi_hybrid.modules.bridge_module_v540 import TuyulAgiBridgeV540
-from tuyul_fx_agi_hybrid.core.reflective.reflective_cycle_core_v540 import ReflectiveCycleCoreV540
-from tuyul_fx_agi_hybrid.core.bridge.vault_autosync_v541 import scan_and_sync
+from core.reflex.reflex_core_v540 import ReflexCore
+from core.fushion.tuyul_fusion_engine_v540 import TuyulFusionEngine
+from core.reflective.reflective_cycle_core_v540 import ReflectiveCycleCore
+from core.vdd.vddhybrid_module_v540 import VDDHybridModule
+from clients import FXVaultClient, JournalVaultClient
+import pandas as pd
 
-import asyncio
-
-class TuyulHybridPipelineV540:
+class TuyulHybridPipeline:
     def __init__(self):
-        self.bridge = TuyulAgiBridgeV540()
-        self.reflex = ReflexCoreV540()
-        self.reflective = ReflectiveCycleCoreV540()
+        self.reflex = ReflexCore()
+        self.fusion = TuyulFusionEngine()
+        self.reflective = ReflectiveCycleCore()
+        self.vdd = VDDHybridModule()
+        self.fx = FXVaultClient()
+        self.journal = JournalVaultClient()
 
-    async def run(self, pair="XAUUSD", timeframe="H4", balance=100000):
-        print(f"\n🐺 Running TUYUL Hybrid Pipeline v5.4.0 — {pair} ({timeframe})")
-        reflex_data = self.reflex.analyze(pair)
-        fusion_output = await self.bridge.fusion_analyze(pair, timeframe)
-        risk = await self.bridge.risk_calculate(balance, 120, pair)
-        reflective = self.reflective.run_cycle(fusion_output.get("data", {}), reflex_data, risk.get("data", {}))
-        scan_and_sync("/mnt/data")
-        return {"fusion": fusion_output, "risk": risk, "reflective": reflective}
+    def run(self, pair="XAUUSD"):
+        feed = self.fx.get_latest_feed(pair)
+        df = pd.DataFrame(feed["data"])
 
-if __name__ == "__main__":
-    asyncio.run(TuyulHybridPipelineV540().run())
+        reflex_out = self.reflex.analyze(df)
+        fusion_out = self.fusion.run(reflex_out["RLSI"] / 100, 0.9, df)
+        reflective_out = self.reflective.run_cycle(fusion_out)
+        vdd_out = self.vdd.detect_regime(df, reflex_out["RLSI"], fusion_out["FusionConfidence"], 0.9)
+
+        self.journal.upload_reflection({
+            "pair": pair,
+            "reflex": reflex_out,
+            "fusion": fusion_out,
+            "reflective": reflective_out,
+            "vdd": vdd_out
+        })
+
+        return {"pair": pair, "fusion_confidence": fusion_out["FusionConfidence"], "vdd": vdd_out}

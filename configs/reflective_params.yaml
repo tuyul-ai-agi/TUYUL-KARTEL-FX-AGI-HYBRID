@@ -1,0 +1,23 @@
+meta_learning:
+  learning_rate: 0.001
+  regularization: 0.02
+  dropout: 0.1
+  optimizer: "adamw"
+
+reflection_cycle:
+  max_iterations: 500
+  batch_size: 32
+  coherence_threshold: 0.85
+  reflective_intensity: 1.2
+  bias_correction_strength: 0.75
+
+fusion_feedback:
+  conf12_weight: 0.6
+  wlwci_weight: 0.4
+  reflective_decay: 0.95
+  sync_with_vault: true
+
+auto_adjustment:
+  enable_dynamic_lr: true
+  lr_decay_rate: 0.97
+  threshold_autotune: true

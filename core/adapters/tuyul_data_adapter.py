@@ -1,61 +1,31 @@
-from __future__ import annotations
+"""
+Tuyul Data Adapter
+------------------
+Mengubah data mentah (CSV/API) menjadi format siap olah untuk AGI Hybrid.
+"""
 
-import json
-import random
-from dataclasses import dataclass
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any, Dict, Mapping
-
-
-@dataclass
-class FeedRecord:
-    pair: str
-    interval: str
-    open: float
-    high: float
-    low: float
-    close: float
-    volume: float
-    timestamp: datetime
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "pair": self.pair,
-            "interval": self.interval,
-            "open": self.open,
-            "high": self.high,
-            "low": self.low,
-            "close": self.close,
-            "volume": self.volume,
-            "timestamp": self.timestamp.isoformat(),
-        }
+import pandas as pd
 
 
 class TuyulDataAdapter:
-    def __init__(self, live_feed_path: Path | str | None = None) -> None:
-        self.live_feed_path = Path(live_feed_path) if live_feed_path else Path("vaults/live_feed.jsonl")
+    def __init__(self, source=None):
+        self.source = source
 
-    def fetch_live_data(self, pair: str, interval: str) -> Dict[str, Any]:
-        base_price = random.uniform(100, 200)
-        high = base_price + random.uniform(0, 5)
-        low = base_price - random.uniform(0, 5)
-        close = random.uniform(low, high)
+    def load_csv(self, file_path: str) -> pd.DataFrame:
+        """Load data CSV pasar"""
+        df = pd.read_csv(file_path)
+        df.columns = [c.strip().lower() for c in df.columns]
+        return df
 
-        record = FeedRecord(
-            pair=pair,
-            interval=interval,
-            open=base_price,
-            high=high,
-            low=low,
-            close=close,
-            volume=random.uniform(10_000, 100_000),
-            timestamp=datetime.now(tz=timezone.utc),
-        )
-        return record.to_dict()
+    def normalize_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Normalisasi kolom OHLC & volume"""
+        for col in ["open", "high", "low", "close", "volume"]:
+            if col not in df.columns:
+                raise KeyError(f"Missing {col} in dataset")
+        df["mid"] = (df["high"] + df["low"]) / 2
+        df["range"] = df["high"] - df["low"]
+        return df
 
-    def save_feed(self, data: Mapping[str, Any]) -> None:
-        self.live_feed_path.parent.mkdir(parents=True, exist_ok=True)
-        with self.live_feed_path.open("a", encoding="utf-8") as file:
-            json.dump(data, file, default=str)
-            file.write("\n")
+    def get_latest_snapshot(self, df: pd.DataFrame):
+        """Ambil data candle terakhir"""
+        return df.tail(1).to_dict("records")[0]

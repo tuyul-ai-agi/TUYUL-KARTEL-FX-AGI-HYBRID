@@ -1,35 +1,22 @@
-name: Notify Telegram
+name: "📣 Notify Telegram Channel"
+
 on:
   push:
-    paths:
-      - 'vaults/fusion_journal.json'
+    branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-      
-      - name: Send Notification
-        continue-on-error: true
-        run: |
-          cd tuyul_fx_agi_hybrid
-          if [ ! -f vaults/fusion_journal.json ]; then
-            echo "⚠️ fusion_journal.json not found - skipping notification"
-            exit 0
-          fi
-          
-          if [ -z "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] || [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
-            echo "⚠️ Telegram secrets not configured - skipping notification"
-            exit 0
-          fi
-          
-          MESSAGE=$(jq -r '"PAIR: \(.pair)\nCONF₁₂: \(.conf12)\nWLWCI: \(.wlwci)\nRCAdj: \(.rcadj)"' vaults/fusion_journal.json || echo "Error parsing JSON")
-          
-          RESPONSE=$(curl -s -X POST -H "Content-Type: application/json" \
-            -d "{\"chat_id\":\"${{ secrets.TELEGRAM_CHAT_ID }}\",\"text\":\"$MESSAGE\"}" \
-            https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage)
-          
-          echo "Telegram API Response: $RESPONSE"
+      - name: Send Notification to Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            🔔 *AGI Update Detected*  
+            Repository: ${{ github.repository }}  
+            Commit: ${{ github.event.head_commit.message }}  
+            Branch: ${{ github.ref_name }}  
+            🧠 Reflex–Fusion–Reflective cycle complete.

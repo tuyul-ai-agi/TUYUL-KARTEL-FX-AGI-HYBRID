@@ -23,4 +23,5 @@ class RiskScenarioSimulator:
             "SimulatedMeanBalance": round(avg_outcome, 2),
             "ExpectedGainLoss(%)": round(((avg_outcome - balance) / balance) * 100, 2),
             "Iterations": self.iterations,
+            "Iterations": self.iterations
         }

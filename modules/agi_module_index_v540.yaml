@@ -1,45 +1,10 @@
-version: 5.4.1
-last_sync: 2025-11-26T20:26:00Z
-
+# AGI Module Index v5.4.0
 modules:
-  - name: rlsi_module_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /modules/rlsi_module_v540.py
-    function: Reflex Liquidity Shift Index computation
-    vault_link: knowledge-vault-agi/knowledge_base/rlsi_module_v540.md
-
-  - name: bridge_module_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /modules/bridge_module_v540.py
-    function: Bridge to 46 OpenAPI Endpoints (Fusion, Reflex, Risk, Vault, GPT)
-    vault_link: knowledge-vault-agi/knowledge_base/bridge_module_v540.md
-
-  - name: reflective_cycle_core_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /core/reflective/reflective_cycle_core_v540.py
-    function: Reflective Cycle control engine for meta-learning
-    vault_link: knowledge-vault-agi/knowledge_base/reflective_cycle_core_v540.md
-
-  - name: hybrid_pipeline_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /pipeline/tuyul_hybrid_pipeline_v540.py
-    function: Main reasoning and execution pipeline
-    vault_link: knowledge-vault-agi/knowledge_base/tuyul_hybrid_pipeline_v540.md
-
-  - name: adaptive_risk_calculator_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /core/risk/adaptive_risk_calculator_v540.py
-    function: Adaptive risk selection and lot sizing
-    vault_link: knowledge-vault-agi/knowledge_base/adaptive_risk_calculator_v540.md
-
-  - name: vault_sync_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /core/bridge/vault_sync_v540.py
-    function: Legacy synchronization bridge (v5.4.0 → v5.4.1)
-    vault_link: journal-vault-agi/data/vault_sync_status.json
-
-  - name: reflex_core_v540
-    repo: tuyul-kartel-fx-agi-hybrid
-    path: /core/reflex/reflex_core_v540.py
-    function: Reflex Coherence and RLSI analyzer
-    vault_link: knowledge-vault-agi/knowledge_base/reflex_core_v540.md
+  - reflex_core_v540
+  - tuyul_fusion_engine_v540
+  - reflective_reasoner_v540
+  - vddhybrid_module_v540
+  - adaptive_risk_calculator_v540
+  - vault_integrity_checker
+  - bridge_module_v540
+  - vdd_signal_broadcat

@@ -19,6 +19,7 @@ class JournalArchiver:
         archive_path = os.path.join(self.vault_path, archive_name)
 
         with zipfile.ZipFile(archive_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+        with zipfile.ZipFile(archive_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, _, files in os.walk(target_dir):
                 for file in files:
                     if file.endswith(".json"):

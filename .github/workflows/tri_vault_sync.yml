@@ -1,0 +1,29 @@
+name: 🔄 Tri-Vault Auto Sync
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # setiap 30 menit
+  workflow_dispatch:
+  push:
+    branches: [main, hybrid]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Checkout Hybrid Repo
+        uses: actions/checkout@v4
+
+      - name: 🔁 Jalankan AutoSync Script
+        run: bash .devcontainer/vault_autosync.sh
+
+      - name: 🧩 Jalankan Vault Healthcheck
+        run: python .devcontainer/vault_healthcheck.py
+
+      - name: 🚀 Commit Sinkronisasi (opsional)
+        run: |
+          git config user.name "tuyul-bot"
+          git config user.email "tuyul@users.noreply.github.com"
+          git add vaults/
+          git commit -m "🤖 AutoSync Tri-Vault ($(date))" || echo "No changes"
+          git push || echo "No changes to push"

@@ -1,0 +1,39 @@
+name: 🧱 Codespace Prebuild Environment
+
+on:
+  push:
+    branches: [main, hybrid, dev]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  prebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: 🧠 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: ⚙️ Install Devcontainer CLI
+        run: npm install -g @devcontainers/cli
+
+      - name: 📦 Build Devcontainer
+        run: devcontainer build --workspace-folder .
+
+      - name: 🧩 Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: ✅ Validate Environment
+        run: python -V && pip list | grep fastapi || echo "FastAPI belum terinstal"

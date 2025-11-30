@@ -1,22 +1,20 @@
-"""Reflective reasoning and bias analysis module."""
+"""
+Reflective Reasoner v5.4.0
+--------------------------
+Analisa reflektif AGI terhadap hasil reasoning fusion.
+"""
 
-from typing import Any, Dict
+import json
 
-from ..vaults.reflection_output import save_reflection_report
-
-
-def analyze_reflection(last_conf12: float, current_conf12: float) -> Dict[str, Any]:
-    """Analyze confidence delta and determine bias direction.
-    
-    Args:
-        last_conf12: Previous CONF12 value.
-        current_conf12: Current CONF12 value.
-        
-    Returns:
-        Dictionary containing delta and bias direction.
-    """
-    delta = round(current_conf12 - last_conf12, 3)
-    bias = "positive" if delta > 0 else "negative"
-    report = {"delta_conf12": delta, "bias": bias}
-    save_reflection_report(report)
-    return report
+class ReflectiveReasoner:
+    def evaluate(self, fusion_result):
+        bias_delta = abs(fusion_result["RCAdj"] - fusion_result["CONF12"])
+        integrity_index = round((fusion_result["CONF12"] + fusion_result["RCAdj"]) / 2, 3)
+        result = {
+            "BiasDelta": round(bias_delta, 3),
+            "IntegrityIndex": integrity_index,
+            "Reflection": "Stable" if integrity_index > 0.85 else "Need Relearn"
+        }
+        with open("vaults/journal_vault/reflection_output.json", "w") as f:
+            json.dump(result, f, indent=2)
+        return result

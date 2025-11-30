@@ -1,27 +1,26 @@
+"""
+Reflection Output Writer
+------------------------
+Menulis hasil reasoning reflektif ke Vault output JSON.
+"""
+
 import json
-from pathlib import Path
-from datetime import datetime, timezone
+import os
+from datetime import datetime
 
+class ReflectionOutput:
+    def __init__(self, vault_path="vaults/journal_vault/reflection_output.json"):
+        self.vault_path = vault_path
+        os.makedirs(os.path.dirname(self.vault_path), exist_ok=True)
 
-VAULT_PATH = Path(__file__).resolve().parents[2] / "vaults" / "reflection_output.json"
+    def write(self, reflection_data: dict):
+        reflection_data["timestamp"] = datetime.utcnow().isoformat()
+        with open(self.vault_path, "w") as f:
+            json.dump(reflection_data, f, indent=2)
+        return {"status": "written", "path": self.vault_path}
 
-
-def _load_reports():
-    if not VAULT_PATH.exists():
-        return {"reflections": []}
-    try:
-        with VAULT_PATH.open("r", encoding="utf-8") as file:
-            return json.load(file)
-    except json.JSONDecodeError:
-        return {"reflections": []}
-
-
-def save_reflection_report(report: dict):
-    payload = _load_reports()
-    payload.setdefault("reflections", []).append(
-        {"timestamp": datetime.now(tz=timezone.utc).isoformat(), **report}
-    )
-    VAULT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with VAULT_PATH.open("w", encoding="utf-8") as file:
-        json.dump(payload, file, indent=2)
-    return payload
+    def read(self):
+        if not os.path.exists(self.vault_path):
+            return {"error": "Reflection file not found"}
+        with open(self.vault_path) as f:
+            return json.load(f)

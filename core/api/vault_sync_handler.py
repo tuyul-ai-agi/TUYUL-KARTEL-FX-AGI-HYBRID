@@ -1,21 +1,17 @@
-"""Vault synchronization API handler."""
+"""
+Vault Sync Handler
+------------------
+Sinkronisasi antar vault (FX ↔ Kartel ↔ Journal).
+"""
 
 from fastapi import APIRouter
-from pydantic import BaseModel
-
-from ...adapters.vault_bridge_client import sync_vaults
+from ai_bridge.vault_autosync_v541 import VaultAutoSync
 
 router = APIRouter()
+sync = VaultAutoSync()
 
 
-class VaultSyncResponse(BaseModel):
-    sync_status: str
-    details: dict
-
-
-@router.post("/sync", response_model=VaultSyncResponse)
-def vault_sync() -> VaultSyncResponse:
-    """Trigger vault synchronization across journal, knowledge, and hybrid stores."""
-
-    result = sync_vaults()
-    return VaultSyncResponse(sync_status="complete", details=result)
+@router.get("/sync")
+def sync_vaults():
+    result = sync.sync_all()
+    return {"status": "Vaults synchronized", "result": result}

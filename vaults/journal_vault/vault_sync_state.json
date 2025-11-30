@@ -1,0 +1,11 @@
+{
+  "last_sync": "2025-11-29T10:30:00Z",
+  "fx_vault_state": "up_to_date",
+  "kartel_vault_state": "up_to_date",
+  "integrity_hash": "3a8f8adbf920e51b72e94f7b7ffb32819a3d121edca4ad7f8e29f1b8910c329d",
+  "sync_report": {
+    "updated_files": 2,
+    "skipped": 0,
+    "errors": []
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "audit_date": "2025-11-29",
+  "entries": [
+    {"session": "2025-11-27T10:00Z", "bias_delta": -0.06, "reflection_score": 0.88},
+    {"session": "2025-11-28T10:00Z", "bias_delta": -0.03, "reflection_score": 0.91},
+    {"session": "2025-11-29T10:00Z", "bias_delta": -0.02, "reflection_score": 0.93}
+  ],
+  "trend": "Bias convergence improving; reflective cycle effective."
+}

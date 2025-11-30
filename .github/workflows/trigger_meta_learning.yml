@@ -1,21 +1,24 @@
-name: Trigger Meta Learning
+name: "\U0001F9EC Trigger Meta-Learning Cycle"
+
 on:
-  push:
-    paths:
-      - 'vaults/fusion_journal.json'
+  schedule:
+    - cron: "0 */8 * * *"  # Setiap 8 jam
+  workflow_dispatch:
+
 jobs:
-  reflect:
+  meta-learning:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
-      
-      - name: Run Meta Learning
-        continue-on-error: true
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run Meta-Learning Reflective Trainer
+        run: python core/reflective/reflection_trainer.py
+      - name: Commit Updated Reflective Params
         run: |
-          cd tuyul_fx_agi_hybrid
-          python3 core/reflective/relearning_cycle.py || echo "Meta learning completed with warnings"
+          git add configs/reflective_params.yaml
+          git commit -m "\U0001F9EC Meta-learning reflective parameter update"
+          git push

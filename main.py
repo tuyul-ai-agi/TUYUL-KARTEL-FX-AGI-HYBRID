@@ -1,69 +1,22 @@
 """
-🐺 TUYUL FX AGI HYBRID – Main Launcher v5.4.1-H
-FastAPI runtime utama yang menggabungkan router reflektif & GPT bridge AGI Hybrid.
+Entrypoint utama TUYUL-KARTEL-FX-AGI-HYBRID
 """
 
-import uvicorn
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from core.api.api_router import api_router
+from core.fushion.hybrid_fusion_orchestrator_v540 import HybridFusionOrchestrator
+from core.reflective.reflective_cycle_core_v540 import ReflectiveCycle
+from core.vaults.vault_integrity_checker import VaultIntegrityChecker
 
-# ==============================
-# ⚙️ Konfigurasi Aplikasi
-# ==============================
-app = FastAPI(
-    title="TUYUL FX AGI HYBRID 🧠🐺",
-    description="Reflex–Fusion–Vault–GPT unified orchestrator v5.4.1-H",
-    version="5.4.1-H",
-    docs_url="/docs",
-    redoc_url="/redoc",
-)
+def main():
+    print("🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.1 mulai...")
+    orchestrator = HybridFusionOrchestrator()
+    reflective = ReflectiveCycle()
+    integrity = VaultIntegrityChecker()
 
-# ==============================
-# 🌐 CORS Policy
-# ==============================
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "https://tuyulwolf.ai",
-    "https://tjx578.github.io",
-]
+    orchestrator.run()
+    reflective.run_cycle()
+    integrity.audit()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    print("✅ AGI Hybrid cycle complete.")
 
-# ==============================
-# 🧩 Router AGI Hybrid
-# ==============================
-app.include_router(api_router, prefix="/api")
-
-# ==============================
-# 🧠 Root Diagnostic
-# ==============================
-@app.get("/")
-async def root():
-    return {
-        "status": "🧠 TUYUL FX AGI HYBRID aktif",
-        "version": "v5.4.1-H",
-        "modules": [
-            "Fusion",
-            "Reflex",
-            "Risk",
-            "Vault",
-            "Reflective",
-            "GPT Bridge",
-            "System",
-        ],
-        "sync_state": "Online",
-    }
-
-# ==============================
-# 🚀 Runtime Entry
-# ==============================
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
+    main()

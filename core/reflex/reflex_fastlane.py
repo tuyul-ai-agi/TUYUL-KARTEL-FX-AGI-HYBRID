@@ -27,4 +27,9 @@ class ReflexFastlane:
             "direction": direction,
             "momentum_strength": result["Strength"],
             "rlsi": result["RLSI"],
+        direction = "UP" if result["Signal"] == "BUY" else "DOWN" if result["Signal"] == "SELL" else "FLAT"
+        return {
+            "direction": direction,
+            "momentum_strength": result["Strength"],
+            "rlsi": result["RLSI"]
         }

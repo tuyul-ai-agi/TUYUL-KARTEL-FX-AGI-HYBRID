@@ -1,0 +1,3 @@
+# Binary file placeholder
+# Model ini dihasilkan oleh core/vdd/vddhybrid_module_v540.py
+# berisi trained regime-switching detector (MarkovSwitching / HMM).

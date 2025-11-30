@@ -20,4 +20,5 @@ class AdaptiveRiskCalculator:
             "LotSize": lot,
             "ConfidenceAvg": round(avg_conf, 3),
             "Volatility": volatility,
+            "Volatility": volatility
         }

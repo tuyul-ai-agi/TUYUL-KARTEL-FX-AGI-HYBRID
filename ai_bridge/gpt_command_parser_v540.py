@@ -1,32 +1,18 @@
-"""Command parser for GPT reflex commands."""
+"""
+GPT Command Parser v5.4.0
+-------------------------
+Parser untuk memetakan input natural language menjadi struktur prompt GPT.
+"""
 
 import re
-from typing import Any, Dict, Tuple
 
 
-COMMANDS = {
-    r"gas kan analisa (\w+) (\w+)": "run_analysis",
-    r"calculate risk (\d+)": "calculate_risk",
-    r"sync hybrid": "sync_vaults",
-    r"reflective cycle": "run_reflection",
-}
+class CommandParser:
+    def parse_reflex_command(self, text: str) -> str:
+        return f"Analisa cepat pola harga: {text}. Berikan arah bias pasar (BUY/SELL/WAIT)."
 
+    def parse_fusion_command(self, text: str) -> str:
+        return f"Gabungkan hasil reflex dan smart money flow: {text}. Hitung CONF12 dan WLWCI."
 
-class GPTCommandParser:
-    """Parser for natural language commands to system actions."""
-    
-    def parse(self, text: str) -> Dict[str, Any]:
-        """Detect and parse GPT Reflex Commands from user input.
-        
-        Args:
-            text: User input text to parse.
-            
-        Returns:
-            Dictionary with command name and extracted arguments.
-        """
-        for pattern, action in COMMANDS.items():
-            match = re.search(pattern, text.lower())
-            if match:
-                args = match.groups()
-                return {"command": action, "args": args}
-        return {"command": "unknown", "args": ()}
+    def parse_reflective_command(self, text: str) -> str:
+        return f"Evaluasi bias dan hasil reasoning berikut: {text}. Berikan rekomendasi meta-learning."

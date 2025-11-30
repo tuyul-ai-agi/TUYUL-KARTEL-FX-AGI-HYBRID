@@ -1,22 +1,17 @@
-"""Reflex Coherence API handler."""
+"""
+Reflex Handler
+--------------
+Endpoint Reflex Layer — analisa cepat pasar & pola harga.
+"""
 
 from fastapi import APIRouter
-from pydantic import BaseModel
-
-from ...fusion.fusion_confidence_core import compute_reflex_coherence
+from ai_bridge.gpt_bridge_handler_v540 import GPTBridge
 
 router = APIRouter()
+bridge = GPTBridge()
 
 
-class ReflexResponse(BaseModel):
-    Reflex_Coherence: float
-    status: str
-
-
-@router.post("/run", response_model=ReflexResponse)
-def run_reflex() -> ReflexResponse:
-    """Compute the reflex coherence metric and return a status summary."""
-
-    rc: float = compute_reflex_coherence()
-    status = "OK" if rc >= 0.75 else "LOW"
-    return ReflexResponse(Reflex_Coherence=rc, status=status)
+@router.get("/analyze")
+def reflex_analyze(pair: str = "EURUSD", timeframe: str = "H1"):
+    result = bridge.execute_reflex(f"Analisa cepat {pair} {timeframe}")
+    return {"pair": pair, "timeframe": timeframe, "reflex_result": result}

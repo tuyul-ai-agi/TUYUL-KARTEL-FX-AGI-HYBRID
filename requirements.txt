@@ -1,7 +1,15 @@
+# TUYUL-KARTEL-FX-AGI-HYBRID Dependencies
 fastapi==0.115.0
-uvicorn==0.30.1
-requests==2.31.0
-pandas==2.2.3
-python-dotenv==1.0.1
+uvicorn==0.30.0
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.5.0
+requests==2.32.3
 pyyaml==6.0.2
-numpy==2.1.2
+matplotlib==3.9.1
+httpx==0.27.0
+tqdm==4.66.4
+pytest==8.3.1
+joblib==1.4.2
+pydantic==2.7.4
+python-dotenv==1.0.1

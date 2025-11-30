@@ -1,30 +1,22 @@
+"""
+VDD Data Stream
+---------------
+Membaca dan menyiapkan feed data dari FX/Kartel Vault untuk deteksi rezim hybrid.
+"""
+
 import pandas as pd
-import numpy as np
-import requests
-from datetime import datetime
+import json
 
 class VDDDataStream:
-    """
-    TUYUL FX ULTRA WOLF v5.4.0
-    Modul: VDD Data Stream (Volatility-Dollar Feed)
-    Fungsi: Streamer real-time untuk indeks VIX, DXY, VIX3M
-    """
+    def load_from_vault(self, path: str):
+        """Load data JSON dari Vault"""
+        with open(path) as f:
+            data = json.load(f)
+        return pd.DataFrame(data.get("candles", []))
 
-    def __init__(self, api_key: str, source: str = "twelvedata"):
-        self.api_key = api_key
-        self.source = source
-        self.symbols = ["VIX", "DXY", "VIX3M"]
-
-    def fetch_data(self):
-        """Ambil data live"""
-        url = f"https://api.twelvedata.com/time_series"
-        result = {}
-        for sym in self.symbols:
-            params = {"symbol": sym, "interval": "1min", "apikey": self.api_key, "outputsize": 10}
-            r = requests.get(url, params=params)
-            if r.status_code == 200:
-                df = pd.DataFrame(r.json()['values'])
-                df['datetime'] = pd.to_datetime(df['datetime'])
-                df = df.sort_values('datetime')
-                result[sym] = df
-        return result
+    def preprocess(self, df: pd.DataFrame):
+        """Normalisasi data feed"""
+        df["range"] = df["high"] - df["low"]
+        df["mid"] = (df["high"] + df["low"]) / 2
+        df = df.dropna()
+        return df

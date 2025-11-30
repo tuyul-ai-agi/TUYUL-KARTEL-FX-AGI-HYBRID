@@ -23,4 +23,5 @@ class ReflexCore:
             "CandleClose": candle["close"],
             "Signal": signal,
             "Strength": round(abs(rlsi_val - 50) / 50, 3),
+            "Strength": round(abs(rlsi_val - 50) / 50, 3)
         }

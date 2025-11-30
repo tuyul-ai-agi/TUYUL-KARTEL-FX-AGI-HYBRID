@@ -1,0 +1,33 @@
+name: 🧠 Build Swagger UI (Private)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/openapi_tuyul_agi_hybrid_v5.4.4-ultra.yml"
+      - "scripts/generate_swagger_ui.py"
+
+jobs:
+  build-swagger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔄 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
+        run: |
+          pip install pyyaml requests
+
+      - name: 🧠 Generate Swagger UI
+        run: python scripts/generate_swagger_ui.py
+
+      - name: 📦 Upload Swagger Artifact (Private)
+        uses: actions/upload-artifact@v4
+        with:
+          name: swagger-ui-private
+          path: docs/swagger/

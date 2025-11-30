@@ -1,19 +1,26 @@
-# Hybrid Fusion Orchestrator V540
+# 🔄 Hybrid Fusion Orchestrator v5.4.0
 
-**Module:** `core/fusion/hybrid_fusion_orchestrator_v540.py`
+## Fungsi
+Menjadi pusat kontrol eksekusi Fusion Layer-12:
+- Menggabungkan Reflex signal (FX Vault)
+- Integrasi Smart Money (Kartel Vault)
+- Update Journal Vault hasil Reflective loop
 
-## Functions
+## Pipeline
+Reflex Layer → Fusion Layer → Reflective Layer
 
-### `run_full_fusion_cycle(pair, timeframe)`
+yaml
+Copy code
 
-Run complete fusion cycle including risk and reflection analysis.
+## Modul terkait
+- `core/fushion/hybrid_fusion_orchestrator_v540.py`
+- `core/fushion/fusion_confidence_core.py`
+- `core/fushion/final_output_12_engine_v5_4_1.py`
 
-Args:
-    pair: Trading pair symbol.
-    timeframe: Analysis timeframe.
-    
-Returns:
-    Dictionary with fusion metrics, risk calculations, and reflection data.
+## Output
+File log: `/logs/fusion_engine.log`  
+Vault output: `/vaults/journal_vault/reflection_output.json`
 
 ---
-*Generated: 2025-11-24T05:53:34.028012+00:00*
+
+> “Orchestrator adalah konduktor yang mengatur simfoni antar vault.” 🎼⚡

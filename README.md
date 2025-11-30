@@ -1,167 +1,82 @@
-# 🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.0-HYBRID 🧠⚡
-Reflex–Cognition–EMA–TWMS–DVG–AGI Fusion Engine
+# 🧠 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.x
+
+Sistem AGI Hybrid Reflex–Fusion–Reflective dengan tiga vault:
+- **FX Vault** — Reflex Data (Price & Market)
+- **Kartel Vault** — Smart Money Flow
+- **Journal Vault** — Reflective Learning
 
 ---
 
-## 🚀 Deskripsi
-Framework AGI Hybrid untuk analisa pasar finansial dengan reasoning Layer-12.
-Mengintegrasikan Reflex Coherence, EMA Dynamics, dan Adaptive Risk Intelligence.
-Filosofi: **"Precision adalah Survival."**
+## 🚀 Fitur Utama
+✅ Reflex Engine (RLSI, EMA, Volume Divergence)  
+✅ Fusion Layer-12 (Multi-vault Confidence System)  
+✅ Reflective Meta-learning  
+✅ Adaptive Risk Management  
+✅ Vault Synchronization & Integrity Audit  
 
 ---
 
-## 📂 Struktur Proyek
+## ⚙️ Struktur Singkat
+core/ # Otak utama AGI (Reflex, Fusion, Reflective)
+ai_bridge/ # GPT & GitHub Integration Layer
+vaults/ # FX, Kartel, Journal Vaults
+configs/ # Endpoint, GPT, Vault Key, dll
+pipeline/ # Orkestrasi siklus Hybrid
+scripts/ # CLI runner, sync, dan analisa hybrid
 
-- `adapters/` → Integrasi API & Vault bridge
-- `ai_bridge/` → GPT–AGI interface layer (Bridge Handler)
-- `fusion/` → Hybrid Fusion Engine (Layer 8–12)
-- `reflective/` → Meta Reflection & Feedback System
-- `risk/` → Adaptive Risk Management Layer
-- `vaults/` → Journal & Knowledge Vault
-- `scripts/` → Eksekusi & automation tools
-Berbasis pada integrasi Reflex Coherence, EMA Dynamics, dan Adaptive Risk Intelligence.
-
----
-
-## 📂 Struktur
-
-
-adapters/ → API & Vault bridges
-ai_bridge/ → GPT–AGI interface layer (Bridge Handler)
-fusion/ → Hybrid Fusion Engine (Layer 8–12)
-reflective/ → Meta Reflection & Feedback
-risk/ → Adaptive Risk Module
-vaults/ → Journal & Knowledge Vault
-scripts/ → Eksekusi & automation tools
-
+yaml
+Copy code
 
 ---
 
-## ⚙️ Eksekusi
-Jalankan analisa penuh via terminal:
+## 🧩 Cara Menjalankan
 
+### 1️⃣ Jalankan lokal:
 ```bash
-python scripts/run_hybrid_analysis.py [PAIR] [TIMEFRAME]
-```
+pip install -r requirements.txt
+python main.py
+2️⃣ Jalankan via Docker:
+bash
+Copy code
+docker-compose up --build
+3️⃣ Jalankan di Codespace:
+bash
+Copy code
+bash .devcontainer/submodule_init.sh
+python pipeline/tuyul_hybrid_pipeline_v540.py
+📡 Integrasi Vault
+Vault	Fungsi	Repo
+FX Vault	Reflex Data	TUYUL-FX-KNOWLEDGE-VAULT-AGI
+Kartel Vault	Smart Money / Liquidity	TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI
+Journal Vault	Reflective Reasoning	TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI
 
-Contoh:
+🧠 Reflective Insight
+“Breakout bukan sekadar pergerakan harga —
+tapi refleksi perubahan emosi kolektif pasar.” 🐺⚡
 
-```bash
-python scripts/run_hybrid_analysis.py XAU/USD H1
-python scripts/run_hybrid_analysis.py BTC/USDT M15
-```
+python
+Copy code
 
-Atau panggil lewat GPT internal command:
-
-gas kan analisa XAU/USD H1
-
-🧠 Pipeline
-
-TWMS → EMA → VWAP → Reflex Coherence → FTA Alignment → DVG →
-Adaptive Risk → WLWCI → Monte Carlo → Fusion Reasoning → Reflective Cycle
-
-🧩 Output
-
-CONF₁₂
-
-WLWCI
-
-RCAdj
-
-Reflective Bias
-
-Vault Synchronization Feedback
-
-“Reflex defines Survival, Coherence defines Mastery.”
-— TUYUL WOLF 🐺⚡
-
+🧠 **Fungsi:** Dokumentasi utama untuk repo AGI Hybrid lengkap.
 
 ---
 
-## ⚙️ Eksekusi Analisa
-Jalankan analisa penuh (contoh XAU/USD H1):
+## 🧩 `__init__.py`
+```python
+"""
+TUYUL-KARTEL-FX-AGI-HYBRID
+===========================
 
-```bash
-python scripts/run_hybrid_analysis.py XAU/USD H1
-```
+Hybrid AGI Reflex–Fusion–Reflective System v5.4.x
 
-Atau melalui GPT internal command:
+Mengorkestrasi tiga vault:
+- FX Vault (Reflex)
+- Kartel Vault (Smart Money)
+- Journal Vault (Reflective)
 
-```
-gas kan analisa XAU/USD H1
-```
+Ekspos fungsi utama untuk pipeline hybrid dan sinkronisasi.
+"""
 
-### 🧠 Pipeline Reasoning
-
-- TWMS → EMA → VWAP → Reflex Coherence → FTA Alignment
-- DVG → Adaptive Risk → WLWCI
-- Monte Carlo → Fusion Reasoning → Reflective Cycle
-
-### 🧩 Output Analisa
-
-- CONF₁₂ – Confidence Layer-12
-- WLWCI – Weighted Layer-Wise Coherence Index
-- RCAdj – Reflex Coherence Adjustment
-- Meta Reflection Feedback
-- Vault Synchronization Log
-
-### 💾 Integrasi Vault
-
-Setiap hasil reasoning akan otomatis disimpan ke:
-
-- Knowledge Vault
-- Journal Vault
-- Reflexive Feedback System
-
-Melalui `adapters/vault_bridge_client.py`.
-
-> “Reflex defines Survival, Coherence defines Mastery.”
-> — TUYUL WOLF 🐺⚡
-
-### 🔐 Sinkronisasi Repo dengan WOLF_KEY
-
-Gunakan helper script untuk menyamakan repo GitHub dengan Vault AGI-Hybrid memakai token
-`WOLF_KEY`:
-
-```bash
-export WOLF_KEY="<token>"
-bash scripts/sync_hybrid_repo.sh
-```
-
-Opsi yang dapat dioverride:
-
-- `REPO_SLUG` (default: `tjx578/TUYUL-KARTEL-FX-AGI-HYBRID`)
-- `BRANCH_NAME` (default: `main`)
-- `TARGET_DIR` (default: `vaults/hybrid_repo`)
-
----
-
-## 🔐 Sinkronisasi GitHub via WOLF_KEY
-
-Gunakan helper baru untuk memicu sinkronisasi repo dengan token `WOLF_KEY` atau
-`GITHUB_TOKEN` dari environment:
-
-```bash
-export WOLF_KEY=ghp_xxx   # atau pastikan GITHUB_TOKEN sudah tersedia
-python scripts/sync_hybrid_repo.py --repo tjx578/TUYUL-KARTEL-FX-AGI-HYBRID \
-    --branch main
-```
-
-Script akan mengekspor token ke `GITHUB_TOKEN`, mengambil commit terbaru, lalu
-menyimpan snapshot tarball ke folder `vaults/` agar Fusion Layer dapat melakukan
-reload.
-
----
-
-## ✅ Langkah Setelah Ini
-1. Buat folder di repo kamu:
-   ```bash
-   mkdir -p ai_bridge scripts
-   ```
-2. Tambahkan 3 file di atas sesuai path.
-3. Commit dan push:
-   ```bash
-   git add ai_bridge/gpt_bridge_handler_v540.py scripts/run_hybrid_analysis.py README.md
-   git commit -m "Add GPTBridgeHandler + analysis runner for TUYUL-KARTEL-FX-AGI-HYBRID v5.4.0"
-   git push origin main
-   ```
+__version__ = "5.4.1"
+__author__ = "Tuyul Kartel AGI Team"
+🧠 Fungsi: Inisialisasi modul utama Python dan metadata proyek.

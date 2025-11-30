@@ -1,0 +1,25 @@
+# Codespace Environment Mapping
+environment: production
+
+vaults:
+  fx_vault:
+    repo: tjx578/TUYUL-FX-KNOWLEDGE-VAULT-AGI
+    path: vaults/fx_vault/
+    sync: true
+  kartel_vault:
+    repo: tjx578/TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI
+    path: vaults/kartel_vault/
+    sync: true
+  journal_vault:
+    repo: tjx578/TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI
+    path: vaults/journal_vault/
+    sync: true
+
+gpt_profile:
+  model: gpt-5-turbo
+  temperature: 0.3
+  max_tokens: 4096
+
+runtime:
+  enable_autosync: true
+  reflective_mode: true

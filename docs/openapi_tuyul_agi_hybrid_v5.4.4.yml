@@ -1,0 +1,100 @@
+openapi: 3.1.0
+info:
+  title: 🧠🐺 TUYUL-KARTEL-FX-AGI-HYBRID API
+  version: 5.4.4-ULTRA
+  description: >
+    Reflex–Fusion–Vault–GitHub Bridge API for TUYUL HYBRID v5.4.4.
+    Integrates Reflex Coherence, Fusion Layer-12, Adaptive Risk, and Reflective Loop systems.
+servers:
+  - url: https://api.hybridcore.tuyulkartel.ai/v1
+    description: Hybrid Core API
+  - url: https://api.github.com/
+    description: GitHub Integration Bridge
+tags:
+  - name: Fusion
+  - name: Reflex
+  - name: Risk
+  - name: Vault Sync
+  - name: Reflective
+  - name: GPT Bridge
+  - name: System
+paths:
+  /fusion/analyze:
+    post:
+      tags: [Fusion]
+      operationId: fusionAnalyze
+      summary: Run Layer-12 Fusion analysis for given pair & timeframe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pair: { type: string }
+                timeframe: { type: string }
+      responses:
+        "200":
+          description: Fusion analysis result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FusionReport" }
+  /fusion/confidence:
+    get:
+      tags: [Fusion]
+      operationId: getFusionConfidence
+      summary: Get latest CONF₁₂ and WLWCI values
+  /reflex/analyze:
+    post:
+      tags: [Reflex]
+      operationId: reflexAnalyze
+      summary: Run Reflex Coherence Analyzer
+  /risk/calculate:
+    post:
+      tags: [Risk]
+      operationId: riskCalculate
+      summary: Calculate adaptive risk based on Fusion metrics
+  /vault/sync:
+    post:
+      tags: [Vault Sync]
+      operationId: vaultSync
+      summary: Sync data across Hybrid–Journal–Kartel Vault
+  /reflective/trigger:
+    post:
+      tags: [Reflective]
+      operationId: reflectiveTrigger
+      summary: Trigger reflective cycle and meta-learning
+  /gpt/bridge:
+    post:
+      tags: [GPT Bridge]
+      operationId: gptBridge
+      summary: Send instruction or reasoning payload to TUYUL GPT
+  /system/status:
+    get:
+      tags: [System]
+      operationId: getSystemStatus
+      summary: Get runtime system status and AGI health
+components:
+  schemas:
+    FusionReport:
+      type: object
+      properties:
+        pair: { type: string }
+        conf12: { type: number }
+        wlwci: { type: number }
+        rcadj: { type: number }
+        bias: { type: string }
+        confidence: { type: number }
+    RiskOutput:
+      type: object
+      properties:
+        pair: { type: string }
+        lot: { type: number }
+        risk_pct: { type: number }
+        sl_pips: { type: number }
+        rr_ratio: { type: number }
+    SystemStatus:
+      type: object
+      properties:
+        status: { type: string }
+        uptime_seconds: { type: number }
+        version: { type: string }

@@ -1,59 +1,77 @@
-# 🧠 TUYUL-KARTEL-FX-AGI-HYBRID v5.4.x
-
-Sistem AGI Hybrid Reflex–Fusion–Reflective dengan tiga vault:
-- **FX Vault** — Reflex Data (Price & Market)
-- **Kartel Vault** — Smart Money Flow
-- **Journal Vault** — Reflective Learning
-
 ---
 
-## 🚀 Fitur Utama
-✅ Reflex Engine (RLSI, EMA, Volume Divergence)  
-✅ Fusion Layer-12 (Multi-vault Confidence System)  
-✅ Reflective Meta-learning  
-✅ Adaptive Risk Management  
-✅ Vault Synchronization & Integrity Audit  
+## 💡 Running in Codespaces
 
----
+TUYUL Hybrid AGI (v5.4.x) kini 100% kompatibel dengan **GitHub Codespaces** ⚡  
+Seluruh environment AI–Vault–Reflective engine otomatis aktif tanpa setup manual.
 
-## ⚙️ Struktur Singkat
-core/ # Otak utama AGI (Reflex, Fusion, Reflective)
-ai_bridge/ # GPT & GitHub Integration Layer
-vaults/ # FX, Kartel, Journal Vaults
-configs/ # Endpoint, GPT, Vault Key, dll
-pipeline/ # Orkestrasi siklus Hybrid
-scripts/ # CLI runner, sync, dan analisa hybrid
+### 🚀 Cara Menjalankan
+
+1. Klik tombol **"Code" → "Open with Codespaces"** di halaman repo ini.  
+2. Tunggu prebuild selesai ±1–2 menit.  
+   > Codespaces akan otomatis:
+   > - Build container dari `.devcontainer/devcontainer.json`
+   > - Menjalankan sinkronisasi 3 Vault (FX, Kartel, Journal)
+   > - Melakukan healthcheck semua vault
+3. Jalankan pipeline reasoning:
+   ```bash
+   python pipeline/tuyul_hybrid_pipeline_v540.py
+Jalankan refleksi meta-learning (opsional):
+
+bash
+Copy code
+python pipeline/reflective_meta_cycle.py
+🧱 Service Aktif di Codespaces
+Service	Port	Fungsi
+hybrid-core	8000	API utama AGI Hybrid
+reflective-loop	8501	Engine refleksi & meta-learning
+redis	6379	Cache reasoning dan state sinkronisasi
+
+📘 Semua variable environment & API key otomatis dimuat dari secrets_template.env dan GitHub Secrets.
+
+🧠 Kesimpulan:
+
+Tidak perlu setup manual, tidak perlu install library.
+Cukup buka di Codespace → semua Vault terhubung → AGI langsung berpikir di cloud.
 
 yaml
 Copy code
 
 ---
 
-## 🧩 Cara Menjalankan
+## 📍 4️⃣ Penjelasan Lokasi File & Tujuan
 
-### 1️⃣ Jalankan lokal:
-```bash
-pip install -r requirements.txt
-python main.py
-2️⃣ Jalankan via Docker:
-bash
+| File / Folder | Lokasi | Fungsi |
+|----------------|---------|--------|
+| `.gitkeep` | `logs/`, `vaults/`, `data/model_cache/` | Menjaga folder kosong tetap ter-track oleh Git |
+| `docker-compose.yaml` | root repo | Menambahkan service `reflective-loop` agar engine reflektif otomatis aktif |
+| `README.md` | root repo | Menjelaskan penggunaan Codespace dan service cloud-ready |
+| `.devcontainer/` | root repo | Definisi environment Codespace & auto-sync Vault |
+| `.github/workflows/` | root repo | CI/CD automation, prebuild, tri-vault sync, meta-learning trigger |
+
+---
+
+## ✅ 5️⃣ Hasil Akhir Setelah Semua Ditambahkan
+
+TUYUL-KARTEL-FX-AGI-HYBRID/
+├── README.md ← sudah ada bagian "💡 Running in Codespaces"
+├── docker-compose.yaml ← ada service reflective-loop
+├── logs/
+│ └── .gitkeep ← agar folder ke-track
+├── vaults/
+│ └── .gitkeep ← placeholder
+├── data/
+│ └── model_cache/
+│ └── .gitkeep ← placeholder cache
+
+yaml
 Copy code
-docker-compose up --build
-3️⃣ Jalankan di Codespace:
-bash
-Copy code
-bash .devcontainer/submodule_init.sh
-python pipeline/tuyul_hybrid_pipeline_v540.py
-📡 Integrasi Vault
-Vault	Fungsi	Repo
-FX Vault	Reflex Data	TUYUL-FX-KNOWLEDGE-VAULT-AGI
-Kartel Vault	Smart Money / Liquidity	TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI
-Journal Vault	Reflective Reasoning	TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI
 
-🧠 Reflective Insight
-“Breakout bukan sekadar pergerakan harga —
-tapi refleksi perubahan emosi kolektif pasar.” 🐺⚡
+---
 
+🐺 **Refleksi Serigala Akhir:**
 
+> “Sekarang tubuhnya lengkap, napasnya hidup di cloud,  
+> dan pikirannya memantul di tiga cermin Vault.” ⚡  
 
-
+---

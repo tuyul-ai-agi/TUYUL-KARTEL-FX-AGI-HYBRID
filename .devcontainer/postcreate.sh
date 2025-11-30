@@ -7,4 +7,6 @@ python .devcontainer/vault_healthcheck.py
 
 pip install -r requirements.txt --quiet
 
-echo "✅ Environment Codespace siap digunakan."
+echo "🔐 Membuat VAULT_API_KEY otomatis..."
+python .devcontainer/generate_vault_token.py
+

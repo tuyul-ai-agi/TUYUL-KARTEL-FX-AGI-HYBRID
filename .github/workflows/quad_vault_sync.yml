@@ -1,0 +1,81 @@
+name: "\U0001f9e0 TUYUL Quad-Vault Reflective Sync"
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # setiap 10 menit
+  workflow_dispatch:
+
+env:
+  PAIR: "EURUSD"
+  HYBRID_REPO_TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+
+jobs:
+  run-quad-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+          pip install numpy pandas requests pyyaml
+
+      - name: Run TUYUL FX Quad-Vault Sync
+        run: |
+          python3 core/bridge/tuyul_fx_vault_bridge_v571.py
+        env:
+          PAIR: ${{ env.PAIR }}
+
+      - name: Upload reflective log artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reflective_bridge_logs
+          path: data/vault/bridge_quad_log.json
+
+  # Trigger sync ke repo lain
+  notify-vaults:
+    needs: run-quad-sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Knowledge Vault Update
+        env:
+          TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyul-ai-agi/tuyul-fx-knowledge-agi/dispatches \
+            -d '{"event_type":"reflective_update"}'
+
+      - name: Trigger Kartel Vault Update
+        env:
+          TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyul-ai-agi/tuyul-kartel-knowledge-agi/dispatches \
+            -d '{"event_type":"reflective_update"}'
+
+      - name: Trigger Journal Vault Logging
+        env:
+          TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyul-ai-agi/tuyul-journal-vault-agi/dispatches \
+            -d '{"event_type":"reflective_log"}'
+
+# 📈 Hasil Eksekusi Workflow
+# Event            Tujuan                                   Output
+# run-quad-sync    Menjalankan sinkronisasi 4 vault          bridge_quad_log.json
+# notify-vaults    Kirim event ke repos lain (via dispatch)  Model update & log reflective
+# Artifact CI      Upload log hasil sync                     Tersedia di tab "Actions → Artifacts"

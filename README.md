@@ -39,7 +39,6 @@ Vault Journal → AGI Learning Engine (v1.0)
 
 ## 🧩 Posisi dalam Quad-Vault Architecture
 
-```mermaid
 flowchart TD
 A[🧠 Hybrid Vault] --> B[📘 FX Knowledge Vault]
 B --> C[🧩 Kartel Knowledge Vault]

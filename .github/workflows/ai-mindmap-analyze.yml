@@ -1,0 +1,85 @@
+name: AI MindMap Analyze
+on:
+  workflow_dispatch:
+    inputs:
+      text_input:
+        description: "Masukkan teks yang ingin dianalisis ke dalam mind map terstruktur"
+        required: true
+        type: string
+  issues:
+    types: [opened, edited, reopened]
+
+jobs:
+  analyze:
+    name: Jalankan AI MindMap Reasoning Agent
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/.github/actions/checkout@main
+
+      - name: Buat direktori output jika belum ada
+        run: mkdir -p docs/mindmap
+
+      - name: Jalankan AI Agent (GPT-5)
+        id: run_ai
+        uses: openai/chatgpt-action@v1
+        with:
+          model: gpt-5
+          temperature: 0.2
+          max_tokens: 4000
+          prompt: |
+            Anda adalah AI Asisten ahli dalam analisis sistem dan dokumentasi teknis.
+            Jalankan proses berikut **secara berurutan dan tidak boleh dilompati**.
+
+            ============================================================
+            🧠 PROSES 5 LANGKAH PENALARAN MIND MAP
+            ============================================================
+
+            Langkah 1: Identifikasi Konsep Utama
+            - Nyatakan satu frasa tunggal paling akurat sebagai konsep utama.
+
+            Langkah 2: Dekomposisi ke Sub-Konsep
+            - Buat 5–7 sub-konsep utama yang menjadi pilar pengetahuan.
+
+            Langkah 3: Detilkan Tiap Sub-Konsep
+            - Jelaskan tiap sub-konsep dalam bullet bersarang:
+              - Komponen
+              - Terminologi kunci
+              - Fungsi/ide spesifik
+
+            Langkah 4: Analisis Hubungan
+            - Gunakan format: "Node A [jenis hubungan] Node B karena [alasan]"
+
+            Langkah 5: Sintesis Akhir
+            - Susun laporan akhir dalam format Markdown:
+              # [Konsep Utama]
+              ## [Sub-Konsep 1]
+              Penjelasan naratif...
+              ...
+              ## 🔗 Integrasi dan Hubungan
+              Daftar hubungan kausal antar bagian.
+
+            ============================================================
+            Input:
+            ${{ github.event.inputs.text_input || github.event.issue.body }}
+            ============================================================
+
+            Output wajib berupa laporan Markdown dengan struktur lengkap.
+
+      - name: Simpan hasil analisis ke file Markdown
+        run: |
+          echo "${{ steps.run_ai.outputs.response }}" > docs/mindmap/output.md
+
+      - name: Commit hasil ke repository
+        run: |
+          git config user.name "AI MindMap Agent"
+          git config user.email "ai-agent@users.noreply.github.com"
+          git add docs/mindmap/output.md
+          git commit -m "🧠 MindMap Analysis: Generated from workflow" || echo "No changes to commit"
+          git push
+
+      - name: Tampilkan ringkasan hasil
+        run: |
+          echo "=== MindMap Analysis Completed ==="
+          head -n 20 docs/mindmap/output.md

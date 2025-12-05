@@ -1,0 +1,35 @@
+version: 5.7.2
+mode: Reflex–Fusion–Reflective–VIX Hybrid+
+pipeline:
+  - TWMS
+  - EMA
+  - VWAP
+  - Reflex
+  - Fusion
+  - Reflective
+  - VIXHybrid
+  - SmartMoney
+  - AdaptiveRisk
+  - MonteCarlo
+  - RefinementLayer   # 🧩 Baru ditambahkan
+  - Execution
+  - FinalFeedback
+vaults:
+  hybrid: TUYUL-FX-AGI-HYBRID
+  knowledge: TUYUL-FX-KNOWLEDGE-VAULT-AGI
+  kartel: TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI
+  journal: TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI
+refinement_layer:
+  enabled: true
+  components:
+    - FibonacciOverlap: "38.2–61.8%"
+    - SmartMoneyFootprint: true
+    - VWAPAlignment: true
+    - LiquidityMicrostructure: true
+  output:
+    rr_ratio_refined: true
+    fusion_confidence_refined: true
+    reflective_coherence_refined: true
+monitoring:
+  telemetry_log: logs/bridge_events.log
+  reflective_sync_interval: 3600

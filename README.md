@@ -58,7 +58,6 @@ Copy code
 
 ## 🧠 3️⃣ Arsitektur Quad Vault (v5.7.2)
 
-```mermaid
 graph TD
 A[🧠 Hybrid Vault] --> B[📘 Knowledge Vault]
 B --> C[🧩 Kartel Vault]

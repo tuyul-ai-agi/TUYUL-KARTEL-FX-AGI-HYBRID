@@ -1,0 +1,44 @@
+name: 🧠 Run TUYUL FX 5.7.8 Balanced Analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      pair:
+        description: "Currency pair to analyze"
+        required: true
+      timeframe:
+        description: "Timeframe (H1/H4/D1/W1)"
+        required: true
+
+jobs:
+  run-balanced:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔹 Checkout Hybrid Repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Initialize Balanced Reflex–Fusion–Reflective Cycle
+        run: |
+          echo "Starting Balanced Cycle v5.7.8..."
+          python scripts/init_balanced_pipeline.py --pair ${{ inputs.pair }} --tf ${{ inputs.timeframe }}
+
+      - name: 🔁 Run Reflex & Fusion Rebalance
+        run: |
+          python scripts/reflex_fusion_sync.py --pair ${{ inputs.pair }} --sync true
+
+      - name: 🔄 Reflective Feedback Injection
+        run: |
+          python scripts/reflective_feedback.py --pair ${{ inputs.pair }}
+
+      - name: 📊 Update Risk RCAdj & Integrity Audit
+        run: |
+          python scripts/adaptive_risk_update.py --pair ${{ inputs.pair }}
+          python scripts/integrity_proxy_check.py --pair ${{ inputs.pair }}
+
+      - name: 🧩 Log to Journal Vault
+        run: |
+          python scripts/journal_sync.py --pair ${{ inputs.pair }}
+
+      - name: ✅ Finalize Balanced Report
+        run: |
+          echo "Fusion–Reflective Balance Complete ✅"

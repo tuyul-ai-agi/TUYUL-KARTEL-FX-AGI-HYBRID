@@ -1,0 +1,68 @@
+name: "🧠 TUYUL FX Repo Auto-Recovery System"
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"  # Cek setiap 20 menit
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+  PAIR: "EURUSD"
+
+jobs:
+  check-and-recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests pyyaml pandas numpy
+
+      - name: Run Health Monitor
+        run: |
+          echo "🔍 Menjalankan Health Monitor..."
+          python3 reflective/repo_health_monitor.py
+
+      - name: Evaluate System Health
+        id: eval
+        run: |
+          echo "📊 Mengevaluasi hasil health report..."
+          STATE=$(python3 -c "import json; print(json.load(open('logs/repo_health_report.json'))['system_state'])")
+          echo "System state: $STATE"
+          echo "state=$STATE" >> $GITHUB_OUTPUT
+
+      - name: Trigger Reflective Recovery if Needed
+        if: steps.eval.outputs.state == 'DEGRADED'
+        run: |
+          echo "🚨 Sistem DEGRADE — Menjalankan recovery reflektif..."
+          python3 reflective/repo_recovery_manager.py
+        env:
+          GH_TOKEN: ${{ env.GH_TOKEN }}
+
+      - name: Run BOT Auto-Heal (if recovery was triggered)
+        if: steps.eval.outputs.state == 'DEGRADED'
+        run: |
+          echo "🤖 Menjalankan BOT TUYULAGIBOT-TJX setelah recovery..."
+          python3 bots/tuyulagibot-tjx.py
+
+      - name: Upload Recovery Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovery_logs
+          path: |
+            logs/repo_health_report.json
+            logs/repo_recovery_summary.json
+            logs/tuyulagibot.log
+
+      - name: Summary
+        run: |
+          echo "✅ Auto-recovery workflow selesai dijalankan."
+          echo "🧠 TUYUL AGI telah melakukan siklus reflektif & pemulihan otomatis."

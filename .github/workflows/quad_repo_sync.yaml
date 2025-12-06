@@ -1,0 +1,93 @@
+name: "🧠 TUYUL Quad Repo Reflective Sync (v5.7.2-HYBRID+)"
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # 🔁 Sinkronisasi otomatis setiap 10 menit
+  workflow_dispatch:
+
+env:
+  PAIR: "EURUSD"
+  GH_TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+
+jobs:
+  run-quad-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 🧠 Checkout TUYUL FX Hybrid Repo
+        uses: actions/checkout@v4
+        with:
+          repository: tuyulfx/agi_hybrid_tools
+          token: ${{ env.GH_TOKEN }}
+
+      - name: ⚙️ Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
+        run: |
+          pip install pyyaml requests pandas numpy
+
+      - name: 🔁 Run Quad Repo Sync
+        run: |
+          echo "🚀 Starting Quad Repo Sync System..."
+          python3 tools/quad_repo_sync.py
+        env:
+          GH_TOKEN: ${{ env.GH_TOKEN }}
+
+      - name: 🧩 Run Reflective Bridge Manager
+        run: |
+          echo "🔄 Executing Reflective Repo Bridge..."
+          python3 reflective/repo_bridge_manager.py
+        env:
+          GH_TOKEN: ${{ env.GH_TOKEN }}
+
+      - name: 📊 Upload Reflective Log Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reflective_audit_logs
+          path: journal_repo/logs/sync_audit.json
+
+  notify-repos:
+    needs: run-quad-sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Knowledge Repo Reflective Update
+        env:
+          TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyulfx/knowledge_vault_agi/dispatches \
+            -d '{"event_type":"reflective_update"}'
+
+      - name: Trigger Kartel Repo Macro Sync
+        env:
+          TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyulfx/kartel_macro_vault/dispatches \
+            -d '{"event_type":"macro_coherence_update"}'
+
+      - name: Trigger Journal Repo Reflective Log
+        env:
+          TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyulfx/journal_vault_agi/dispatches \
+            -d '{"event_type":"reflective_log_commit"}'
+
+# ============================================================
+# 📈 Quad Repo Reflective System Summary
+# ============================================================
+# Job              Fungsi                                          Output
+# run-quad-sync    Sinkronisasi lintas 4 repo TUYUL FX AGI          journal_repo/logs/sync_audit.json
+# notify-repos     Trigger update ke repo lain (reflective dispatch) Meta-learning & logging
+# artifact logs    Upload log hasil sinkronisasi untuk audit AGI     Artifacts tab di GitHub Actions

@@ -12,16 +12,16 @@
 yang bekerja di atas **Quad Repo Sync System**.
 
 Sistem ini menyatukan pipeline lama (`v5.4.4`) dan sistem baru (`v5.7.x Refinement Hybrid`)  
-melalui sinkronisasi lintas repo dan lintas vault (Hybrid, Knowledge, Kartel, Journal).
+melalui sinkronisasi lintas repo dan lintas repo (Hybrid, Knowledge, Kartel, Journal).
 
-| Vault | Fungsi | Output |
-|-------|--------|--------|
-| 🧠 **Hybrid Vault** | Otak utama | Reflex → Fusion → Reflective reasoning |
-| 📘 **Knowledge Vault** | Memori rasional | Heuristic + Meta-learning |
-| 🧩 **Kartel Vault** | Makro kognitif | Cross-market coherence (VIX, Indeks, Bond, Crypto) |
-| 🧾 **Journal Vault** | Empiris reflektif | Trade log, risk archive, Monte Carlo report |
+| Repo | Fungsi | Output |
+|------|--------|--------|
+| 🧠 **Hybrid Repo** | Otak utama | Reflex → Fusion → Reflective reasoning |
+| 📘 **Knowledge Repo** | Memori rasional | Heuristic + Meta-learning |
+| 🧩 **Kartel Repo** | Makro kognitif | Cross-market coherence (VIX, Indeks, Bond, Crypto) |
+| 🧾 **Journal Repo** | Empiris reflektif | Trade log, risk archive, Monte Carlo report |
 
-Semua vault dikendalikan otomatis oleh **Reflective BOT `tuyulagibot-tjx`**,  
+Semua repo dikendalikan otomatis oleh **Reflective BOT `tuyulagibot-tjx`**,  
 menggunakan **Reflective Bridge Protocol (RBP v2.0)** dan **Quad Repo Sync System**  
 untuk menjaga konsistensi state antar repositori TUYUL FX AGI.
 
@@ -34,7 +34,7 @@ untuk menjaga konsistensi state antar repositori TUYUL FX AGI.
 `TWMS → EMA → VWAP–EMC → Reflex Coherence → FTA Alignment →  
 VDDHybrid → VIX Engine → RSD Hybrid → Smart Money →  
 Adaptive Risk → WLWCI → Monte Carlo → Fusion Reasoning →  
-Refinement Layer (8.5) → Reflective Sync → Tri-Vault Repo Sync`
+Refinement Layer (8.5) → Reflective Sync → Tri-Repo Repo Sync`
 
 | Layer | Fungsi | Output |
 |-------|--------|--------|
@@ -51,18 +51,18 @@ Refinement Layer (8.5) → Reflective Sync → Tri-Vault Repo Sync`
 | **Monte Carlo** | Simulasi 15k iterasi / 180 hari | Probabilitas tren dan drawdown |
 | **Fusion Reasoning** | Integrasi reflektif semua layer | `CONF₁₄` & `RCAdj` |
 | **Refinement Layer (8.5)** | Precision Institutional Confluence | Entry presisi, RR refinement |
-| **Reflective Sync** | Sinkronisasi Vault | Meta-learning update |
-| **Tri-Vault Repo Sync** | Integrasi final antar vault + repos | Hybrid–Knowledge–Journal coherence |
+| **Reflective Sync** | Sinkronisasi Repo | Meta-learning update |
+| **Tri-Repo Repo Sync** | Integrasi final antar repo + repos | Hybrid–Knowledge–Journal coherence |
 
 ---
 
-## 🧠 3️⃣ Arsitektur Quad Vault & Quad Repo Sync
+## 🧠 3️⃣ Arsitektur Quad Repo & Quad Repo Sync
 
 ```mermaid
 graph TD
-  A[🧠 Hybrid Vault] --> B[📘 Knowledge Vault]
-  B --> C[🧩 Kartel Vault]
-  C --> D[🧾 Journal Vault]
+  A[🧠 Hybrid Repo] --> B[📘 Knowledge Repo]
+  B --> C[🧩 Kartel Repo]
+  C --> D[🧾 Journal Repo]
   D --> A
 
   A --> E[⚡ Reflective BOT tuyulagibot-tjx]
@@ -84,8 +84,8 @@ graph TD
 
 **Quad Repo Sync System** memastikan bahwa:
 
-- State analisa di **Hybrid Vault** tercermin ke **Knowledge/Kartel/Journal** repos.
-- Hasil **Journal Vault** (trade result, drawdown, Monte Carlo) mengalir balik sebagai sinyal reflektif.
+- State analisa di **Hybrid Repo** tercermin ke **Knowledge/Kartel/Journal** repos.
+- Hasil **Journal Repo** (trade result, drawdown, Monte Carlo) mengalir balik sebagai sinyal reflektif.
 - BOT `tuyulagibot-tjx` menjadi **orchestrator sinkronisasi** lintas repo, bukan hanya lintas layer.
 
 ---
@@ -129,7 +129,7 @@ Output layer ini meng-update:
 | 9️⃣ | Monte Carlo Simulation | 15k iterasi probabilitas |
 | 🔟 | Fusion Layer (`CONF₁₄`) | Integrasi reflektif |
 | 11️⃣ | EMA + Divergence Validation | Validasi konfluensi |
-| 12️⃣ | Final Integrity Feedback | Evaluasi akhir & sinkronisasi Vault + repos |
+| 12️⃣ | Final Integrity Feedback | Evaluasi akhir & sinkronisasi Repo + repos |
 
 ---
 
@@ -149,12 +149,12 @@ Workflow ini:
 
 - Menarik state terbaru dari repo Hybrid.
 - Menyelaraskan data dan artefak ke Knowledge/Kartel/Journal.
-- Menulis log reflektif ke **Journal Vault** (JSON-based).
+- Menulis log reflektif ke **Journal Repo** (JSON-based).
 - Memicu re-sync bila terdeteksi anomali (auto-heal).
 
 ---
 
-## 🧠 7️⃣ Struktur JSON Journal Vault v5.7.2
+## 🧠 7️⃣ Struktur JSON Journal Repo v5.7.2
 
 ```json
 {
@@ -186,7 +186,7 @@ JSON ini adalah **single source of truth** untuk:
 
 - Evaluasi performa strategi.
 - Monte Carlo adaptive risk.
-- Meta-learning di **Knowledge Vault**.
+- Meta-learning di **Knowledge Repo**.
 - Audit trail di Quad Repo Sync System.
 
 ---

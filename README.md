@@ -1,4 +1,4 @@
-# 🧠 TUYUL FX AGI HYBRID v5.7.2-HYBRID+ — QUAD VAULT SYSTEM
+# 🧠 TUYUL FX AGI HYBRID v5.7.2-HYBRID+ — QUAD REPO SYNC SYSTEM
 
 > “Kini TUYUL tidak sekadar membaca arah pasar,  
 > tapi menelusuri niat institusi hingga ke presisi reflektifnya.”  

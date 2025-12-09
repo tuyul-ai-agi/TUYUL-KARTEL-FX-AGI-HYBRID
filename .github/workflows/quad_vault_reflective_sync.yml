@@ -1,0 +1,33 @@
+name: Quad Vault Reflective Sync
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Reflective Sync
+        env:
+          REFLECTIVE_BRIDGE_VERSION: RBP_v2.2
+          MONTECARLO_SPEC: 20k/90d
+          ENABLE_VAULT_SYNC: true
+          ENABLE_JOURNAL_LOG: true
+        run: |
+          python pipeline/reflective_meta_cycle.py

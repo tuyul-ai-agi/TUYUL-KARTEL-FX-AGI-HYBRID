@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # ==============================================================
-# 🧠 TUYUL FX AGI HYBRID v5.7.3r++ — Reflective Loop Service
+# 🧠 TUYUL FX AGI HYBRID v5.7.3r++ — Reflective Loop Service (Adaptive)
 # --------------------------------------------------------------
-# Service reflektif yang berjalan 24/7 di container `reflective-loop`.
-# - Menjalankan ReflectiveMetaCycle setiap 1 jam
+# Service reflektif adaptif yang berjalan 24/7.
+# - Menjalankan ReflectiveMetaCycle() secara berkala
+# - Interval adaptif berdasarkan Regime State (Tranquil/Stressed/Crisis)
 # - Mencatat hasilnya ke Journal Vault dan logs
-# - Sinkron dengan BOT (via tuyulagibot-tjx bridge)
+# - Sinkron dengan BOT tuyulagibot-tjx (Bridge RBP v2.2)
 # ==============================================================
 
 import os
@@ -14,21 +15,28 @@ import json
 from datetime import datetime
 from loguru import logger
 from pathlib import Path
+
 from pipeline.reflective_meta_cycle import ReflectiveMetaCycle
 
 # ==============================================================
-# Konfigurasi dasar
+# Konfigurasi
 # ==============================================================
 
 LOG_PATH = Path("logs/reflective_loop_service.log")
 JOURNAL_PATH = Path("vaults/journal_vault/reflective_loop_log.json")
-INTERVAL = int(os.getenv("REFLECTIVE_LOOP_INTERVAL", 3600))  # Default: 1 jam (3600 detik)
+
+DEFAULT_INTERVALS = {
+    "Tranquil": 3600,   # 1 jam
+    "Stressed": 1800,   # 30 menit
+    "Crisis": 900       # 15 menit
+}
 
 logger.add(LOG_PATH, rotation="5 MB", retention="14 days", encoding="utf-8")
-logger.info("🐺 Reflective Loop Service v5.7.3r++ started (interval = 1 hour)")
+logger.info("🐺 Reflective Loop Service v5.7.3r++ [Adaptive Mode] initialized.")
+
 
 # ==============================================================
-# Fungsi utilitas
+# Utility Functions
 # ==============================================================
 
 def write_journal_log(entry: dict):
@@ -41,16 +49,22 @@ def write_journal_log(entry: dict):
             journal_data = []
     journal_data.append(entry)
     with open(JOURNAL_PATH, "w", encoding="utf-8") as f:
-        json.dump(journal_data[-24:], f, indent=2)  # Simpan max 24 log (1 hari)
-    logger.info(f"🧾 Reflective log updated → {JOURNAL_PATH}")
+        json.dump(journal_data[-48:], f, indent=2)  # Simpan max 48 entri (2 hari)
+    logger.info(f"🧾 Journal updated → {JOURNAL_PATH}")
 
 
 def notify_bot(result: dict):
     """Simulasi notifikasi ke BOT tuyulagibot-tjx."""
-    bridge_status = os.getenv("ENABLE_BOT_NOTIFY", "true").lower() == "true"
-    if not bridge_status:
+    if os.getenv("ENABLE_BOT_NOTIFY", "true").lower() != "true":
         return
-    logger.info(f"🤖 BOT tuyulagibot-tjx notified: regime={result.get('based_on')}")
+    regime = result.get("based_on", "Unknown")
+    logger.info(f"🤖 BOT tuyulagibot-tjx notified: regime={regime}")
+
+
+def get_adaptive_interval(regime_state: str) -> int:
+    """Menentukan interval loop berdasarkan kondisi pasar."""
+    regime = regime_state.capitalize()
+    return DEFAULT_INTERVALS.get(regime, 3600)
 
 
 # ==============================================================
@@ -59,29 +73,34 @@ def notify_bot(result: dict):
 
 def reflective_loop():
     cycle = ReflectiveMetaCycle()
+    regime_state = "Tranquil"
 
     while True:
         try:
-            logger.info("🔁 Executing ReflectiveMetaCycle() ...")
+            logger.info(f"🔁 Executing ReflectiveMetaCycle() [Current Regime: {regime_state}] ...")
             result = cycle.execute()
+
+            regime_state = result.get("based_on", "Tranquil")
+            next_interval = get_adaptive_interval(regime_state)
 
             entry = {
                 "timestamp": datetime.utcnow().isoformat(),
                 "status": result.get("status", "ok"),
-                "based_on": result.get("based_on"),
+                "based_on": regime_state,
                 "bridge_protocol": result.get("bridge_protocol", "RBP v2.2"),
                 "version": result.get("version", "v5.7.3r++"),
+                "next_interval": next_interval
             }
 
             write_journal_log(entry)
             notify_bot(result)
-            logger.success(f"✅ Reflective cycle completed at {entry['timestamp']}")
 
+            logger.success(f"✅ Reflective cycle completed — next cycle in {next_interval/60:.0f} min.")
         except Exception as e:
             logger.exception(f"💥 Error during reflective cycle: {e}")
+            next_interval = 3600  # fallback 1 jam
 
-        logger.info(f"🕒 Sleeping for {INTERVAL/3600:.1f} hour(s)...")
-        time.sleep(INTERVAL)
+        time.sleep(next_interval)
 
 
 # ==============================================================

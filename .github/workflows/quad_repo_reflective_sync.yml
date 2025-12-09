@@ -1,0 +1,243 @@
+name: "🧠 TUYUL Quad-Repo Reflective Sync"
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # setiap 1 jam
+  workflow_dispatch:
+
+env:
+  PAIR: "EURUSD"
+  TIMEFRAME: "H4"
+  AGI_HYBRID_BRIDGE_CONFIG: "configs/agi_hybrid_bridge.yml"
+  AGI_HYBRID_BASE_DIR: "."
+  HYBRID_REPO_TOKEN: ${{ secrets.HYBRID_REPO_TOKEN }}
+
+jobs:
+  quad-repo-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Hybrid Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt || true
+          pip install numpy pandas requests pyyaml
+
+      - name: Load Bridge Config & Export Sync Settings
+        id: bridge_config
+        run: |
+          python - << 'PYCODE'
+          import json
+          import os
+          from pathlib import Path
+
+          import yaml  # type: ignore[import-untyped]
+
+          config_path = Path(os.environ["AGI_HYBRID_BRIDGE_CONFIG"])
+          if not config_path.is_file():
+              raise SystemExit(f"Bridge config not found: {config_path}")
+
+          cfg = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+          monitoring = cfg.get("monitoring", {}) or {}
+          reflective_bridge = cfg.get("reflective_bridge", {}) or {}
+          sync_policies = cfg.get("sync_policies", {}) or {}
+          journal_schema = cfg.get("journal_schema", {}) or {}
+
+          out = Path(os.environ["GITHUB_OUTPUT"])
+          with out.open("a", encoding="utf-8") as f:
+              f.write(f"LOG_LEVEL={monitoring.get('log_level', 'INFO')}\n")
+              f.write(f"METRICS_NAMESPACE={monitoring.get('metrics_namespace', 'tuyul_fx_agi_hybrid')}\n")
+              f.write(f"AUTO_HEAL_ENABLED={str(reflective_bridge.get('auto_heal', {}).get('enabled', True)).lower()}\n")
+              f.write(f"AUTO_HEAL_MAX_RETRIES={reflective_bridge.get('auto_heal', {}).get('max_retries', 3)}\n")
+              f.write(f"AUTO_HEAL_BACKOFF={reflective_bridge.get('auto_heal', {}).get('backoff_seconds', 120)}\n")
+              f.write(f"SCHEDULE_INTERVAL={reflective_bridge.get('schedule', {}).get('interval_seconds', 3600)}\n")
+              # Serialize sync policies & schema for later debug/metrics if needed
+              f.write(f"SYNC_POLICIES_JSON={json.dumps(sync_policies)}\n")
+              f.write(f"JOURNAL_SCHEMA_VERSION={journal_schema.get('version', '5.7.2')}\n")
+          PYCODE
+
+      - name: Run TUYUL FX Hybrid Pipeline (Layer-12)
+        id: run_layer12
+        run: |
+          python3 core/pipeline/run_layer12.py \
+            --pair "${PAIR}" \
+            --timeframe "${TIMEFRAME}" \
+            --output-json "artifacts/layer12_output.json"
+
+      - name: Extract Layer-12 Outputs to Env
+        id: export_layer12_env
+        run: |
+          python - << 'PYCODE'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path("artifacts/layer12_output.json")
+          if not path.is_file():
+              raise SystemExit(f"Layer-12 output not found: {path}")
+
+          data = json.loads(path.read_text(encoding="utf-8"))
+
+          mapping = {
+              "L12_PAIR": data["pair"],
+              "L12_BIAS": data["bias"],
+              "L12_ENTRY_ZONE_REFINED": data["entry_zone_refined"],
+              "L12_TIMEFRAME": data["timeframe"],
+              "L12_SL": str(data["sl"]),
+              "L12_TP1": str(data["tp1"]),
+              "L12_TP2": str(data["tp2"]),
+              "L12_FUSION_CONFIDENCE": str(data["fusion_confidence"]),
+              "L12_WLWCI": str(data["wlwci"]),
+              "L12_RCADJ": str(data["rcadj"]),
+              "L12_MONTE_CARLO_CONFIDENCE": str(data["monte_carlo_confidence"]),
+              "L12_INTEGRITY_INDEX": str(data["integrity_index"]),
+              "L12_REFLECTIVE_SYNC": data.get("reflective_sync", "PENDING"),
+              "L12_REF_FIBONACCI_OVERLAP": data["refinement_layer"]["fibonacci_overlap"],
+              "L12_REF_VWAP": str(data["refinement_layer"]["vwap"]),
+              "L12_REF_DELTA_CLUSTER": str(data["refinement_layer"]["delta_cluster"]),
+              "L12_REF_LIQUIDITY_TYPE": data["refinement_layer"]["liquidity_type"],
+              "L12_REF_RR_RATIO_REFINED": data["refinement_layer"]["rr_ratio_refined"],
+              "L12_REF_FUSION_CONFIDENCE_REFINED": str(
+                  data["refinement_layer"]["fusion_confidence_refined"]
+              ),
+              "L12_REF_REFLECTIVE_COHERENCE_REFINED": str(
+                  data["refinement_layer"]["reflective_coherence_refined"]
+              ),
+          }
+
+          out = Path(os.environ["GITHUB_OUTPUT"])
+          with out.open("a", encoding="utf-8") as f:
+              for key, value in mapping.items():
+                  f.write(f"{key}={value}\n")
+          PYCODE
+
+      - name: Inject Layer-12 Refinement JSON to Journal Repo (with Auto-Heal)
+        id: inject_journal
+        run: |
+          set -e
+
+          AUTO_HEAL_ENABLED="${AUTO_HEAL_ENABLED}"
+          MAX_RETRIES="${AUTO_HEAL_MAX_RETRIES}"
+          BACKOFF="${AUTO_HEAL_BACKOFF}"
+
+          attempt=1
+          while :; do
+            echo "Attempt ${attempt}/${MAX_RETRIES} - injecting Layer-12 JSON to Journal..."
+            if python3 tools/layer12_refinement_injector.py; then
+              echo "Injection succeeded on attempt ${attempt}"
+              echo "STATUS=SUCCESS" >> "${GITHUB_OUTPUT}"
+              break
+            fi
+
+            if [ "${AUTO_HEAL_ENABLED}" != "true" ]; then
+              echo "Auto-heal disabled. Failing immediately."
+              echo "STATUS=FAILED_NO_AUTOHEAL" >> "${GITHUB_OUTPUT}"
+              exit 1
+            fi
+
+            if [ "${attempt}" -ge "${MAX_RETRIES}" ]; then
+              echo "Auto-heal: reached max retries (${MAX_RETRIES}). Failing."
+              echo "STATUS=FAILED_MAX_RETRIES" >> "${GITHUB_OUTPUT}"
+              exit 1
+            fi
+
+            echo "Auto-heal: waiting ${BACKOFF}s before retry..."
+            sleep "${BACKOFF}"
+            attempt=$((attempt + 1))
+          done
+        env:
+          AGI_HYBRID_BRIDGE_CONFIG: ${{ env.AGI_HYBRID_BRIDGE_CONFIG }}
+          AGI_HYBRID_BASE_DIR: ${{ env.AGI_HYBRID_BASE_DIR }}
+          AUTO_HEAL_ENABLED: ${{ steps.bridge_config.outputs.AUTO_HEAL_ENABLED }}
+          AUTO_HEAL_MAX_RETRIES: ${{ steps.bridge_config.outputs.AUTO_HEAL_MAX_RETRIES }}
+          AUTO_HEAL_BACKOFF: ${{ steps.bridge_config.outputs.AUTO_HEAL_BACKOFF }}
+          L12_PAIR: ${{ steps.export_layer12_env.outputs.L12_PAIR }}
+          L12_BIAS: ${{ steps.export_layer12_env.outputs.L12_BIAS }}
+          L12_ENTRY_ZONE_REFINED: ${{ steps.export_layer12_env.outputs.L12_ENTRY_ZONE_REFINED }}
+          L12_TIMEFRAME: ${{ steps.export_layer12_env.outputs.L12_TIMEFRAME }}
+          L12_SL: ${{ steps.export_layer12_env.outputs.L12_SL }}
+          L12_TP1: ${{ steps.export_layer12_env.outputs.L12_TP1 }}
+          L12_TP2: ${{ steps.export_layer12_env.outputs.L12_TP2 }}
+          L12_FUSION_CONFIDENCE: ${{ steps.export_layer12_env.outputs.L12_FUSION_CONFIDENCE }}
+          L12_WLWCI: ${{ steps.export_layer12_env.outputs.L12_WLWCI }}
+          L12_RCADJ: ${{ steps.export_layer12_env.outputs.L12_RCADJ }}
+          L12_MONTE_CARLO_CONFIDENCE: ${{ steps.export_layer12_env.outputs.L12_MONTE_CARLO_CONFIDENCE }}
+          L12_INTEGRITY_INDEX: ${{ steps.export_layer12_env.outputs.L12_INTEGRITY_INDEX }}
+          L12_REFLECTIVE_SYNC: ${{ steps.export_layer12_env.outputs.L12_REFLECTIVE_SYNC }}
+          L12_REF_FIBONACCI_OVERLAP: ${{ steps.export_layer12_env.outputs.L12_REF_FIBONACCI_OVERLAP }}
+          L12_REF_VWAP: ${{ steps.export_layer12_env.outputs.L12_REF_VWAP }}
+          L12_REF_DELTA_CLUSTER: ${{ steps.export_layer12_env.outputs.L12_REF_DELTA_CLUSTER }}
+          L12_REF_LIQUIDITY_TYPE: ${{ steps.export_layer12_env.outputs.L12_REF_LIQUIDITY_TYPE }}
+          L12_REF_RR_RATIO_REFINED: ${{ steps.export_layer12_env.outputs.L12_REF_RR_RATIO_REFINED }}
+          L12_REF_FUSION_CONFIDENCE_REFINED: ${{ steps.export_layer12_env.outputs.L12_REF_FUSION_CONFIDENCE_REFINED }}
+          L12_REF_REFLECTIVE_COHERENCE_REFINED: ${{ steps.export_layer12_env.outputs.L12_REF_REFLECTIVE_COHERENCE_REFINED }}
+
+      - name: Emit Telemetry Snapshot
+        if: always()
+        run: |
+          STATUS="${{ steps.inject_journal.outputs.STATUS || 'UNKNOWN' }}"
+          LOG_LEVEL="${{ steps.bridge_config.outputs.LOG_LEVEL }}"
+          METRICS_NS="${{ steps.bridge_config.outputs.METRICS_NAMESPACE }}"
+          echo "Telemetry :: namespace=${METRICS_NS} status=${STATUS} log_level=${LOG_LEVEL}"
+          echo "TELEMETRY_STATUS=${STATUS}" >> "${GITHUB_OUTPUT}"
+
+      - name: Upload reflective bridge logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reflective_bridge_logs
+          path: |
+            logs/bridge_events.log
+            artifacts/layer12_output.json
+          if-no-files-found: ignore
+
+  notify-repos:
+    needs: quad-repo-sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Knowledge Repo Update
+        env:
+          TOKEN: ${{ env.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyul-ai-agi/tuyul-fx-knowledge-agi/dispatches \
+            -d '{"event_type":"reflective_update"}'
+
+      - name: Trigger Kartel Repo Update
+        env:
+          TOKEN: ${{ env.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyul-ai-agi/tuyul-kartel-knowledge-agi/dispatches \
+            -d '{"event_type":"reflective_update"}'
+
+      - name: Trigger Journal Repo Logging
+        env:
+          TOKEN: ${{ env.HYBRID_REPO_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/tuyul-ai-agi/tuyul-journal-agi/dispatches \
+            -d '{"event_type":"reflective_log"}'
+
+# 📈 Hasil Eksekusi Workflow (Quad Repo, Auto-Heal + Telemetry)
+# Event              Tujuan                                           Output
+# quad-repo-sync     Jalankan pipeline Layer-12 + inject JSON Journal journal/{date}/{pair}-{tf}.json + logs
+#  ├─ auto-heal      Retry injection sesuai reflective_bridge.auto_heal STATUS=SUCCESS/FAILED_*
+#  └─ telemetry      Snapshot status + namespace metrics               log di UI + artifacts
+# notify-repos       Fire repo_dispatch ke Knowledge/Kartel/Journal   Model update & reflective log sync

@@ -1,7 +1,6 @@
 version: '3.9'
 
 services:
-  # 🧠 HYBRID CORE — Otak utama reasoning
   hybrid-core:
     build:
       context: .
@@ -20,75 +19,34 @@ services:
       - ENV_PROFILE=production
       - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
       - ENABLE_VAULT_SYNC=true
-      - ENABLE_KNOWLEDGE_FEED=true
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     depends_on:
       - reflective-loop
-      - vix-watcher
       - redis
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 20s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
 
-  # 🔁 REFLECTIVE LOOP — Meta-learning cycle adaptif (tiap 1 jam, auto adjust)
   reflective-loop:
     build:
       context: .
       dockerfile: dockerfile
     container_name: tuyul_reflective_loop
-    command: python pipeline/reflective_loop_service.py
+    command: python pipeline/reflective_meta_cycle.py
     restart: always
     volumes:
       - .:/app
       - ./vaults:/app/vaults
-      - ./knowledge:/app/knowledge
       - ./logs:/app/logs
     environment:
       - REFLECTIVE_MODE=true
       - ENABLE_VAULT_SYNC=true
       - ENABLE_JOURNAL_LOG=true
-      - ENABLE_BOT_NOTIFY=true
       - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - MONTECARLO_ITER=20000
+      - MONTECARLO_DAYS=90
     ports:
       - "8501:8501"
-    healthcheck:
-      test: ["CMD", "python", "core/healthcheck_reflective.py"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 15s
 
-  # 🌍 VIX WATCHER — Pemantau volatilitas global (CBOE VIX)
-  vix-watcher:
-    build:
-      context: .
-      dockerfile: dockerfile
-    container_name: tuyul_vix_watcher
-    command: python core/vix/vix_state_watcher.py
-    restart: always
-    environment:
-      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
-      - VIX_REFRESH_INTERVAL=1800
-      - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
-    volumes:
-      - .:/app
-      - ./vaults:/app/vaults
-      - ./logs:/app/logs
-    healthcheck:
-      test: ["CMD-SHELL", "test -f vaults/journal_vault/vix_state.json"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 15s
-
-  # ⚙️ REDIS — Cache reasoning, WLWCI & Monte Carlo buffer
   redis:
     image: redis:7
     container_name: tuyul_redis
@@ -97,12 +55,6 @@ services:
       - "6379:6379"
     volumes:
       - tuyul_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 5s
 
 volumes:
   tuyul_data:

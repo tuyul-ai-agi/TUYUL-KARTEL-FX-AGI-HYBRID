@@ -1,38 +1,31 @@
 """
-GPT Context Memory v5.4.0
--------------------------
-Simpan dan ambil memori reasoning GPT antar sesi.
+GPT Context Memory v5.7.3r++
+----------------------------
+Menyimpan konteks percakapan reflektif GPT dan meta-learning.
 """
 
 import json
-import os
 from datetime import datetime
 
+CONTEXT_FILE = "knowledge/context_memory.json"
 
-class ContextMemory:
-    def __init__(self, file_path="vaults/journal_vault/context_memory.json"):
-        self.file_path = file_path
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        if not os.path.exists(file_path):
-            with open(file_path, "w") as f:
-                json.dump([], f)
 
-    def save(self, role, prompt, result):
-        memory_entry = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "role": role,
-            "prompt": prompt,
-            "result": result,
-        }
-        data = self.load()
-        data.append(memory_entry)
-        with open(self.file_path, "w") as f:
-            json.dump(data, f, indent=2)
+def store_context(user_input: str, model_output: str):
+    entry = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "input": user_input,
+        "output": model_output,
+        "context_version": "v5.7.3r++"
+    }
+    with open(CONTEXT_FILE, "a", encoding="utf-8") as f:
+        f.write(json.dumps(entry) + "\n")
+    print("[MEMORY] Context stored.")
 
-    def load(self):
-        with open(self.file_path, "r") as f:
-            return json.load(f)
 
-    def clear(self):
-        with open(self.file_path, "w") as f:
-            json.dump([], f)
+def load_context(limit=10):
+    try:
+        with open(CONTEXT_FILE, "r", encoding="utf-8") as f:
+            lines = f.readlines()[-limit:]
+        return [json.loads(line) for line in lines]
+    except FileNotFoundError:
+        return []

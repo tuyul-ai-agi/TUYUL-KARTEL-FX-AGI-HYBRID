@@ -39,4 +39,70 @@ services:
   reflective-loop:
     build:
       context: .
-      dockerfile
+      dockerfile: dockerfile
+    container_name: tuyul_reflective_loop
+    command: python pipeline/reflective_loop_service.py
+    restart: always
+    volumes:
+      - .:/app
+      - ./vaults:/app/vaults
+      - ./knowledge:/app/knowledge
+      - ./logs:/app/logs
+    environment:
+      - REFLECTIVE_MODE=true
+      - ENABLE_VAULT_SYNC=true
+      - ENABLE_JOURNAL_LOG=true
+      - ENABLE_BOT_NOTIFY=true
+      - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8501:8501"
+    healthcheck:
+      test: ["CMD", "python", "core/healthcheck_reflective.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  # 🌍 VIX WATCHER — Pemantau volatilitas global (CBOE VIX)
+  vix-watcher:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyul_vix_watcher
+    command: python core/vix/vix_state_watcher.py
+    restart: always
+    environment:
+      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
+      - VIX_REFRESH_INTERVAL=1800
+      - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
+    volumes:
+      - .:/app
+      - ./vaults:/app/vaults
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD-SHELL", "test -f vaults/journal_vault/vix_state.json"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ⚙️ REDIS — Cache reasoning, WLWCI & Monte Carlo buffer
+  redis:
+    image: redis:7
+    container_name: tuyul_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - tuyul_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  tuyul_data:

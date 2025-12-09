@@ -1,15 +1,31 @@
-# Dockerfile — TUYUL-KARTEL-FX-AGI-HYBRID
+# ============================================================
+# 🧠 TUYUL FX AGI HYBRID v5.7.3r++ — Reflective Container
+# ============================================================
 
 FROM python:3.11-slim
 
+LABEL maintainer="TUYUL Labs <dev@tuyulkartel.ai>"
+LABEL version="v5.7.3r++"
+LABEL description="Reflective Intelligence Hybrid System (Quad Repo Mode)"
+
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Update and install system deps
+RUN apt-get update && apt-get install -y \
+    git curl build-essential && \
+    pip install --upgrade pip setuptools wheel
 
-COPY . .
+# Copy source
+COPY . /app
 
-EXPOSE 8000
+# Install dependencies
+RUN pip install -r requirements.txt
 
-ENV ENV=production
+# Expose ports for FastAPI / Reflex API
+EXPOSE 8080
+
+# Healthcheck
+HEALTHCHECK CMD curl --fail http://localhost:8080/health || exit 1
+
+# Default command
 CMD ["python", "main.py"]

@@ -1,5 +1,6 @@
-version: 5.7.2
-mode: Reflex–Fusion–Reflective–VIX Hybrid+
+version: "5.7.2"
+mode: "Reflex–Fusion–Reflective–VIX Hybrid+"
+
 pipeline:
   - TWMS
   - EMA
@@ -11,25 +12,123 @@ pipeline:
   - SmartMoney
   - AdaptiveRisk
   - MonteCarlo
-  - RefinementLayer   # 🧩 Baru ditambahkan
+  - RefinementLayer      # 🧩 Precision Institutional Confluence (8.5)
   - Execution
   - FinalFeedback
-vaults:
-  hybrid: TUYUL-FX-AGI-HYBRID
-  knowledge: TUYUL-FX-KNOWLEDGE-VAULT-AGI
-  kartel: TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI
-  journal: TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI
+
+repos:
+  hybrid:
+    name: "TUYUL-FX-AGI-HYBRID"
+    role: "core_hybrid_engine"
+    source_of_truth: true
+  knowledge:
+    name: "TUYUL-FX-KNOWLEDGE-AGI"
+    role: "rational_memory"
+    source_of_truth: false
+  kartel:
+    name: "TUYUL-KARTEL-FX-KNOWLEDGE-AGI"
+    role: "macro_coherence"
+    source_of_truth: false
+  journal:
+    name: "TUYUL-KARTEL-FX-JOURNAL-AGI"
+    role: "reflective_empirical_log"
+    source_of_truth: false
+
+reflective_bridge:
+  version: "2.0"
+  orchestrator: "tuyulagibot-tjx"
+  mode: "quad_repo"
+  # Hybrid menjadi anchor utama; repo lain mengikuti state Hybrid
+  sync_direction: "hybrid_to_others"
+  schedule:
+    interval_seconds: 3600
+    allow_manual_dispatch: true
+  integrity:
+    conflict_strategy: "prefer_hybrid"
+    max_drift_seconds: 7200
+    require_schema_match: true
+  auto_heal:
+    enabled: true
+    max_retries: 3
+    backoff_seconds: 120
+    mark_on_failure: "reflective_sync:FAILED"
+
 refinement_layer:
   enabled: true
+  version: "1.0"
   components:
-    - FibonacciOverlap: "38.2–61.8%"
-    - SmartMoneyFootprint: true
-    - VWAPAlignment: true
-    - LiquidityMicrostructure: true
+    fibonacci_overlap:
+      enabled: true
+      range: "38.2–61.8%"
+    smart_money_footprint:
+      enabled: true
+      delta_cluster: true
+    vwap_alignment:
+      enabled: true
+      institutional_median: true
+    liquidity_microstructure:
+      enabled: true
+      timeframe: "H4"
+      detect_clean_liquidity: true
+      detect_trap_liquidity: true
   output:
     rr_ratio_refined: true
     fusion_confidence_refined: true
     reflective_coherence_refined: true
+  journal_mapping:
+    target_repo: "journal"
+    schema_version: "5.7.2"
+    use_as_single_source_of_truth: true
+
+journal_schema:
+  version: "5.7.2"
+  path_pattern: "journal/{date}/{pair}-{timeframe}.json"
+  fields:
+    pair: "string"
+    bias: "string"
+    entry_zone_refined: "string"
+    sl: "float"
+    tp1: "float"
+    tp2: "float"
+    refinement_layer:
+      fibonacci_overlap: "string"
+      vwap: "float"
+      delta_cluster: "float"
+      liquidity_type: "string"
+      rr_ratio_refined: "string"
+      fusion_confidence_refined: "float"
+      reflective_coherence_refined: "float"
+    fusion_confidence: "float"
+    wlwci: "float"
+    rcadj: "float"
+    monte_carlo_confidence: "float"
+    integrity_index: "float"
+    reflective_sync: "string"
+
+sync_policies:
+  hybrid_to_knowledge:
+    enabled: true
+    strategy: "push_state"
+    include:
+      - "bias"
+      - "fusion_confidence"
+      - "wlwci"
+      - "monte_carlo_confidence"
+  hybrid_to_kartel:
+    enabled: true
+    strategy: "push_macro_signals"
+    include:
+      - "RSD_state"
+      - "VIXHybrid_state"
+      - "SmartMoney_flows"
+  hybrid_to_journal:
+    enabled: true
+    strategy: "append_reflective_log"
+    include: "all_journal_fields"
+
 monitoring:
-  telemetry_log: logs/bridge_events.log
+  telemetry_log: "logs/bridge_events.log"
   reflective_sync_interval: 3600
+  log_level: "INFO"
+  emit_metrics: true
+  metrics_namespace: "tuyul_fx_agi_hybrid"

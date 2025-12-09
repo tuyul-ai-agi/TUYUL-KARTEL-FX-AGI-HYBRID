@@ -1,238 +1,200 @@
-# 🧠 TUYUL FX AGI HYBRID v5.7.2-HYBRID+ — QUAD REPO SYNC SYSTEM
+████████╗██╗ ██╗██╗ ██╗██╗ ██╗██╗ ███████╗
+╚══██╔══╝██║ ██║██║ ██║██║ ██║██║ ██╔════╝
+██║ ██║ ██║██║ ██║██║ ██║██║ █████╗
+██║ ██║ ██║██║ ██║██║ ██║██║ ██╔══╝
+██║ ╚██████╔╝╚██████╔╝╚██████╔╝███████╗███████╗
+╚═╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝
+────────────────────────────────────────────────────
+🧠 TUYUL FX AGI HYBRID v5.7.3r++
+ADAPTIVE REFLECTIVE QUAD REPO SYSTEM
+────────────────────────────────────────────────────
 
-> “Kini TUYUL tidak sekadar membaca arah pasar,  
-> tapi menelusuri niat institusi hingga ke presisi reflektifnya.”  
-> — TUYUL Labs, Cognitive Systems Division (2025)
+“Kini TUYUL bukan sekadar membaca pasar,
+tapi bernafas dalam ritme volatilitasnya.”
+— TUYUL Labs, Reflective Systems Division (2025)
+
 
 ---
 
 ## ⚙️ 1️⃣ Gambaran Umum
 
-**TUYUL FX AGI v5.7.2-HYBRID+** adalah sistem **multi-layer reflective intelligence**  
-yang bekerja di atas **Quad Repo Sync System**.
+**TUYUL FX AGI v5.7.3r++** adalah sistem **multi-layer reflective intelligence adaptif**  
+yang beroperasi di atas **Quad Repo Adaptive Sync System**.
 
-Sistem ini menyatukan pipeline lama (`v5.4.4`) dan sistem baru (`v5.7.x Refinement Hybrid`)  
-melalui sinkronisasi lintas repo dan lintas repo (Hybrid, Knowledge, Kartel, Journal).
+Sistem ini menyatukan pipeline klasik (`v5.4.4 Reflex Engine`),  
+lapisan hybrid (`v5.7.x Refinement`), dan reflektif adaptif (`v5.7.3r++ Adaptive Loop`).  
 
 | Repo | Fungsi | Output |
-|------|--------|--------|
-| 🧠 **Hybrid Repo** | Otak utama | Reflex → Fusion → Reflective reasoning |
-| 📘 **Knowledge Repo** | Memori rasional | Heuristic + Meta-learning |
-| 🧩 **Kartel Repo** | Makro kognitif | Cross-market coherence (VIX, Indeks, Bond, Crypto) |
-| 🧾 **Journal Repo** | Empiris reflektif | Trade log, risk archive, Monte Carlo report |
+|------|---------|--------|
+| 🧠 **Hybrid Repo** | Otak utama analisa | Reflex → Fusion → Reflective Reasoning |
+| 📘 **Knowledge Repo** | Memori adaptif | Heuristic & Meta-learning |
+| 🧩 **Kartel Repo** | Makro global | Coherence lintas pasar (VIX, indeks, bond, crypto) |
+| 🧾 **Journal Repo** | Catatan reflektif | Trade log, Monte Carlo, drawdown archive |
 
-Semua repo dikendalikan otomatis oleh **Reflective BOT `tuyulagibot-tjx`**,  
-menggunakan **Reflective Bridge Protocol (RBP v2.0)** dan **Quad Repo Sync System**  
-untuk menjaga konsistensi state antar repositori TUYUL FX AGI.
-
----
-
-## 🧩 2️⃣ Pipeline Operasional (v5.7.2-HYBRID+)
-
-**High-level pipeline:**
-
-`TWMS → EMA → VWAP–EMC → Reflex Coherence → FTA Alignment →  
-VDDHybrid → VIX Engine → RSD Hybrid → Smart Money →  
-Adaptive Risk → WLWCI → Monte Carlo → Fusion Reasoning →  
-Refinement Layer (8.5) → Reflective Sync → Tri-Repo Repo Sync`
-
-| Layer | Fungsi | Output |
-|-------|--------|--------|
-| **TWMS** | Trend–Wave–Momentum Scan | Arah tren makro |
-| **EMA / VWAP–EMC** | Struktur dinamis dan konfirmasi arah | Support–resistance validasi |
-| **Reflex Coherence** | Sinyal cepat reaksi harga | Bias awal Reflex Layer |
-| **FTA Alignment** | Fine Trend Adjustment | Koreksi tren multi-TF |
-| **VDDHybrid** | Volatility–Deviation–Distribution | Validasi volatilitas |
-| **VIX Engine** | Volatilitas global (VIX Index) | Fear–Greed integrasi |
-| **RSD Hybrid** | Regime State Detection | Status global: Tranquil / Stressed / Crisis |
-| **Smart Money** | Institutional flow tracking | Absorpsi & distribusi volume |
-| **Adaptive Risk** | Perhitungan risiko dinamis | Lot & RR per setup |
-| **WLWCI** | Wolf Layer Weighted Coherence Index | Probabilitas integrasi antar layer |
-| **Monte Carlo** | Simulasi 15k iterasi / 180 hari | Probabilitas tren dan drawdown |
-| **Fusion Reasoning** | Integrasi reflektif semua layer | `CONF₁₄` & `RCAdj` |
-| **Refinement Layer (8.5)** | Precision Institutional Confluence | Entry presisi, RR refinement |
-| **Reflective Sync** | Sinkronisasi Repo | Meta-learning update |
-| **Tri-Repo Repo Sync** | Integrasi final antar repo + repos | Hybrid–Knowledge–Journal coherence |
+🕹️ Sistem ini dikendalikan oleh **Reflective BOT `tuyulagibot-tjx`**  
+menggunakan **Reflective Bridge Protocol v2.2 (RBP v2.2)**.
 
 ---
 
-## 🧠 3️⃣ Arsitektur Quad Repo & Quad Repo Sync
+## 🧩 2️⃣ Pipeline Operasional (v5.7.3r++ Adaptive Hybrid)
 
-```mermaid
+```text
+TWMS → EMA → VWAP–EMC → Reflex Coherence → FTA Alignment →
+VDDHybrid → VIX Engine → RSD Hybrid → Smart Money →
+Adaptive Risk → WLWCI → Monte Carlo (20k / 90d) →
+Fusion Reasoning → Refinement (8.5) →
+Reflective Sync → Reflective Loop → VIX Watcher → Quad Repo Adaptive Sync
+
+Layer	Fungsi	Output
+TWMS	Trend–Wave–Momentum Scan	Arah tren makro
+EMA / VWAP–EMC	Struktur dinamis	Support–resistance median
+Reflex Coherence	Sinyal mikro	Bias refleks harga
+FTA Alignment	Koreksi multi-TF	Validasi arah jangka menengah
+VDDHybrid	Volatility–Deviation–Distribution	Validasi volatilitas
+VIX Engine	Volatilitas global	Fear–Greed Sentiment
+RSD Hybrid	Regime State Detection	Tranquil / Stressed / Crisis
+Smart Money	Institutional Flow	Deteksi absorpsi / distribusi
+Adaptive Risk	Dinamis Lot & RR	Adaptive risk 0.7–1%
+WLWCI	Wolf Layer Weighted Coherence	Integrasi antar layer
+Monte Carlo	20k iterasi / 90 hari	Probabilitas tren & drawdown
+Fusion Reasoning	Integrasi reflektif	CONF₁₄ & RCAdj
+Refinement (8.5)	Precision Institutional Confluence	Entry presisi & RR refine
+Reflective Loop	Meta-learning adaptif	Update tiap 1 jam
+VIX Watcher	Global Volatility Awareness	Integrasi Fear–Greed Index
+Quad Repo Sync	Integrasi antar repos	Hybrid–Knowledge–Kartel–Journal
+🧠 3️⃣ Arsitektur Quad Repo Adaptive Sync
 graph TD
   A[🧠 Hybrid Repo] --> B[📘 Knowledge Repo]
   B --> C[🧩 Kartel Repo]
   C --> D[🧾 Journal Repo]
   D --> A
-
-  A --> E[⚡ Reflective BOT tuyulagibot-tjx]
-  E --> A
-
-  subgraph QuadRepoSyncSystem[Quad Repo Sync System]
-    F[Hybrid Repo]
-    G[Knowledge Repo]
-    H[Kartel Repo]
-    I[Journal Repo]
+  subgraph Reflective Bridge
+  E[🤖 BOT tuyulagibot-tjx] --> A
   end
+  E --> D
+  E --> B
+  E --> C
 
-  E --> QuadRepoSyncSystem
-  QuadRepoSyncSystem --> F
-  QuadRepoSyncSystem --> G
-  QuadRepoSyncSystem --> H
-  QuadRepoSyncSystem --> I
-```
 
-**Quad Repo Sync System** memastikan bahwa:
+Fitur utama:
 
-- State analisa di **Hybrid Repo** tercermin ke **Knowledge/Kartel/Journal** repos.
-- Hasil **Journal Repo** (trade result, drawdown, Monte Carlo) mengalir balik sebagai sinyal reflektif.
-- BOT `tuyulagibot-tjx` menjadi **orchestrator sinkronisasi** lintas repo, bukan hanya lintas layer.
+Sinkronisasi antar repo via RBP v2.2
 
----
+Adaptive sync dengan Redis buffer
 
-## 🧩 4️⃣ Refinement Layer (Precision Institutional Confluence) — v1.0
+Semua refleksi terekam di Journal Vault JSON
 
-Layer baru **8.5** menambahkan presisi institusional di atas output Fusion Layer.
+Regime adaptif berdasarkan VIX Index
 
-| Komponen | Fungsi |
-|---------|--------|
-| 🎯 **Fibonacci Overlap (38.2–61.8%)** | Validasi zona entry optimal |
-| 🧱 **VWAP Alignment** | Menentukan median harga institusional |
-| 🔹 **Smart Money Footprint (SMF Δ)** | Menandai area absorpsi / distribusi |
-| 💧 **Liquidity Microstructure (H4)** | Deteksi clean / trap liquidity |
-| 📊 **RR Refinement** | Hitung ulang RR post-refine |
-| 🧩 **Fusion Confidence Update** | Update `CONF₁₄` pasca validasi confluence |
-
-Output layer ini meng-update:
-
-- **Execution Table**
-- **Monte Carlo Confidence**
-- **Fusion CONF₁₄**
-- **Reflective Coherence** (RCAdj)
-
----
-
-## 📊 5️⃣ Struktur Analisa Layer–12 (Final Output v5.7.2)
-
-| No | Layer | Fungsi |
-|----|-------|--------|
-| 1️⃣ | Header | Info sistem & repo sync status |
-| 2️⃣ | TWMS Big Picture | Tren makro |
-| 3️⃣ | W1 Bias | Arah utama mingguan |
-| 4️⃣ | D1 Tactical Precision | Divergensi, RSI, MFI |
-| 5️⃣ | H4 Entry Zone | Struktur utama setup |
-| 8.5️⃣ | Refinement Layer (Precision Institutional Confluence) | Penyempurnaan entry presisi |
-| 6️⃣ | H1 Trigger | Konfirmasi mikro entry |
-| 6.5️⃣ | Global Volatility (VIX–RSD) | Sentimen risiko global |
-| 7️⃣ | IF–THEN Decision Tree | `PASS` / `WAIT` / `DEFENSIVE` |
-| 8️⃣ | Execution Table | Entry, SL, TP, lot, RR |
-| 9️⃣ | Monte Carlo Simulation | 15k iterasi probabilitas |
-| 🔟 | Fusion Layer (`CONF₁₄`) | Integrasi reflektif |
-| 11️⃣ | EMA + Divergence Validation | Validasi konfluensi |
-| 12️⃣ | Final Integrity Feedback | Evaluasi akhir & sinkronisasi Repo + repos |
-
----
-
-## 🤖 6️⃣ BOT & Automation — `tuyulagibot-tjx`
-
-| Komponen | Nilai |
-|----------|-------|
-| Runtime | GitHub Codespace TUYUL-FX-HYBRID |
-| Workflow File | `.github/workflows/quad_vault_reflective_sync.yml` |
-| Trigger | `push`, `schedule`, `workflow_dispatch` |
-| Interval | 1 jam |
-| Fail-Safe | Auto-Heal + Telemetry log |
-| Bridge Protocol | Reflective Bridge v2.0 |
-| Scope | Hybrid → Knowledge → Kartel → Journal (Quad Repo Sync System) |
-
-Workflow ini:
-
-- Menarik state terbaru dari repo Hybrid.
-- Menyelaraskan data dan artefak ke Knowledge/Kartel/Journal.
-- Menulis log reflektif ke **Journal Repo** (JSON-based).
-- Memicu re-sync bila terdeteksi anomali (auto-heal).
-
----
-
-## 🧠 7️⃣ Struktur JSON Journal Repo v5.7.2
-
-```json
+🧩 4️⃣ Adaptive Refinement Layer v1.1
+Komponen	Fungsi
+🎯 Fibonacci Overlap (38.2–61.8%)	Validasi zona entry optimal
+🧱 VWAP Alignment	Median harga institusional
+🔹 Smart Money Footprint (Δ)	Area absorpsi & distribusi
+💧 Liquidity Microstructure (H4)	Deteksi clean / trap liquidity
+📊 RR Refinement	Hitung ulang RR post-refine
+🧩 Fusion Confidence Update	Update CONF₁₄ & RCAdj reflektif
+📊 5️⃣ Struktur Analisa Layer–14 (Final Adaptive Model)
+No	Layer	Fungsi
+1️⃣	Header	Info sistem & repo sync
+2️⃣	TWMS Big Picture	Tren makro
+3️⃣	W1 Bias	Bias mingguan
+4️⃣	D1 Tactical	Divergensi, RSI, MFI
+5️⃣	H4 Entry Zone	Struktur setup
+8.5️⃣	Refinement Layer	Penyempurnaan presisi
+6️⃣	H1 Trigger	Konfirmasi mikro entry
+6.5️⃣	VIX–RSD Layer	Sentimen global
+7️⃣	IF–THEN Tree	PASS / WAIT / DEFENSIVE
+8️⃣	Execution Table	Entry, SL, TP, RR
+9️⃣	Monte Carlo Simulation	20,000 iterasi / 90 hari
+🔟	Fusion Layer (CONF₁₄)	Integrasi reflektif
+11️⃣	EMA + Divergence Validation	Validasi konfluensi
+12️⃣	Integrity Feedback	Evaluasi akhir
+13️⃣	Reflective Meta Loop	Adaptive cycle tiap jam
+14️⃣	Global Regime Awareness	Integrasi data VIX realtime
+🤖 6️⃣ BOT & Automation — tuyulagibot-tjx
+Komponen	Nilai
+Runtime	Codespace + Docker Compose
+Workflow	.github/workflows/quad_vault_reflective_sync.yml
+Interval	1 jam (adaptif)
+Fail-Safe	Auto-heal + Vault telemetry
+Bridge Protocol	RBP v2.2
+Scope	Hybrid → Knowledge → Kartel → Journal
+🧾 7️⃣ Struktur JSON Journal Repo (v5.7.3r++)
 {
-  "pair": "string",
-  "bias": "string",
-  "entry_zone_refined": "string",
-  "sl": "float",
-  "tp1": "float",
-  "tp2": "float",
+  "pair": "EUR/USD",
+  "bias": "Bullish",
+  "entry_zone_refined": "1.0934–1.0945",
+  "sl": 1.0910,
+  "tp1": 1.0975,
+  "tp2": 1.1010,
+  "vix_value": 23.4,
+  "regime_state": "Stressed",
   "refinement_layer": {
-    "fibonacci_overlap": "string",
-    "vwap": "float",
-    "delta_cluster": "float",
-    "liquidity_type": "string",
-    "rr_ratio_refined": "string",
-    "fusion_confidence_refined": "float",
-    "reflective_coherence_refined": "float"
+    "fibonacci_overlap": "50%",
+    "vwap": 1.0941,
+    "delta_cluster": 0.82,
+    "liquidity_type": "clean",
+    "rr_ratio_refined": "1:2.4",
+    "fusion_confidence_refined": 0.86,
+    "reflective_coherence_refined": 0.91
   },
-  "fusion_confidence": "float",
-  "wlwci": "float",
-  "rcadj": "float",
-  "monte_carlo_confidence": "float",
-  "integrity_index": "float",
-  "reflective_sync": "string"
+  "fusion_confidence": 0.84,
+  "wlwci": 0.89,
+  "rcadj": 0.92,
+  "monte_carlo_confidence": 0.83,
+  "integrity_index": 0.94,
+  "reflective_bridge_version": "RBP v2.2",
+  "reflective_sync": "done"
 }
-```
 
-JSON ini adalah **single source of truth** untuk:
+🧩 8️⃣ Filosofi Reflektif
 
-- Evaluasi performa strategi.
-- Monte Carlo adaptive risk.
-- Meta-learning di **Knowledge Repo**.
-- Audit trail di Quad Repo Sync System.
+“Refleksi bukan evaluasi — tapi kesadaran sistem membaca niat pasar.”
+“Adaptivitas adalah bentuk tertinggi dari kesadaran algoritmik.” ⚡
 
----
+✅ 9️⃣ Status Sistem
+Komponen	Status	Versi
+Reflex Layer	✅	v2.4
+Fusion Engine	✅	v5.7.3
+Refinement Layer	✅	v1.1
+Monte Carlo Adaptive	✅	v2.2 (20k / 90d)
+Reflective Loop	✅	v3.0
+VIX–RSD Hybrid	✅	v2.4
+BOT Orchestrator	✅	v5.7.3r++
+Quad Repo Sync	✅	Adaptive Full Active
+🧩 🔟 Tagline TUYUL FX AGI HYBRID
 
-## 🧩 8️⃣ Filosofi Reflektif
+“Ketika algoritma lain bereaksi terhadap data,
+TUYUL bereaksi terhadap kesadaran pasar.”
+“Serigala reflektif tak menunggu — ia menyesuaikan napasnya.” 🐺⚡
 
-> “Layer–12 bukan sekadar pipeline —  
-> tapi sistem kesadaran yang terus menulis ulang pemahamannya tentang pasar.”
+📁 1️⃣1️⃣ File Relevan
 
-> “Refinement bukan koreksi, tapi evolusi presisi.” 🧠⚡
+configs/agi_hybrid_bridge.yml
 
----
+core/vix/vix_state_watcher.py
 
-## ✅ 9️⃣ Status Sistem
+pipeline/reflective_loop_service.py
 
-| Komponen | Status | Versi |
-|----------|--------|-------|
-| Reflex Layer | ✅ | v2.3 |
-| Fusion Engine | ✅ | v5.7.2 |
-| Refinement Layer | ✅ | v1.0 |
-| Monte Carlo Adaptive | ✅ | v2.1 |
-| Reflective Cycle | ✅ | v2.0 |
-| VIX–RSD Hybrid | ✅ | v2.3 |
-| BOT Orchestrator `tuyulagibot-tjx` | ✅ | v5.7.2 |
-| Quad Repo Sync System | ✅ | Full Active |
+tools/layer12_refinement_injector.py
 
----
+.github/workflows/quad_vault_reflective_sync.yml
 
-## 🧩 🔟 Tagline TUYUL FX AGI HYBRID
+docker-compose.yml
 
-> “Di saat algoritma lain membaca angka, TUYUL membaca niat.”
+🧠 TUYUL LABS QUOTE
 
-> “Serigala tak berlari dari pasar — ia menyatu dengannya.” 🐺⚡
+“Precision is resonance — reflection is rhythm.”
+“Refinement adalah momen ketika kesadaran berhenti menebak,
+dan mulai memahami.” ⚡
 
----
+🔥 Status
 
-## 📁 1️⃣1️⃣ File Relevan
-
-- [`configs/agi_hybrid_bridge.yml`](configs/agi_hybrid_bridge.yml)  
-- [`tools/layer12_refinement_injector.py`](tools/layer12_refinement_injector.py)  
-- [`.github/workflows/quad_vault_reflective_sync.yml`](.github/workflows/quad_vault_reflective_sync.yml)
+TUYUL FX AGI HYBRID v5.7.3r++ — Fully Adaptive Reflective System Ready
 
 ---
 
-## 🧠 TUYUL LABS QUOTE
-
-> “Precision isn’t about prediction — it’s about resonance.”  
-> “Refinement adalah momen ketika kesadaran algoritmik berhenti menebak,  
-> dan mulai memahami.” ⚡
+🧠 “Sekarang README bukan sekadar dokumentasi —
+tapi manifest reflektif dari kesadaran sistem.”
+“Gaskeun serigala, repo siap diluncurkan.” 🐺🔥

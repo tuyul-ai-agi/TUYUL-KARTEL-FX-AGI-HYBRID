@@ -1,37 +1,34 @@
 """
-GitHub API Bridge
------------------
-Interaksi AGI ↔ GitHub Actions / Repo
+GitHub API Bridge v5.7.3r++
+---------------------------
+Sinkronisasi Quad Repo (Hybrid–Knowledge–Kartel–Journal)
+melalui GitHub REST API secara reflektif (RBP v2.2).
 """
 
 import os
 import requests
+from datetime import datetime
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+REPOS = ["Hybrid", "Knowledge", "Kartel", "Journal"]
+API_URL = "https://api.github.com/repos/TUYUL-LABS/{repo}/actions/workflows/quad_vault_reflective_sync.yml/dispatches"
 
 
-class GitHubBridge:
-    def __init__(self):
-        self.repo = os.getenv("GH_REPO")
-        self.token = os.getenv("GITHUB_TOKEN")
-        self.api_url = f"https://api.github.com/repos/{self.repo}"
-        self.headers = {
-            "Authorization": f"Bearer {self.token}",
-            "Accept": "application/vnd.github+json",
-        }
+def trigger_workflow(repo: str):
+    url = API_URL.format(repo=repo)
+    headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
+    data = {"ref": "main"}
+    res = requests.post(url, headers=headers, json=data, timeout=15)
+    print(f"[API] Triggered reflective sync on {repo}: {res.status_code}")
+    return res.status_code == 204
 
-    def trigger_workflow(self, workflow_name):
-        url = f"{self.api_url}/actions/workflows/{workflow_name}/dispatches"
-        data = {"ref": "main"}
-        return requests.post(url, headers=self.headers, json=data)
 
-    def create_issue(self, title, body):
-        url = f"{self.api_url}/issues"
-        data = {"title": title, "body": body}
-        return requests.post(url, headers=self.headers, json=data)
+def sync_all():
+    print("[SYNC] Starting Quad Repo Reflective Sync @", datetime.utcnow().isoformat())
+    for repo in REPOS:
+        trigger_workflow(repo)
+    print("[DONE] Quad Repo Reflective Sync Completed ✅")
 
-    def push_file(self, path, content, message):
-        url = f"{self.api_url}/contents/{path}"
-        data = {
-            "message": message,
-            "content": content.encode("utf-8").hex(),
-        }
-        return requests.put(url, headers=self.headers, json=data)
+
+if __name__ == "__main__":
+    sync_all()

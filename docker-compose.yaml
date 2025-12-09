@@ -1,6 +1,7 @@
 version: '3.9'
 
 services:
+  # 🧠 HYBRID CORE — Otak utama reasoning
   hybrid-core:
     build:
       context: .
@@ -25,6 +26,7 @@ services:
       - REDIS_PORT=6379
     depends_on:
       - reflective-loop
+      - vix-watcher
       - redis
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -33,48 +35,8 @@ services:
       retries: 3
       start_period: 10s
 
+  # 🔁 REFLECTIVE LOOP — Meta-learning cycle adaptif (tiap 1 jam, auto adjust)
   reflective-loop:
     build:
       context: .
-      dockerfile: dockerfile
-    container_name: tuyul_reflective_loop
-    command: python pipeline/reflective_meta_cycle.py
-    restart: always
-    volumes:
-      - .:/app
-      - ./vaults:/app/vaults
-      - ./knowledge:/app/knowledge
-      - ./logs:/app/logs
-    environment:
-      - REFLECTIVE_MODE=true
-      - ENABLE_VAULT_SYNC=true
-      - ENABLE_JOURNAL_LOG=true
-      - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    ports:
-      - "8501:8501"
-    healthcheck:
-      test: ["CMD", "python", "core/healthcheck_reflective.py"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 15s
-
-  redis:
-    image: redis:7
-    container_name: tuyul_redis
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - tuyul_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 5s
-
-volumes:
-  tuyul_data:
+      dockerfile

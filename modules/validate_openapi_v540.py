@@ -1,22 +1,34 @@
-"""
-Validate OpenAPI v5.4.0
------------------------
-Validasi struktur OpenAPI Hybrid untuk integritas endpoint.
-"""
+# ============================================================
+# 🧩 Validate OpenAPI Schema — TUYUL FX AGI HYBRID v5.7.3r++
+# ------------------------------------------------------------
+# Memvalidasi endpoint AGI Hybrid agar sesuai dengan v5.7.3r++ API spec.
+# ============================================================
 
 import yaml
-import os
+import json
+from pathlib import Path
 
-class OpenAPIValidator:
-    def __init__(self, spec_path="modules/openapi_spec_46_endpoints.yaml"):
-        self.spec_path = spec_path
 
-    def validate(self):
-        if not os.path.exists(self.spec_path):
-            raise FileNotFoundError("OpenAPI spec not found.")
-        with open(self.spec_path) as f:
-            spec = yaml.safe_load(f)
-        endpoints = spec.get("paths", {})
-        if not endpoints:
-            raise ValueError("No endpoints found in OpenAPI spec.")
-        return {"status": "valid", "endpoint_count": len(endpoints)}
+SCHEMA_PATH = Path("configs/openapi_v573r.yml")
+
+
+def validate_schema(schema_path=SCHEMA_PATH):
+    with open(schema_path, "r", encoding="utf-8") as f:
+        schema = yaml.safe_load(f)
+
+    required_fields = ["info", "paths", "components"]
+
+    for field in required_fields:
+        if field not in schema:
+            raise ValueError(f"[❌] Field '{field}' hilang dari OpenAPI schema")
+
+    version = schema["info"].get("version", "")
+    if not version.startswith("5.7.3"):
+        raise ValueError(f"[⚠️] Schema version mismatch: {version} (expected 5.7.3r++)")
+
+    print(f"[✅] Schema valid — OpenAPI {version}")
+    return True
+
+
+if __name__ == "__main__":
+    validate_schema()

@@ -1,34 +1,16 @@
 {
-  "name": "TUYUL-AGI-HYBRID-CLOUD",
+  "name": "TUYUL FX AGI Hybrid Dev",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
-  "postCreateCommand": "bash .devcontainer/postCreate.sh",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "ms-toolsai.jupyter",
-        "ms-azuretools.vscode-docker",
-        "github.copilot",
-        "GitHub.codespaces",
-        "ms-vscode.remote-explorer"
-      ]
-    },
-    "settings": {
-      "python.defaultInterpreterPath": "/usr/local/bin/python",
-      "terminal.integrated.defaultProfile.linux": "bash"
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": false
     }
   },
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-  ],
-  "forwardPorts": [8000, 8501],
-  "remoteUser": "vscode",
-  "portsAttributes": {
-    "8000": { "label": "FastAPI Hybrid Service" },
-    "8501": { "label": "Reflective Dashboard" }
-  },
-  "onCreateCommand": "echo '🐺 TUYUL AGI Codespace siap digunakan 🧠⚡'"
+  "postCreateCommand": "./postcreate.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  }
 }

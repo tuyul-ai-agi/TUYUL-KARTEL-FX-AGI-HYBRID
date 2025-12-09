@@ -9,13 +9,29 @@ services:
     command: python main.py
     ports:
       - "8000:8000"
+    restart: on-failure
     volumes:
       - .:/app
+      - ./vaults:/app/vaults
+      - ./knowledge:/app/knowledge
+      - ./logs:/app/logs
     environment:
       - ENV_PROFILE=production
+      - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
+      - ENABLE_VAULT_SYNC=true
+      - ENABLE_KNOWLEDGE_FEED=true
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - reflective-loop
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   reflective-loop:
     build:
@@ -26,11 +42,24 @@ services:
     restart: always
     volumes:
       - .:/app
+      - ./vaults:/app/vaults
+      - ./knowledge:/app/knowledge
+      - ./logs:/app/logs
     environment:
       - REFLECTIVE_MODE=true
       - ENABLE_VAULT_SYNC=true
+      - ENABLE_JOURNAL_LOG=true
+      - REFLECTIVE_BRIDGE_VERSION=RBP_v2.2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     ports:
       - "8501:8501"
+    healthcheck:
+      test: ["CMD", "python", "core/healthcheck_reflective.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
 
   redis:
     image: redis:7
@@ -38,6 +67,14 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    volumes:
+      - tuyul_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
 volumes:
   tuyul_data:

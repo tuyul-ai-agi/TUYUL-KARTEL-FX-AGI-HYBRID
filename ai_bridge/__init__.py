@@ -1,26 +1,53 @@
-"""
-ai_bridge package
------------------
-Lapisan integrasi antara AGI Hybrid (Reflex–Fusion–Reflective) dengan GPT, Vault, dan GitHub API.
+# ============================================================
+# 🧠 AI Bridge Module — TUYUL FX AGI HYBRID v5.7.3r++
+# ------------------------------------------------------------
+# Mengatur komunikasi reflektif antara GPT ↔ Hybrid Core
+# Menggunakan Reflective Bridge Protocol v2.2
+# ============================================================
 
-Version: v5.4.4-TriVault
-"""
+from datetime import datetime
+import json
+import httpx
 
-__version__ = "5.4.4"
-__author__ = "Tuyul Kartel FX Hybrid Team"
 
-from .gpt_bridge_handler_v540 import GPTBridge
-from .gpt_command_parser_v540 import CommandParser
-from .gpt_context_memory import ContextMemory
-from .github_api_bridge import GitHubBridge
-from .vault_autosync_v541 import VaultAutoSync
-from .bridge_observer_v543 import BridgeObserver
+class AIBridge:
+    """
+    Kelas utama untuk menghubungkan GPT Layer ↔ Hybrid API.
+    Berfungsi sebagai jembatan reasoning dan refleksi lintas repositori.
+    """
 
-__all__ = [
-    "GPTBridge",
-    "CommandParser",
-    "ContextMemory",
-    "GitHubBridge",
-    "VaultAutoSync",
-    "BridgeObserver",
-]
+    def __init__(self, base_url="https://api.hybridcore.tuyulkartel.ai/v1", token=None):
+        self.base_url = base_url
+        self.session = httpx.Client(timeout=30)
+        self.token = token or "local-dev-token"
+
+    def _headers(self):
+        return {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"
+        }
+
+    def send_reflective_query(self, prompt: str, layer: str = "fusion"):
+        """Kirim prompt reflektif ke AGI Core"""
+        payload = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "layer": layer,
+            "prompt": prompt,
+            "bridge_protocol": "RBP v2.2"
+        }
+        response = self.session.post(
+            f"{self.base_url}/reflective/query",
+            headers=self._headers(),
+            json=payload
+        )
+        if response.status_code == 200:
+            result = response.json()
+            print("[🧠 AI Bridge] Reflective Response:", json.dumps(result, indent=2))
+            return result
+        else:
+            raise Exception(f"Bridge error: {response.status_code}, {response.text}")
+
+
+if __name__ == "__main__":
+    bridge = AIBridge()
+    bridge.send_reflective_query("Analyze EURUSD H4 institutional bias.")

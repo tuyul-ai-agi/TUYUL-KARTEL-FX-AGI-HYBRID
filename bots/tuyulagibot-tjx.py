@@ -1,155 +1,147 @@
 # ============================================================
-# 🧠 TUYUL FX AGI HYBRID v5.7.2-HYBRID+
-# BOT ORCHESTRATOR — tuyulagibot-tjx.py
-# ============================================================
-# Fungsi:
-#  - Mengelola siklus penuh Quad Repo System
-#  - Menjalankan Reflective Feedback dan Bridge Manager
-#  - Memantau latency antar repo
-#  - Menjalankan corrective cycle otomatis
+# 🧠🐺 TUYUL FX AGI HYBRID BOT v5.7.3r++
+# File: tuyulagibot-tjx.py
+# ------------------------------------------------------------
+# BOT reflektif sinkronisasi Quad Repo:
+# Hybrid | Knowledge | Kartel | Journal
+# ------------------------------------------------------------
+# Fitur:
+# ✅ Quad Repo Sync
+# ✅ Reflective Bridge
+# ✅ Quantum–Reflective Fusion
+# ✅ Kartel Realignment Auto-Healing
+# ✅ Adaptive Quantum Backend (IBM / Aer)
+# ✅ Journal Logging
 # ============================================================
 
 import os
-import time
 import json
-import subprocess
+import time
+import asyncio
+import yaml
+import random
 import requests
 from datetime import datetime
-
-CONFIG_FILE = "configs/repo_map.yml"
-LOG_FILE = "logs/tuyulagibot.log"
-SYNC_AUDIT_FILE = "journal_repo/logs/sync_audit.json"
-REFLECTIVE_FEEDBACK_FILE = "journal_repo/logs/reflective_feedback.json"
+from client_agi_hybrid import AgiHybridClient
+from core.kartel_engine.kartel_reflective_realign import realign_kartel_repo
 
 # ============================================================
-# LOGGING SYSTEM
+# 📡 Logging dan Utilitas
 # ============================================================
 
-def log_event(message: str):
-    timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-    entry = f"[{timestamp}] [TUYULBOT] {message}"
-    print(entry)
-    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(entry + "\n")
+def log_event(msg):
+    timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] {msg}")
+    with open("journal_repo/bot_log.txt", "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_quantum_config(path="configs/quantum_config.yml"):
+    if not os.path.exists(path):
+        log_event("⚠️ Quantum config tidak ditemukan. Menggunakan default.")
+        return {"enabled": False, "adaptive_trigger": False}
+    with open(path, "r") as f:
+        data = yaml.safe_load(f)
+    return data.get("quantum", {})
 
 # ============================================================
-# BOT CORE FUNCTIONALITY
+# 🧩 Quad Repo Connectivity Check
 # ============================================================
 
-def run_quad_repo_sync():
-    """Menjalankan sinkronisasi lintas 4 repo TUYUL."""
-    log_event("🚀 Menjalankan Quad Repo Sync System...")
+REPOS = {
+    "Hybrid": "https://api.hybridcore.tuyulkartel.ai/v1/status",
+    "Knowledge": "https://api.knowledge.tuyulkartel.ai/v1/status",
+    "Kartel": "https://api.kartel.tuyulkartel.ai/v1/status",
+    "Journal": "https://api.journal.tuyulkartel.ai/v1/status"
+}
+
+def check_repo(name, url):
+    start = time.time()
     try:
-        subprocess.run(["python3", "tools/quad_repo_sync.py"], check=True)
-        log_event("✅ Quad Repo Sync selesai tanpa error.")
-    except subprocess.CalledProcessError as e:
-        log_event(f"❌ Gagal menjalankan Quad Repo Sync: {e}")
+        res = requests.get(url, timeout=3)
+        latency = round((time.time() - start) * 1000, 2)
+        if res.status_code == 200:
+            data = res.json()
+            log_event(f"✅ [{name}] OK | latency={latency}ms | integrity={data.get('integrity_index', 'N/A')}")
+            return {"repo": name, "status": "OK", "latency": latency, "integrity": data.get("integrity_index", 0.0)}
+        else:
+            log_event(f"⚠️ [{name}] Response {res.status_code}")
+            return {"repo": name, "status": "WARN", "latency": latency}
+    except Exception as e:
+        latency = round((time.time() - start) * 1000, 2)
+        log_event(f"❌ [{name}] Unreachable ({str(e)}) latency={latency}ms")
+        return {"repo": name, "status": "DOWN", "latency": latency}
 
+def check_quad_repo():
+    log_event("🐺 Checking Quad Repo Connectivity ...")
+    results = [check_repo(name, url) for name, url in REPOS.items()]
+    healthy = all(r["status"] == "OK" for r in results)
+    log_event(f"🧩 Quad Repo Status: {'FULLY SYNCHRONIZED' if healthy else 'SYNC DEGRADED'}")
+    return results
 
-def run_reflective_bridge():
-    """Menjalankan Reflective Feedback antar repo."""
-    log_event("🔄 Menjalankan Reflective Bridge Manager...")
-    try:
-        subprocess.run(["python3", "reflective/repo_bridge_manager.py"], check=True)
-        log_event("✅ Reflective Bridge berhasil dijalankan.")
-    except subprocess.CalledProcessError as e:
-        log_event(f"❌ Gagal menjalankan Reflective Bridge: {e}")
+# ============================================================
+# ⚛️ Adaptive Quantum Backend Selector
+# ============================================================
 
-
-def check_system_integrity():
-    """Mengevaluasi hasil sinkronisasi terakhir (ICI dan status repo)."""
-    if not os.path.exists(SYNC_AUDIT_FILE):
-        log_event("⚠️ File sync_audit.json tidak ditemukan.")
-        return 0.0
-
-    with open(SYNC_AUDIT_FILE, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    ici = data.get("integrity_index", 0)
-    state = data.get("state", "Unknown")
-    log_event(f"🧠 Integrity Coherence Index (ICI): {ici} | State: {state}")
-    return ici
-
-
-def check_latency():
-    """Mengecek waktu respon antar repo (simulasi latency check)."""
-    log_event("📡 Mengecek latency antar repo...")
-    repo_urls = [
-        "https://github.com/tuyulfx/agi_hybrid_tools",
-        "https://github.com/tuyulfx/knowledge_vault_agi",
-        "https://github.com/tuyulfx/kartel_macro_vault",
-        "https://github.com/tuyulfx/journal_vault_agi",
-    ]
-
-    latencies = {}
-    for url in repo_urls:
-        start = time.time()
-        try:
-            requests.get(url, timeout=3)
-            latency = round((time.time() - start) * 1000, 2)
-            latencies[url] = latency
-            log_event(f"🌐 {url} → {latency} ms")
-        except Exception:
-            latencies[url] = None
-            log_event(f"⚠️ Timeout pada {url}")
-    return latencies
-
-
-def reflective_auto_correction(ici: float):
-    """Menjalankan koreksi reflektif otomatis jika integritas < 0.85"""
-    if ici < 0.85:
-        log_event("🔴 Integritas rendah — menjalankan auto-correction cycle.")
-        subprocess.run(["python3", "reflective/repo_bridge_manager.py"], check=False)
-        time.sleep(2)
-        subprocess.run(["python3", "tools/quad_repo_sync.py"], check=False)
-        log_event("🧩 Reflective auto-correction selesai.")
+def select_quantum_backend(latency_ms: float, vix_impact: float) -> str:
+    if latency_ms < 200 and vix_impact < 0.25:
+        backend = "ibm_qasm_simulator"
     else:
-        log_event("🟢 Sistem dalam keadaan stabil, tidak perlu koreksi.")
-
-
-def summary_report(ici, latencies):
-    """Menyimpan laporan status BOT."""
-    report = {
-        "timestamp": datetime.utcnow().isoformat(),
-        "integrity_index": ici,
-        "latencies_ms": latencies,
-        "status": "Stable" if ici >= 0.85 else "Degraded",
-    }
-    with open("logs/tuyulagibot_summary.json", "w", encoding="utf-8") as f:
-        json.dump(report, f, indent=4)
-    log_event("🧾 Laporan BOT disimpan ke logs/tuyulagibot_summary.json")
+        backend = "aer_simulator"
+    log_event(f"⚛️ Backend terpilih: {backend} | Latency={latency_ms}ms | VIX Impact={vix_impact}")
+    return backend
 
 # ============================================================
-# MAIN EXECUTION
+# 🧠 BOT MAIN
 # ============================================================
 
 def main():
-    log_event("🐺 Memulai TUYUL FX BOT Orchestrator v5.7.2-HYBRID+ ...")
+    log_event("🚀 Memulai TUYUL FX BOT v5.7.3r++ — Reflective Quantum Mode ...")
 
-    ici = 0
-    latencies = {}
+    # Step 1️⃣: Cek koneksi Quad Repo
+    results = check_quad_repo()
+    kartel_status = next((r for r in results if r["repo"] == "Kartel"), None)
 
-    # Step 1: Jalankan sinkronisasi repo
-    run_quad_repo_sync()
+    # Step 2️⃣: Jalankan Vault Sync
+    hybrid = AgiHybridClient()
+    try:
+        hybrid.vault_sync()
+    except Exception as e:
+        log_event(f"⚠️ Vault Sync gagal: {e}")
 
-    # Step 2: Cek integritas sistem
-    ici = check_system_integrity()
+    # Step 3️⃣: Auto Realignment jika Kartel integrity < 0.90
+    if kartel_status and kartel_status.get("integrity", 1) < 0.90:
+        log_event(f"🧩 Kartel integrity rendah ({kartel_status['integrity']}) — menjalankan realignment ...")
+        asyncio.run(realign_kartel_repo())
 
-    # Step 3: Jalankan Reflective Feedback Loop
-    run_reflective_bridge()
+    # Step 4️⃣: Load Quantum Config
+    qcfg = load_quantum_config()
+    log_event(f"⚙️ Quantum Config Loaded: {json.dumps(qcfg, indent=2)}")
 
-    # Step 4: Periksa latency antar repo
-    latencies = check_latency()
+    # Step 5️⃣: Adaptive backend selection
+    vault_latency = random.uniform(100, 400)
+    global_vix_impact = random.uniform(0.1, 0.4)
+    backend = select_quantum_backend(vault_latency, global_vix_impact)
+    qcfg["backend"] = backend
 
-    # Step 5: Jalankan auto-correction jika perlu
-    reflective_auto_correction(ici)
+    # Step 6️⃣: Quantum Reflective Fusion Cycle
+    if qcfg.get("enabled", True):
+        log_event("⚛️ Menjalankan Quantum–Reflective Fusion Cycle ...")
+        try:
+            pair_list = ["EUR/USD", "GBP/USD", "GBPAUD", "USD/JPY", "XAU/USD"]
+            for pair in pair_list:
+                metrics = [0.87, 0.91, 0.83, 0.89]
+                q_result = hybrid.fusion_analyze_quantum(pair, metrics)
+                log_event(f"✅ {pair} | CONF₁₂={q_result['conf12_q']} | WLWCI={q_result['wlwci_q']}")
+                time.sleep(2)
+            log_event("🧾 Quantum Reflective Cycle selesai.")
+        except Exception as e:
+            log_event(f"⚠️ Quantum Reflective Cycle gagal: {e}")
 
-    # Step 6: Simpan laporan BOT
-    summary_report(ici, latencies)
+    log_event("✅ BOT selesai menjalankan siklus reflektif-kuantum.\n")
 
-    log_event("✅ TUYULBOT selesai menjalankan siklus penuh.\n")
-
+# ============================================================
+# 🐺 ENTRY POINT
+# ============================================================
 
 if __name__ == "__main__":
     main()

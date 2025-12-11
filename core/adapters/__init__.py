@@ -1,9 +1,15 @@
-"""
-🐺 Adapters – TUYUL-KARTEL-FX-AGI-HYBRID v5.4.0
-API Bridge & Vault Integration Layer
-"""
+# TUYUL FX AGI HYBRID v5.7.3r++
+# Reflective Adapter Package Loader — RBP v2.2
+from .chart_ocr_reflective_adapter import ChartOCRReflectiveAdapter
+from .tuyul_data_reflective_adapter import TuyulDataReflectiveAdapter
+from .adapter_registry import AdapterRegistry
 
-from .vault_bridge_client import sync_vaults
+__version__ = "v5.7.3r++"
+__protocol__ = "RBP v2.2"
+__all__ = [
+    "ChartOCRReflectiveAdapter",
+    "TuyulDataReflectiveAdapter",
+    "AdapterRegistry"
+]
 
-__all__ = ["sync_vaults"]
-__version__ = "5.4.0"
+print("🧩 Reflective Adapters Initialized — TUYUL v5.7.3r++ RBP v2.2 Active")

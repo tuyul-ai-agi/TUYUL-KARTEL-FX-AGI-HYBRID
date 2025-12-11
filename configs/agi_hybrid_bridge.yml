@@ -1,17 +1,20 @@
-# AGI Hybrid Bridge Configuration — v5.7.3r++
-system:
-  version: v5.7.3r++
-  reflective_bridge: RBP_v2.2
-  montecarlo:
-    version: v2.2
-    iterations: 20000
-    duration_days: 90
-    model: adaptive_reflective
-  vix_engine:
-    version: v2.4
-    refresh_interval: 1800
-    integration: true
-  sync:
-    quad_repo: true
-    vault_autoheal: true
-    knowledge_feed: true
+# TUYUL FX AGI HYBRID v5.7.3r++
+# Reflective Bridge Configuration (RBP v2.2)
+version: v5.7.3r++
+protocol: RBP v2.2
+timestamp: 2025-12-11T16:20Z
+bridge:
+  mode: adaptive
+  integrity_check_interval: 3600  # seconds
+  reflective_sync: true
+  auto_recovery: enabled
+  telemetry: logs/reflective_telemetry.json
+vaults:
+  hybrid: https://api.hybrid.tuyulfx.ai
+  fx: https://api.fxvault.tuyulfx.ai
+  kartel: https://api.kartel.tuyulfx.ai
+  journal: https://api.journal.tuyulfx.ai
+meta_learning:
+  enabled: true
+  cycle_hours: 8
+  reflective_log_path: journal/

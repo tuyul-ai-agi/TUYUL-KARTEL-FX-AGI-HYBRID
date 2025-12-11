@@ -1,4 +1,4 @@
-name: "\U0001F9E0 AGI Hybrid Sync"
+name: "🧠 AGI Hybrid Sync v5.7.3r++"
 
 on:
   push:
@@ -11,24 +11,48 @@ jobs:
   sync-agi:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: 🧩 Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: 🧠 Setup Python Environment
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: ⚙️ Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install httpx pyyaml pydantic requests
 
-      - name: Run AGI Hybrid Sync
-        run: python scripts/sync_hybrid_repo.py
+      - name: 🔄 Run Hybrid Vault Sync
+        env:
+          HYBRID_API_TOKEN: ${{ secrets.HYBRID_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: |
+          echo "🚀 Menjalankan Reflective Vault Sync (Quad Repo System)..."
+          python3 scripts/sync_hybrid_repo.py
+          python3 tuyulagibot-tjx.py
 
-      - name: Commit & Push Vault Sync
+      - name: 🧩 Run Reflective Bridge Integration
+        run: |
+          echo "🔗 Menjalankan GPT Bridge Handler v5.7.3r++..."
+          python3 gpt_bridge_handler_v573r.py
+          echo "✅ Reflective Bridge selesai."
+
+      - name: 📜 Commit & Push Vault Sync Results
         run: |
           git config user.name "AGI Sync Bot"
           git config user.email "agi@tuyulkartel.ai"
           git add vaults/ logs/
-          git commit -m "\U0001F916 Auto-sync AGI Hybrid Vaults"
+          git commit -m "🤖 Auto-sync AGI Hybrid Vaults v5.7.3r++"
           git push
+
+      - name: 🧾 Report Sync Integrity
+        run: |
+          echo "🧠 Membuat laporan integritas sinkronisasi..."
+          python3 - <<'PYCODE'
+          from bridge_observer_v543 import BridgeObserver
+          observer = BridgeObserver("logs/bridge_events.log")
+          observer.log_event("GitHub Actions", "Hybrid Sync", "SUCCESS", "Vault Sync & Reflective Bridge selesai.")
+          PYCODE

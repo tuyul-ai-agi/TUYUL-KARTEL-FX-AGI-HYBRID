@@ -1,23 +1,17 @@
-"""
-FX Vault Client
----------------
-Client API untuk membaca dan menulis data ke FX Vault.
-"""
+# ⚙️ FXVaultClientReflective — TUYUL FX AGI HYBRID v5.7.3r++
+from .vault_client_base import VaultClientBase
 
-from clients.vault_base_client import VaultBaseClient
+class FXVaultClient(VaultClientBase):
+    """Vault untuk data & strategi FX reflektif"""
 
-class FXVaultClient(VaultBaseClient):
-    def __init__(self):
-        super().__init__(base_url="https://api.fxvault.tuyulkartel.ai", api_key_env="FX_VAULT_KEY")
+    def __init__(self, endpoint, token=None):
+        super().__init__("FXVault", endpoint, token)
+        self.bias = None
+        self.conf12 = 0.0
 
-    def get_latest_feed(self, pair="XAUUSD"):
-        """Ambil feed terbaru dari FX Vault"""
-        return self.get(f"feed/latest?pair={pair}")
+    async def update_bias(self, bias, conf):
+        self.bias = bias
+        self.conf12 = conf
+        print(f"📊 [FXVault] Updated Bias: {bias}, CONF₁₂: {conf}")
+        return await self.reflective_sync()
 
-    def push_fusion_result(self, fusion_data: dict):
-        """Kirim hasil fusion AGI ke FX Vault"""
-        return self.post("fusion/upload", json=fusion_data)
-
-    def sync(self):
-        """Sinkronisasi FX Vault"""
-        return self.get("sync")

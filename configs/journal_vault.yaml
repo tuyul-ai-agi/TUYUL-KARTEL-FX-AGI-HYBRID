@@ -1,24 +1,8 @@
-vault_name: Journal_Vault
-description: >
-  Reflective output vault for meta-learning, bias analysis, and reasoning logs.
-  Acts as the “memory” layer for reflective and adaptive learning cycles.
-
-endpoint:
-  base_url: "https://api.journalvault.tuyulkartel.ai"
-  auth_token: "${JOURNAL_VAULT_TOKEN}"
-  timeout: 60
-
-data_paths:
-  reflection_output: "vaults/journal_vault/reflection_output.json"
-  meta_reflective_log: "vaults/journal_vault/meta_reflective_log.json"
-  bias_audit: "vaults/journal_vault/bias_audit.json"
-
-sync_policy:
-  auto_sync: true
-  interval_minutes: 180
-  sync_method: "bidirectional"
-
-backup:
-  enabled: true
-  location: "backups/journal_vault/"
-  retention_days: 14
+# Journal Vault Configuration — v5.7.3r++
+vault:
+  name: JournalVault
+  archive_path: journal/
+  reflective_log: true
+  montecarlo_records: 90d
+  meta_learning_archive: true
+  integrity_threshold: 0.9

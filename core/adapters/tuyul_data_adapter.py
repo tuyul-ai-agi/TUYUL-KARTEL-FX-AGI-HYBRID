@@ -1,31 +1,38 @@
-"""
-Tuyul Data Adapter
-------------------
-Mengubah data mentah (CSV/API) menjadi format siap olah untuk AGI Hybrid.
-"""
+# Tuyul Data Reflective Adapter — v5.7.3r++
+# Sinkronisasi data real-time Tuyul Bridge → Hybrid AGI Core
+import requests, datetime, json
 
-import pandas as pd
+class TuyulDataReflectiveAdapter:
+    def __init__(self, api_url, token):
+        self.api_url = api_url
+        self.token = token
+        self.last_sync = None
+        self.integrity_index = 0.0
 
+    def fetch_data(self, pair="EUR/USD"):
+        headers = {"Authorization": f"Bearer {self.token}"}
+        response = requests.get(f"{self.api_url}/data/{pair}", headers=headers)
+        if response.status_code != 200:
+            print(f"❌ Fetch error: {response.status_code}")
+            return None
 
-class TuyulDataAdapter:
-    def __init__(self, source=None):
-        self.source = source
+        data = response.json()
+        reflection = self._reflect_data(data)
+        self.last_sync = datetime.datetime.utcnow().isoformat() + "Z"
+        return reflection
 
-    def load_csv(self, file_path: str) -> pd.DataFrame:
-        """Load data CSV pasar"""
-        df = pd.read_csv(file_path)
-        df.columns = [c.strip().lower() for c in df.columns]
-        return df
+    def _reflect_data(self, data):
+        """Hitung fusion_confidence & integritas reflektif"""
+        close_values = [float(d["close"]) for d in data[-50:]]
+        bias_drift = abs(max(close_values) - min(close_values)) / sum(close_values)
+        fusion_confidence = round(1 - bias_drift, 3)
+        self.integrity_index = round((fusion_confidence + 0.95) / 2, 3)
 
-    def normalize_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Normalisasi kolom OHLC & volume"""
-        for col in ["open", "high", "low", "close", "volume"]:
-            if col not in df.columns:
-                raise KeyError(f"Missing {col} in dataset")
-        df["mid"] = (df["high"] + df["low"]) / 2
-        df["range"] = df["high"] - df["low"]
-        return df
-
-    def get_latest_snapshot(self, df: pd.DataFrame):
-        """Ambil data candle terakhir"""
-        return df.tail(1).to_dict("records")[0]
+        reflection = {
+            "fusion_confidence": fusion_confidence,
+            "bias_drift": round(bias_drift, 4),
+            "integrity_index": self.integrity_index,
+            "reflective_state": "stable" if self.integrity_index > 0.9 else "adaptive"
+        }
+        print(f"📊 Reflective Sync — CONF₁₂: {fusion_confidence}, Integrity: {self.integrity_index}")
+        return reflection

@@ -1,20 +1,21 @@
-"""
-Clients Package Init
---------------------
-Inisialisasi semua client API antar Vault AGI Hybrid.
-"""
-
-__version__ = "5.4.4"
-__author__ = "Tuyul Kartel Hybrid Dev"
-
-from clients.fx_vault_client import FXVaultClient
-from clients.kartel_vault_client import KartelVaultClient
-from clients.journal_vault_client import JournalVaultClient
-from clients.vault_base_client import VaultBaseClient
+# TUYUL FX AGI HYBRID v5.7.3r++
+# Reflective Client Package Initializer
+from .client_agi_hybrid import HybridClient
+from .fx_vault_client import FXVaultClient
+from .journal_vault_client import JournalVaultClient
+from .kartel_vault_client import KartelVaultClient
+from .vault_client_base import VaultClientBase
+from .reflective_logger import ReflectiveLogger
 
 __all__ = [
+    "HybridClient",
     "FXVaultClient",
-    "KartelVaultClient",
     "JournalVaultClient",
-    "VaultBaseClient"
+    "KartelVaultClient",
+    "VaultClientBase",
+    "ReflectiveLogger"
 ]
+
+# Auto-register all clients to Reflective Bridge Protocol
+from datetime import datetime
+print(f"[RBP v2.2] Clients registered successfully — {datetime.utcnow().isoformat()}Z")

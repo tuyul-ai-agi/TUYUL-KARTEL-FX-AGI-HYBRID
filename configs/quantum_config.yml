@@ -1,17 +1,7 @@
-# ============================================================
-# ⚛️ TUYUL FX AGI HYBRID v5.7.3r++
-# Quantum Configuration File
-# ------------------------------------------------------------
-# Konfigurasi global untuk modul Quantum Fusion Adapter
-# ============================================================
-
-quantum:
-  enabled: true                 # Aktifkan mode kuantum
-  backend: aer_simulator        # Backend default ("aer_simulator" / "ibm_qasm_simulator" / "ibm_oslo")
-  shots: 8192                   # Jumlah pengukuran qubit per eksekusi
-  entanglement_depth: 4         # Kedalaman koneksi antar-qubit (multi-layer coherence)
-  auto_fallback: true           # Aktifkan fallback ke simulator jika IBM Q gagal
-  adaptive_trigger: true        # Jika true, BOT akan otomatis trigger Quantum Cycle setelah Vault Sync
-  save_journal: true            # Simpan hasil Quantum Fusion ke Journal Vault
-  journal_path: journal_repo/logs/
-  sync_interval_minutes: 60     # Interval sinkronisasi kuantum otomatis oleh BOT
+# Quantum Configuration — TUYUL FX AGI HYBRID v5.7.3r++
+quantum_engine:
+  mode: VQE + QAOA
+  sampling_iterations: 20000
+  coherence_validation: true
+  montecarlo_seed: 573
+  reflective_qbit_threshold: 0.94

@@ -1,33 +1,42 @@
-name: 🧠 Build Swagger UI (Private)
+name: 🧠 Generate Swagger UI v5.7.3r++
+run-name: "Generate Swagger UI (RBP v2.2 Compliant)"
 
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
+    branches: [ "main" ]
     paths:
-      - "docs/openapi_tuyul_agi_hybrid_v5.4.4-ultra.yml"
-      - "scripts/generate_swagger_ui.py"
+      - "openapi/**.yaml"
 
 jobs:
-  build-swagger:
+  generate-swagger:
+    name: 🧩 Generate Swagger UI Files
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🔄 Checkout Repository
+      - name: 🧩 Checkout repo
         uses: actions/checkout@v4
 
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v5
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.11"
+          node-version: "20"
 
-      - name: 📦 Install Dependencies
+      - name: 📦 Install Swagger Generator
+        run: npm install -g redoc-cli
+
+      - name: 🧠 Generate Reflective Swagger UI
         run: |
-          pip install pyyaml requests
+          mkdir -p docs/v573r++
+          redoc-cli bundle openapi/main.yaml \
+            -o docs/v573r++/index.html \
+            --title "TUYUL FX AGI HYBRID API v5.7.3r++"
+          echo "<!-- Reflective API v5.7.3r++ | RBP v2.2 -->" >> docs/v573r++/index.html
+          echo "✅ Swagger UI generated successfully."
 
-      - name: 🧠 Generate Swagger UI
-        run: python scripts/generate_swagger_ui.py
-
-      - name: 📦 Upload Swagger Artifact (Private)
-        uses: actions/upload-artifact@v4
+      - name: 💾 Commit Generated Swagger UI
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: swagger-ui-private
-          path: docs/swagger/
+          commit_message: "Generated Swagger UI — v5.7.3r++"
+          file_pattern: "docs/v573r++/index.html"
+          branch: main

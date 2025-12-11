@@ -1,16 +1,9 @@
-"""
-cognitive_frontend package
---------------------------
-Lapisan antarmuka manusia ↔ AGI Hybrid.
-Menyediakan Reflex Console (CLI) dan Web Dashboard untuk memantau reasoning, sync vault, dan refleksi AGI.
-
-Version: v5.4.4
-"""
-
-__version__ = "5.4.4"
-__author__ = "Tuyul Kartel FX Hybrid Team"
-
+# TUYUL FX AGI HYBRID v5.7.3r++
+# Cognitive Frontend Package Loader — RBP v2.2
+from .web_ui import run_reflective_dashboard
 from .context_interpreter import ContextInterpreter
 from .reflex_console import ReflexConsole
 
-__all__ = ["ContextInterpreter", "ReflexConsole"]
+__all__ = ["run_reflective_dashboard", "ContextInterpreter", "ReflexConsole"]
+
+print("🧠 Cognitive Frontend initialized — TUYUL v5.7.3r++ Adaptive UI Active")

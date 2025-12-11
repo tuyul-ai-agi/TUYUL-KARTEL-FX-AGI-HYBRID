@@ -1,13 +1,12 @@
+# Quad Repo Sync Map — TUYUL FX AGI HYBRID v5.7.3r++
 repos:
-  hybrid:
-    url: https://github.com/tuyulfx/agi_hybrid_tools
-    path: .
-  knowledge:
-    url: https://github.com/tuyulfx/knowledge_vault_agi
-    path: knowledge_repo
-  kartel:
-    url: https://github.com/tuyulfx/kartel_macro_vault
-    path: kartel_repo
-  journal:
-    url: https://github.com/tuyulfx/journal_vault_agi
-    path: journal_repo
+  hybrid_repo: core/hybrid
+  knowledge_repo: core/knowledge
+  kartel_repo: core/kartel
+  journal_repo: core/journal
+sync_rules:
+  interval_minutes: 60
+  reflective_bridge: true
+  fallback_mode: safe
+  integrity_check: auto
+

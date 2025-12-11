@@ -1,48 +1,39 @@
-name: 🐺 AGI Hybrid Reflex–Fusion Bridge
+name: 🧠 AGI Hybrid Reflex–Fusion Bridge v5.7.3r++
+run-name: "AGI Reflective Bridge Sync (RBP v2.2)"
 
 on:
-  workflow_dispatch:    # bisa dijalankan manual dari GitHub UI
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */3 * * *"   # Setiap 3 jam jalankan sync reflektif otomatis
 
 jobs:
-  agi_bridge:
-    name: Run AGI Hybrid Bridge
+  reflective-bridge:
+    name: 🔗 Hybrid Reflex–Fusion Bridge
     runs-on: ubuntu-latest
-
-    env:
-      GH_REPO: ${{ secrets.GH_REPO }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: 🧩 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🧠 Setup Python Environment
-        uses: actions/setup-python@v4
+      - name: ⚙️ Setup Python Environment
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
-      - name: 🐺 Install Dependencies
+      - name: 🧠 Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install requests
+          pip install -r requirements.txt || echo "No requirements file found"
+          pip install httpx pyyaml rich
 
-      - name: ⚡ Run AGI GitHub Bridge
+      - name: 🚀 Initialize Reflective Bridge
         run: |
-          echo "🐺 Running AGI Hybrid Reflex–Fusion Bridge..."
-          python github_api_bridge.py
-        env:
-          GH_REPO: ${{ env.GH_REPO }}
-          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+          echo "======================================================="
+          echo "🧠 TUYUL FX AGI HYBRID v5.7.3r++"
+          echo "🔗 Reflective Bridge Protocol v2.2 — Quad Repo Aware"
+          echo "======================================================="
+          python3 gpt_bridge_handler_v573r.py --mode fusion
 
-      - name: 📦 Push AGI Log to Repo
+      - name: 🔄 Run Reflex–Fusion Analysis
         run: |
-          echo "Pushing AGI log to Vault..."
-          echo "AGI Reflex–Fusion Bridge sync complete at $(date)" > agi_bridge_log.txt
-          git config --global user.name "Tuyul Kartel FX Ultra Wolf"
-          git config --global user.email "wolf@tuyulkartel.ai"
-          git add agi_bridge_log.txt
-          git commit -m "🐺 Reflex–Fusion Bridge Sync $(date)"
-          git push
+          echo "[🐺] Running Reflex–Fusion–Reflective Analysis..."
+          python3 client_agi_hybrid.py --analyze fusion --l

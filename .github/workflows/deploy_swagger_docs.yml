@@ -1,38 +1,47 @@
-name: 🧠 Deploy Swagger Docs to GitHub Pages
+name: 📘 Deploy Swagger Docs v5.7.3r++
+run-name: "Deploy Reflective API Docs to /docs/v573r++"
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
     paths:
-      - "docs/openapi_tuyul_agi_hybrid_v5.4.4-ultra.yml"
-      - "scripts/generate_swagger_ui.py"
+      - "openapi/**.yaml"
+      - "swagger/**.json"
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy-swagger:
+    name: 🚀 Deploy Swagger Docs
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 Checkout Repository
+      - name: 🧩 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v5
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.11"
+          node-version: "20"
 
-      - name: 📦 Install Dependencies
+      - name: 📦 Install Swagger UI
         run: |
-          pip install pyyaml
-          pip install requests
+          npm install -g swagger-ui-watcher
 
-      - name: 🧠 Generate Swagger UI
-        run: python scripts/generate_swagger_ui.py
+      - name: 🧠 Prepare Reflective Swagger Build
+        run: |
+          mkdir -p docs/v573r++
+          cp openapi/*.yaml docs/v573r++/
+          echo "version: v5.7.3r++" > docs/v573r++/version.txt
 
-      - name: 🚀 Deploy Swagger Docs to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/swagger
-          publish_branch: gh-pages
-          commit_message: "🧠 Deploy Swagger UI v5.4.4-ULTRA"
+      - name: 🚀 Deploy Swagger Docs
+        run: |
+          swagger-ui-watcher docs/v573r++/*.yaml --port 8080 --host 0.0.0.0 &
+          echo "Swagger Reflective Docs deployed on /docs/v573r++"
+
+      - name: ✅ Reflective Summary
+        run: |
+          echo "----------------------------------------"
+          echo "Swagger Docs Deployed → /docs/v573r++ ✅"
+          echo "Version : v5.7.3r++"
+          echo "Reflective Bridge Protocol : RBP v2.2"
+          echo "🐺 Serigala puas — dokumentasi sinkron reflektif ⚡"

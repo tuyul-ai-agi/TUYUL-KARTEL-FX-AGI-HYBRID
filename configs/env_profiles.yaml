@@ -1,23 +1,12 @@
-default_env: "prod"
-
+# Environment Profiles — TUYUL FX AGI HYBRID v5.7.3r++
 profiles:
   dev:
-    description: "Development sandbox environment for AGI hybrid testing"
-    branch: "dev"
-    debug_mode: true
-    sync_interval: 15
-    enable_telemetry: false
-
-  stage:
-    description: "Staging environment for QA and internal testing"
-    branch: "staging"
-    debug_mode: false
-    sync_interval: 30
-    enable_telemetry: true
-
+    reflection_mode: "simulation"
+    meta_sync: false
+  staging:
+    reflection_mode: "adaptive"
+    meta_sync: true
   prod:
-    description: "Production environment for active AGI operations"
-    branch: "main"
-    debug_mode: false
-    sync_interval: 60
-    enable_telemetry: true
+    reflection_mode: "full_reflective"
+    meta_sync: true
+

@@ -1,20 +1,7 @@
-core_api:
-  hybrid_core: "https://api.hybridcore.tuyulkartel.ai/v1"
-  reflex_handler: "https://api.hybridcore.tuyulkartel.ai/reflex"
-  fusion_handler: "https://api.hybridcore.tuyulkartel.ai/fusion"
-  reflective_handler: "https://api.hybridcore.tuyulkartel.ai/reflective"
-
-vault_sync_api:
-  fx_vault: "https://api.fxvault.tuyulkartel.ai/sync"
-  kartel_vault: "https://api.kartelvault.tuyulkartel.ai/sync"
-  journal_vault: "https://api.journalvault.tuyulkartel.ai/sync"
-
-gpt_bridge_api:
-  bridge_handler: "https://api.hybridbridge.tuyulkartel.ai"
-  context_updater: "https://api.hybridbridge.tuyulkartel.ai/context"
-  autosync: "https://api.hybridbridge.tuyulkartel.ai/sync"
-
-internal_services:
-  telemetry: "https://telemetry.tuyulkartel.ai"
-  monitoring: "https://monitor.tuyulkartel.ai"
-  meta_learning: "https://meta.tuyulkartel.ai/train"
+# Endpoint Configuration (RBP v2.2)
+hybrid_api: https://api.hybrid.tuyulfx.ai
+fx_vault_api: https://api.fxvault.tuyulfx.ai
+kartel_vault_api: https://api.kartel.tuyulfx.ai
+journal_vault_api: https://api.journal.tuyulfx.ai
+reflective_bridge_api: https://bridge.tuyulfx.ai
+dashboard_api: http://localhost:5733

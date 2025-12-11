@@ -1,23 +1,18 @@
-"""
-Journal Vault Client
---------------------
-Client API untuk Journal Vault (meta-learning dan refleksi).
-"""
+# 🧾 JournalVaultClientReflective — TUYUL FX AGI HYBRID v5.7.3r++
+from .vault_client_base import VaultClientBase
+import json, datetime, os
 
-from clients.vault_base_client import VaultBaseClient
+class JournalVaultClient(VaultClientBase):
+    """Vault reflektif untuk penyimpanan hasil meta-learning & integrity logs"""
 
-class JournalVaultClient(VaultBaseClient):
-    def __init__(self):
-        super().__init__(base_url="https://api.journalvault.tuyulkartel.ai", api_key_env="JOURNAL_VAULT_KEY")
+    def __init__(self, endpoint, token=None):
+        super().__init__("JournalVault", endpoint, token)
+        os.makedirs("journal", exist_ok=True)
 
-    def upload_reflection(self, reflection: dict):
-        """Kirim hasil refleksi reasoning ke Journal Vault"""
-        return self.post("reflection/upload", json=reflection)
-
-    def get_recent_reflections(self, limit=5):
-        """Ambil refleksi reasoning terakhir"""
-        return self.get(f"reflection/recent?limit={limit}")
-
-    def integrity_report(self):
-        """Ambil laporan integritas reasoning terakhir"""
-        return self.get("reflection/integrity")
+    async def write_reflective_log(self, data):
+        ts = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        path = f"journal/reflective_log_{ts}.json"
+        with open(path, "w") as f:
+            json.dump(data, f, indent=2)
+        print(f"🧠 [JournalVault] Log saved → {path}")
+        return await self.reflective_sync()

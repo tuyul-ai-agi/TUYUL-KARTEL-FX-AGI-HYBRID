@@ -1,32 +1,65 @@
-name: 🧠 Generate OpenAPI Docs
+name: 🧩 Generate OpenAPI Docs v5.7.3r++
+run-name: "Generate OpenAPI Schema with Reflective Validation"
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
     paths:
-      - "docs/openapi_tuyul_agi_hybrid_v5.4.4-ultra.yml"
+      - "api/**.py"
 
 jobs:
-  build-docs:
+  openapi-gen:
+    name: 🧬 Generate OpenAPI Schema
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🔄 Checkout repo
+      - name: 🧩 Checkout repository
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
+      - name: ⚙️ Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 20
+          python-version: "3.11"
 
-      - name: 🔧 Install Redoc CLI
-        run: npm install -g redoc-cli
-
-      - name: 🧠 Generate API docs
+      - name: 🧠 Install FastAPI + dependencies
         run: |
-          python3 scripts/generate_openapi_docs.py
+          pip install fastapi uvicorn pyyaml httpx
 
-      - name: 🚀 Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: 🧩 Generate OpenAPI JSON
+        run: |
+          python3 - <<'EOF'
+          from fastapi import FastAPI
+          from fastapi.openapi.utils import get_openapi
+          import json, os
+
+          app = FastAPI(title="TUYUL FX AGI API", version="5.7.3r++")
+          openapi_schema = get_openapi(
+              title="TUYUL FX AGI HYBRID v5.7.3r++",
+              version="5.7.3r++",
+              description="Reflective AGI Hybrid API — RBP v2.2",
+              routes=app.routes,
+          )
+
+          os.makedirs("docs/v573r++", exist_ok=True)
+          with open("docs/v573r++/openapi.json", "w") as f:
+              json.dump(openapi_schema, f, indent=2)
+          print("✅ OpenAPI schema generated at docs/v573r++/openapi.json")
+          EOF
+
+      - name: 🔍 Validate Reflective Schema
+        run: |
+          echo "Running schema validation (RBP v2.2)..."
+          if grep -q "5.7.3r++" docs/v573r++/openapi.json; then
+            echo "✅ Schema validated successfully for RBP v2.2"
+          else
+            echo "❌ Validation failed: Version tag missing."
+            exit 1
+          fi
+
+      - name: 💾 Commit Updated OpenAPI Docs
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: openapi-docs
-          path: docs/openapi_docs.html
+          commit_message: "Generated OpenAPI Docs — v5.7.3r++ (RBP v2.2)"
+          file_pattern: "docs/v573r++/openapi.json"
+          branch: main

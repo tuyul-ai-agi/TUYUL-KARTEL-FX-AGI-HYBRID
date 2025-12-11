@@ -1,0 +1,46 @@
+# TUYUL FX AGI HYBRID v5.7.3r++
+# Prompt Architecture Manifest — TUYUL Labs Reflective Division
+
+version: v5.7.3r++
+author: TUYUL Labs
+protocol: RBP v2.2
+last_updated: 2025-12-11
+description: >
+  Manifest resmi untuk seluruh template prompt yang digunakan oleh
+  sistem Quad Repo Reflective (Hybrid–Knowledge–Kartel–Journal).
+  Mencakup Reflex, Fusion, Reflective, dan Awareness Layers.
+
+prompts:
+  - name: reflex_layer_prompt
+    layer: 1-6
+    type: Reflex Engine
+    status: active
+  - name: fusion_layer_prompt
+    layer: 7-12
+    type: Fusion Integrator
+    status: active
+  - name: reflective_layer_prompt
+    layer: 13-14
+    type: Reflective Meta-Learning
+    status: active
+  - name: vix_awareness_prompt
+    layer: 15
+    type: VIX–RSD Awareness
+    status: active
+  - name: macro_regime_prompt
+    layer: 16
+    type: Macro Regime Engine
+    status: active
+  - name: montecarlo_layer_prompt
+    layer: 17
+    type: Probabilistic Reflective Validation
+    status: active
+  - name: integrity_feedback_prompt
+    layer: 18
+    type: System Integrity Validator
+    status: active
+
+sync_policy:
+  reflective_bridge: true
+  auto_heal: true
+  journal_commit: hourly

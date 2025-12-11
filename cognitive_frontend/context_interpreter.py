@@ -1,34 +1,37 @@
-"""
-Context Interpreter
--------------------
-Modul yang menterjemahkan input manusia (bahasa natural)
-menjadi perintah AGI Hybrid (Reflex–Fusion–Reflective Command).
-"""
-
-import re
-from typing import Dict
-
+# 🧠 ContextInterpreter — TUYUL FX AGI HYBRID v5.7.3r++
+# Menerjemahkan data reflektif menjadi konteks visual dan naratif
+import json, datetime
 
 class ContextInterpreter:
-    def __init__(self) -> None:
-        self.patterns: Dict[str, str] = {
-            r"analisa\s+(\w+)\s+(\w+)": "gas kan analisa {pair} {tf}",
-            r"risiko\s+(\d+)": "calculate risk {balance}",
-            r"sync\s+vault": "journal trade",
-            r"refleksi": "reflective cycle",
-        }
+    def __init__(self, diagnostics_path="logs/reflective_diagnostics.json"):
+        self.path = diagnostics_path
 
-    def interpret(self, text: str) -> str:
-        """
-        Mengubah kalimat alami menjadi perintah AGI formal.
-        """
+    def load_context(self):
+        try:
+            with open(self.path, "r") as f:
+                data = json.load(f)
+            return data[-1] if data else None
+        except Exception as e:
+            print(f"⚠️ Failed to load diagnostics: {e}")
+            return None
 
-        for pattern, command in self.patterns.items():
-            match = re.search(pattern, text.lower())
-            if match:
-                groups = match.groups()
-                if "analisa" in pattern:
-                    return command.format(pair=groups[0].upper(), tf=groups[1].upper())
-                if "risiko" in pattern:
-                    return command.format(balance=groups[0])
-        return text
+    def interpret_context(self):
+        ctx = self.load_context()
+        if not ctx:
+            return "❌ No reflective data available."
+        state = ctx["reflective_state"]
+        reflection = ctx["reflection_score"]
+        bias = round(ctx["fusion_confidence"], 3)
+        integrity = ctx["avg_integrity"]
+        drift = ctx["drift"]
+
+        summary = f"""
+🧠 REFLECTIVE CONTEXT ANALYSIS ({ctx['timestamp']})
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Reflection Score : {reflection} ({state})
+• Integrity Index   : {integrity}
+• Fusion Confidence : {bias}
+• Bias Drift        : {drift}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"""
+        return summary

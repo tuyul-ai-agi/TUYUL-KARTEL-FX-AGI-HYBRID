@@ -1,0 +1,21 @@
+name: 🧠 Build Reflective Prompt Templates
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "ai_bridge/prompt_templates/overview_prompt_manifest.yml"
+
+jobs:
+  build-prompts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          python ai_bridge/build_prompts_manifest.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🧠 Rebuilt Prompt Templates — v5.7.3r++"
+          file_pattern: "ai_bridge/prompt_templates/*.md"

@@ -1,29 +1,42 @@
-"""
-Chart OCR Adapter
------------------
-Membaca pola grafik dari gambar chart dan mengubah ke data angka.
-"""
+# Chart OCR Reflective Adapter — v5.7.3r++
+# Konversi chart image → dataset reflektif terstruktur
+import cv2
+import numpy as np
+from pytesseract import image_to_string
+import json, datetime
 
-import pytesseract
-from PIL import Image
+class ChartOCRReflectiveAdapter:
+    def __init__(self):
+        self.integrity_index = 0.0
+        self.last_reflection = None
 
+    def process_chart(self, image_path):
+        """Ekstraksi data chart dengan validasi reflektif"""
+        img = cv2.imread(image_path)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        text = image_to_string(gray)
+        now = datetime.datetime.utcnow().isoformat() + "Z"
+        price_data = self._parse_prices(text)
+        integrity = self._calculate_integrity(price_data)
 
-class ChartOCRAdapter:
-    def __init__(self, tesseract_path=None):
-        if tesseract_path:
-            pytesseract.pytesseract.tesseract_cmd = tesseract_path
+        reflective_context = {
+            "timestamp": now,
+            "integrity_index": integrity,
+            "data_points": len(price_data),
+            "reflection_state": "stable" if integrity > 0.9 else "adaptive"
+        }
 
-    def extract_text(self, image_path: str) -> str:
-        """Membaca teks dari chart (harga, timeframe, label)"""
-        img = Image.open(image_path)
-        text = pytesseract.image_to_string(img)
-        return text.strip()
+        self.last_reflection = reflective_context
+        print(f"🧠 OCR Reflective Integrity: {integrity}")
+        return reflective_context
 
-    def detect_pattern(self, image_path: str) -> str:
-        """Deteksi pola seperti head-shoulder, triangle, dll (mock)"""
-        text = self.extract_text(image_path)
-        if "triangle" in text.lower():
-            return "Symmetrical Triangle"
-        elif "double" in text.lower():
-            return "Double Top/Bottom"
-        return "Unknown Pattern"
+    def _parse_prices(self, text):
+        lines = [l for l in text.split("\n") if l.strip()]
+        prices = [float(x) for x in lines if x.replace(".", "", 1).isdigit()]
+        return prices or [1.0]
+
+    def _calculate_integrity(self, prices):
+        if not prices: return 0.0
+        mean = np.mean(prices)
+        deviation = np.std(prices) / mean
+        return round(1 - deviation, 3)

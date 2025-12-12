@@ -1,35 +1,30 @@
-# ⚡ Reflex Pipeline Design — TUYUL AGI Hybrid
+# ⚙️ Reflex Pipeline Design (v5.7.3r++)
 
-## 1️⃣ Fungsi Utama
-
-Reflex pipeline memproses sinyal pasar secara real-time dan menentukan bias arah awal (buy/sell/wait).
-
-## 2️⃣ Modul Inti
-
-| Modul | File | Fungsi |
-|--------|------|--------|
-| ReflexCore | `core/reflex/reflex_core_v540.py` | Menghitung RLSI dan reaksi cepat |
-| ReflexFastlane | `core/reflex/reflex_fastlane.py` | Entry trigger cepat |
-| SmartMoneyDetector | `core/analytics/smart_money_detector.py` | Identifikasi aliran institusional |
-| AdaptiveRisk | `core/risk/adaptive_risk_calculator_v540.py` | Penyesuaian risiko otomatis |
-
-## 3️⃣ Flow Diagram
-
-Price Stream → ReflexCore → Fastlane
-↘ SmartMoneyDetector → FusionEngine
-
-yaml
-Copy code
-
-## 4️⃣ Output
-
-- Reflex signal (BUY/SELL/WAIT)
-- RC value
-- WLWCI segment
-- Divergence info
+## Fungsi
+Pipeline Reflex mendeteksi intensitas mikro dan bias harga sebelum konfirmasi makro.
+Ia membaca impuls pasar awal — “refleks” dari pergerakan institusional.
 
 ---
 
-> “Reflex adalah naluri pasar Tuyul — cepat, instingtif, dan adaptif.” 🐺⚡
-🧠 Fungsi: Menjelaskan desain pipeline Reflex layer (reaksi cepat & decision tree awal).
+## Komponen Pipeline
 
+| Layer | Fungsi | Output |
+|--------|---------|--------|
+| **TWMS** | Trend–Wave–Momentum Scan | Arah tren dominan |
+| **EMA/VWAP–EMC** | Struktur median dinamis | Bias struktural |
+| **Reflex Coherence** | Integrasi antar TF (multi-frame) | RCAdj |
+| **WLWCI** | Weighted Layer Coherence Index | Koherensi reflektif |
+
+---
+
+## Output Kunci
+- `RCAdj ≥ 0.8` → Reflex stabil  
+- `WLWCI ≥ 0.9` → Koherensi lintas layer kuat  
+
+---
+
+## Refleksi
+> “Reflex membaca niat sebelum data berbicara.”
+- WLWCI segment
+
+- Divergence info

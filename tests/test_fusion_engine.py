@@ -1,6 +1,13 @@
 import pytest
-from core.fushion.fusion_confidence_core import calculate_confidence
 
-def test_confidence_range():
-    conf = calculate_confidence(rlsi=0.85, rcadj=0.88)
-    assert 0 <= conf <= 1, "Confidence harus di antara 0 dan 1"
+from core.fusion.fusion_confidence_core import FusionConfidenceCore
+
+
+def test_confidence_metrics_structure():
+    core = FusionConfidenceCore()
+    metrics = core.compute([0.92, 0.9, 0.08])
+
+    assert 0 <= metrics["conf12"] <= 1
+    assert "reflective_state" in metrics
+    assert metrics["wlwci"] >= 0
+    assert metrics["timestamp"].endswith("+00:00")

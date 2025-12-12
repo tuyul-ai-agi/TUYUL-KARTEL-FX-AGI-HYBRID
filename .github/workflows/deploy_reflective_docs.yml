@@ -1,0 +1,36 @@
+name: Deploy Reflective OpenAPI Docs v5.7.3r++
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "api/openapi_tuyul_fx_v573r.yaml"
+      - "docs/openapi_tuyul_agi_hybrid_v5.7.3r++.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Bundle OpenAPI via Redoc
+        run: |
+          npx redoc-cli bundle api/openapi_tuyul_fx_v573r.yaml -o docs/openapi_v573r.html
+
+      - name: Upload bundled docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reflective-openapi-v573r
+          path: docs/openapi_v573r.html
+
+      - name: Summary
+        run: |
+          echo "Reflective OpenAPI bundled → docs/openapi_v573r.html"
+          echo "Spec source: api/openapi_tuyul_fx_v573r.yaml"

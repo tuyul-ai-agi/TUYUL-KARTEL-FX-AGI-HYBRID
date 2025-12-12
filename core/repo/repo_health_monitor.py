@@ -4,24 +4,25 @@ import random
 
 
 class RepoHealthMonitor:
-    """Memantau kesehatan Quad Vault dengan indikator reflektif"""
+    """Memantau kesehatan repositori reflektif dengan indikator global."""
 
     def check_health(self):
         integrity = round(random.uniform(0.9, 0.96), 3)
         fusion_conf = round(random.uniform(0.88, 0.93), 3)
         wl = round(random.uniform(0.87, 0.92), 3)
         regime = random.choice(["Tranquil", "Expansion", "Stressed"])
-
         state = "optimal" if integrity > 0.92 else "watching"
-        print(
-            f"🩺 Repo Health Monitor — Integrity {integrity}, Fusion {fusion_conf}, WLWCI {wl}, Regime {regime}"
-        )
+        global_bias = "Risk-On" if regime in ["Tranquil", "Expansion"] else "Risk-Off"
 
+        print(
+            f"🩺 Repo Health — Integrity {integrity}, Fusion {fusion_conf}, WLWCI {wl}, Regime {regime}, Bias {global_bias}"
+        )
         return {
             "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
             "integrity_index": integrity,
             "fusion_confidence": fusion_conf,
             "wlwci": wl,
             "regime_state": regime,
-            "vault_state": state,
+            "global_bias": global_bias,
+            "repo_state": state,
         }

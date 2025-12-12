@@ -16,3 +16,5 @@ __all__ = [
     "ReflectiveCycleCore",
     "VDDHybridModule",
 ]
+__version__ = "5.7.3r++"
+__author__ = "Tuyul Kartel AGI Core Team"

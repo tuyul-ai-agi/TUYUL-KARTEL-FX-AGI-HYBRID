@@ -12,6 +12,7 @@ from .reflective_live_bridge import ReflectiveLiveBridge
 from .reflective_mcp_handler import ReflectiveMCPHandler
 from .reflective_reasoner import ReflectiveReasoner
 from .reflective_status import ReflectiveStatus
+from .reflective_sync import ReflectiveSync
 
 __all__ = [
     "ReflectiveCycleCore",
@@ -19,4 +20,5 @@ __all__ = [
     "ReflectiveMCPHandler",
     "ReflectiveReasoner",
     "ReflectiveStatus",
+    "ReflectiveSync",
 ]

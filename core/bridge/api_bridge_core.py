@@ -1,29 +1,37 @@
-"""
-API Bridge Core
----------------
-Jembatan antar modul AGI Core ↔ API eksternal (Fusion / Reflex / Reflective).
-"""
+# ApiBridgeCore — Reflective API Bridge v5.7.3r++
+import datetime
+import json
 
 import requests
-import os
+
 
 class ApiBridgeCore:
-    def __init__(self):
-        self.core_api = os.getenv("HYBRID_CORE_URL", "https://api.hybridcore.tuyulkartel.ai/v1")
+    """Jembatan utama komunikasi API antara AGI Hybrid dan endpoint eksternal"""
 
-    def call_endpoint(self, route: str, params: dict = None):
-        """Panggil endpoint internal AGI Core"""
-        url = f"{self.core_api}/{route}"
-        response = requests.get(url, params=params)
-        if response.status_code == 200:
-            return response.json()
-        return {"error": response.text, "status_code": response.status_code}
+    def __init__(self, base_url: str, token: str):
+        self.base_url = base_url.rstrip("/")
+        self.headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        self.last_sync = None
+        self.integrity_index = 0.0
 
-    def send_reflex(self, pair: str, tf: str):
-        return self.call_endpoint("reflex/analyze", {"pair": pair, "timeframe": tf})
+    def post(self, endpoint: str, payload: dict):
+        url = f"{self.base_url}/{endpoint.lstrip('/')}"
+        response = requests.post(url, headers=self.headers, json=payload, timeout=5)
+        self._reflect(response)
+        return response.json() if response.ok else {"error": response.status_code}
 
-    def send_fusion(self, conf12: float, wlwci: float):
-        return self.call_endpoint("fusion", {"reflex_conf": conf12, "fusion_conf": wlwci, "wlwci": wlwci})
+    def get(self, endpoint: str):
+        url = f"{self.base_url}/{endpoint.lstrip('/')}"
+        response = requests.get(url, headers=self.headers, timeout=5)
+        self._reflect(response)
+        return response.json() if response.ok else {"error": response.status_code}
 
-    def sync_vaults(self):
-        return self.call_endpoint("vault/sync")
+    def _reflect(self, response):
+        """Evaluasi reflektif setiap komunikasi API"""
+
+        self.last_sync = datetime.datetime.utcnow().isoformat() + "Z"
+        latency = response.elapsed.total_seconds() * 1000
+        self.integrity_index = round(max(0.9, 1 - (latency / 2000)), 3)
+        print(
+            f"🌐 API Bridge Reflective — Integrity: {self.integrity_index}, Latency: {latency:.1f} ms"
+        )

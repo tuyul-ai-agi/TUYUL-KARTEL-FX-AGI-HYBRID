@@ -2,12 +2,20 @@
 Entrypoint utama TUYUL-KARTEL-FX-AGI-HYBRID
 """
 
+from core.fushion.hybrid_fusion_orchestrator_v540 import HybridFusionOrchestrator
+from core.reflective.reflective_cycle_core import ReflectiveCycleCore
 from core.fusion import FinalOutputReflectiveEngine, ReflectiveFusionOrchestrator
 from core.repo.repo_health_monitor import RepoHealthMonitor
 
 
 def main():
     print("🐺 TUYUL-KARTEL-FX-AGI-HYBRID v5.7.3r++ mulai...")
+    orchestrator = HybridFusionOrchestrator()
+    reflective = ReflectiveCycleCore()
+    integrity = VaultIntegrityChecker()
+
+    orchestrator.run()
+    reflective.execute()
     orchestrator = ReflectiveFusionOrchestrator()
     final_output = FinalOutputReflectiveEngine()
     integrity = RepoHealthMonitor()

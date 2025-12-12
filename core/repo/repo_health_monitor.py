@@ -9,6 +9,7 @@ from typing import Dict, Optional
 
 class RepoHealthMonitor:
     """Memantau kesehatan Quad Repo dengan audit integritas reflektif."""
+    """Memantau kesehatan repositori reflektif dengan indikator global."""
 
     def __init__(self, repo_root: str = "vaults"):
         self.repo_root = repo_root
@@ -50,8 +51,12 @@ class RepoHealthMonitor:
             "🩺 Repo Health Monitor — "
             f"Integrity {integrity_index}, Fusion {fusion_confidence}, WLWCI {wl}, "
             f"Regime {regime}, Files {file_count}"
-        )
+        state = "optimal" if integrity > 0.92 else "watching"
+        global_bias = "Risk-On" if regime in ["Tranquil", "Expansion"] else "Risk-Off"
 
+        print(
+            f"🩺 Repo Health — Integrity {integrity}, Fusion {fusion_conf}, WLWCI {wl}, Regime {regime}, Bias {global_bias}"
+        )
         return {
             "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
             "integrity_index": integrity_index,
@@ -60,6 +65,8 @@ class RepoHealthMonitor:
             "regime_state": regime,
             "repo_state": state,
             "files_hashed": file_count,
+            "global_bias": global_bias,
+            "repo_state": state,
         }
 
     def audit(self) -> Dict[str, object]:

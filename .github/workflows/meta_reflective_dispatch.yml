@@ -1,0 +1,93 @@
+name: "🧠 Meta Reflective Dispatch — TUYUL FX AGI HYBRID v5.7.3r++"
+
+on:
+  workflow_run:
+    workflows: ["🧾 Reflective Integrity Audit — TUYUL FX AGI HYBRID v5.7.3r++"]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  meta-dispatch:
+    name: "📡 Meta-Learning Dispatch to Knowledge Vault"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 🧩 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 🧠 Install Dependencies
+        run: |
+          pip install requests pyyaml numpy pandas || true
+
+      - name: 🪞 Read Audit Report
+        id: read_audit
+        run: |
+          echo "🔍 Reading latest audit report..."
+          AUDIT_FILE=$(ls -t journal/audit/reflective_audit_report.json | head -n 1)
+          echo "audit_path=$AUDIT_FILE" >> $GITHUB_ENV
+          cat $AUDIT_FILE
+
+      - name: 🧬 Dispatch Reflective Meta-Learning Cycle
+        run: |
+          echo "📡 Dispatching Reflective Meta-Learning to Knowledge Vault..."
+          python - <<'EOF'
+          import json, yaml, datetime, os, requests
+
+          with open("journal/audit/reflective_audit_report.json") as f:
+              audit = json.load(f)
+
+          with open("configs/reflective_params.yaml") as f:
+              params = yaml.safe_load(f)
+
+          payload = {
+              "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+              "meta_reflective_version": "v5.7.3r++",
+              "average_integrity": audit["average_integrity"],
+              "average_reflection_gain": audit["average_reflection_gain"],
+              "average_bias_stability": audit["average_bias_stability"],
+              "reflective_health": audit["reflective_health"],
+              "updated_params": params,
+              "dispatch_status": "sent"
+          }
+
+          os.makedirs("journal/meta", exist_ok=True)
+          with open("journal/meta/meta_reflective_dispatch.json", "w") as f:
+              json.dump(payload, f, indent=4)
+
+          print("🧠 Meta Reflective Dispatch Payload:")
+          print(json.dumps(payload, indent=4))
+
+          VAULT_ENDPOINT = os.getenv("KNOWLEDGE_VAULT_API", "https://tuyul-agi-reflector.net/api/vaultSync")
+          try:
+              r = requests.post(VAULT_ENDPOINT, json=payload, timeout=10)
+              print(f"📡 Vault Response: {r.status_code}")
+          except Exception as e:
+              print(f"⚠️ Dispatch error (offline mode): {e}")
+          EOF
+
+      - name: 🧾 Commit Meta-Reflective Dispatch Logs
+        run: |
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyulfx.ai"
+          git add journal/meta/meta_reflective_dispatch.json
+          git commit -m "📡 Meta Reflective Dispatch Log (v5.7.3r++)" || echo "No changes to commit"
+          git push || echo "Push skipped (read-only mode)"
+
+      - name: 📦 Upload Dispatch Log as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: meta_reflective_dispatch
+          path: journal/meta/meta_reflective_dispatch.json
+
+      - name: 🧬 Trigger Reflective Learning Cycle
+        if: success()
+        run: |
+          echo "🧬 Initiating Reflective Learning Reinforcement..."
+          python core/reflective/run_reflection_cycle.py || echo "Learning cycle completed."

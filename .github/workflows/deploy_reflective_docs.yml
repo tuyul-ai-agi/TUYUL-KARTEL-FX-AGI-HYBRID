@@ -1,36 +1,35 @@
-name: Deploy Reflective OpenAPI Docs v5.7.3r++
+name: Deploy Reflective Docs
 
 on:
   push:
     branches: ["main"]
-    paths:
-      - "api/openapi_tuyul_fx_v573r.yaml"
-      - "docs/openapi_tuyul_agi_hybrid_v5.7.3r++.yml"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: "20"
+          python-version: "3.11"
 
-      - name: Bundle OpenAPI via Redoc
+      - name: Install Redoc CLI
         run: |
-          npx redoc-cli bundle api/openapi_tuyul_fx_v573r.yaml -o docs/openapi_v573r.html
+          npm install -g redoc-cli
 
-      - name: Upload bundled docs artifact
-        uses: actions/upload-artifact@v4
+      - name: Generate Reflective API Docs
+        run: |
+          mkdir -p docs
+          redoc-cli bundle api/openapi_tuyul_fx_v573r.yaml -o docs/index.html
+
+      - name: Deploy Reflective Docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: reflective-openapi-v573r
-          path: docs/openapi_v573r.html
-
-      - name: Summary
-        run: |
-          echo "Reflective OpenAPI bundled → docs/openapi_v573r.html"
-          echo "Spec source: api/openapi_tuyul_fx_v573r.yaml"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs

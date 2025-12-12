@@ -15,6 +15,11 @@ class ReflectiveMCPHandler:
 
     def reflective_compute(self, bridge_status, reasoning):
         avg = round(
+            (
+                bridge_status["integrity_index"]
+                + reasoning["fusion_confidence"]
+                + reasoning["wlwci"]
+            )
             (bridge_status["integrity_index"] + reasoning["fusion_confidence"] + reasoning["wlwci"])
             / 3,
             3,
@@ -22,6 +27,10 @@ class ReflectiveMCPHandler:
         drift = round(abs(reasoning["rcadj"] - 0.8), 3)
         reflective_state = "coherent" if avg > 0.9 else "adaptive"
 
+        timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
+
+        result = {
+            "timestamp": timestamp,
         result = {
             "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
             "integrity_index": avg,
@@ -29,6 +38,8 @@ class ReflectiveMCPHandler:
             "reflective_state": reflective_state,
         }
 
+        print(f"🧮 MCP Reflective Compute — Integrity {avg}, Drift {drift}, State {reflective_state}")
+        return result
         print(
             "🧮 MCP Reflective Compute — Integrity {integrity}, Drift {drift}, State {state}".format(
                 integrity=avg, drift=drift, state=reflective_state

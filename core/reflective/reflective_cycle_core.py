@@ -9,6 +9,7 @@ from .reflective_reasoner import ReflectiveReasoner
 
 
 class ReflectiveCycleCore:
+    """Menjalankan siklus inti reflektif: bridge → reasoning → synchronization"""
     """Menjalankan siklus inti reflektif: bridge → reasoning → synchronization."""
 
     def __init__(self):
@@ -18,11 +19,17 @@ class ReflectiveCycleCore:
         self.log_path = "journal/reflective_cycle_core_log.json"
 
     def execute(self):
+        """Jalankan meta-cycle penuh dan simpan hasilnya."""
+
         """Jalankan full meta-cycle reflektif dan tulis log hasil sinkronisasi."""
         bridge_status = self.bridge.ping_all()
         reasoning = self.reasoner.evaluate_cycle()
         meta_core = self.mcp.reflective_compute(bridge_status, reasoning)
 
+        timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
+
+        result = {
+            "timestamp": timestamp,
         result = {
             "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
             "fusion_confidence": reasoning["fusion_confidence"],
@@ -34,6 +41,12 @@ class ReflectiveCycleCore:
         }
 
         os.makedirs("journal", exist_ok=True)
+        with open(self.log_path, "a", encoding="utf-8") as log_file:
+            log_file.write(json.dumps(result) + "\n")
+
+        print(
+            "🔁 Reflective Core Cycle — State: "
+            f"{result['reflective_state']} | Integrity: {result['integrity_index']}"
         with open(self.log_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(result) + "\n")
 

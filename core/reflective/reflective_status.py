@@ -6,6 +6,10 @@ import random
 class ReflectiveStatus:
     """Menampilkan status real-time kesadaran reflektif."""
 
+
+class ReflectiveStatus:
+    """Menampilkan status real-time kesadaran reflektif."""
+
     def get_status(self):
         integrity = round(random.uniform(0.91, 0.95), 3)
         coherence = round(random.uniform(0.89, 0.94), 3)
@@ -31,6 +35,17 @@ class ReflectiveStatus:
     def get_status(self):
         integrity = round(random.uniform(0.91, 0.95), 3)
         coherence = round(random.uniform(0.89, 0.94), 3)
+        bias_drift = round(random.uniform(0.01, 0.04), 3)
+        regime = random.choice(["Tranquil", "Expansion", "Stressed"])
+
+        print(
+            "🪞 Reflective Status — Integrity "
+            f"{integrity}, Coherence {coherence}, Drift {bias_drift}, Regime {regime}"
+        )
+        timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
+
+        return {
+            "timestamp": timestamp,
         drift = round(random.uniform(0.01, 0.04), 3)
         regime = random.choice(["Tranquil", "Expansion", "Stressed"])
         integrity_trend = random.choice(["↑ Improving", "→ Stable", "↓ Weakening"])

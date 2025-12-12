@@ -19,6 +19,14 @@ class ReflectiveReasoner:
         bias = "Bullish Continuation" if conf > 0.91 else "Neutral Adjustment"
 
         print(
+            "🧠 Reflective Reasoner — CONF₁₂: "
+            f"{conf}, WLWCI: {wlwci}, RCAdj: {rcadj}, Bias: {bias}"
+        )
+        timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
+
+        return {
+            "timestamp": timestamp,
+            "fusion_confidence": conf,
             "🧠 Reflective Reasoner — CONF₁₂: {conf}, WLWCI: {wlwci}, RCAdj: {rcadj}, Bias: {bias}".format(
                 conf=conf, wlwci=wlwci, rcadj=rcadj, bias=bias
             )

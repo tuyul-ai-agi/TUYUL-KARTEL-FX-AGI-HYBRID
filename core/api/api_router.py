@@ -6,7 +6,7 @@ from fastapi import APIRouter
 
 from .fusion_layer12_handler import FusionLayer12Handler
 from .hybrid_handler import HybridHandler
-from .reflex_handler import ReflexHandler
+from .reflex_handler import router as reflex_router
 from .risk_handler import RiskHandler
 from .vault_sync_handler import VaultSyncHandler
 
@@ -26,7 +26,7 @@ async def system_status() -> Dict[str, Any]:
     }
 
 
-router.include_router(ReflexHandler.router, prefix="/reflex", tags=["Reflex Engine"])
+router.include_router(reflex_router, prefix="/reflex", tags=["Reflex Engine"])
 router.include_router(
     FusionLayer12Handler.router, prefix="/fusion", tags=["Fusion Layer"]
 )

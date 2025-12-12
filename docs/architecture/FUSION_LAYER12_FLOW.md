@@ -1,4 +1,4 @@
-# ⚙️ Fusion Layer-12 Flow — TUYUL Hybrid AGI v5.4.x
+# ⚙️ Fusion Layer-12 Flow — TUYUL Hybrid AGI v5.7.3r++
 
 ## 1️⃣ Pengantar
 
@@ -6,9 +6,9 @@ Fusion Layer-12 adalah jembatan antara *Reflex Reasoning (Layer-1)* dan *Reflect
 
 ## 2️⃣ Komponen
 
-- `core/fushion/fusion_confidence_core.py`
-- `core/fushion/final_output_12_engine_v5_4_1.py`
-- `core/fushion/hybrid_fusion_orchestrator_v540.py`
+- `core/fusion/fusion_confidence_core.py`
+- `core/fusion/final_output_reflective_engine.py`
+- `core/fusion/reflective_fusion_orchestrator.py`
 
 ## 3️⃣ Data Flow
 

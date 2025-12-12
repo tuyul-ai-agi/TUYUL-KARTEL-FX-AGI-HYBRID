@@ -1,0 +1,104 @@
+name: "🧾 Reflective Integrity Audit — TUYUL FX AGI HYBRID v5.7.3r++"
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Jalankan setiap hari pukul 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  reflective-audit:
+    name: "🧠 Daily Reflective Integrity & Coherence Audit"
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: 🧩 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 🧠 Install Dependencies
+        run: |
+          pip install pandas numpy || true
+
+      - name: 🪞 Run Reflective Integrity Audit
+        run: |
+          echo "🔍 Running Reflective Integrity Audit..."
+          python - <<'EOF'
+          import json, os, glob, statistics, datetime
+
+          paths = [
+              "journal/fusion_layer12_log.json",
+              "journal/reflective_cycle_log.json",
+              "journal/regime_awareness_log.json",
+              "journal/final_reflective_output.json"
+          ]
+
+          integrity_values = []
+          reflection_gains = []
+          bias_stabilities = []
+
+          for path in paths:
+              if not os.path.exists(path): continue
+              with open(path, "r") as f:
+                  lines = f.readlines()
+                  for line in lines[-50:]:  # analisa 50 data terakhir
+                      try:
+                          data = json.loads(line)
+                      except:
+                          continue
+                      if "integrity_index" in data:
+                          integrity_values.append(data["integrity_index"])
+                      if "reflection_gain" in data:
+                          reflection_gains.append(data["reflection_gain"])
+                      if "bias_stability" in data:
+                          bias_stabilities.append(data["bias_stability"])
+
+          avg_integrity = round(statistics.mean(integrity_values), 3) if integrity_values else 0
+          avg_gain = round(statistics.mean(reflection_gains), 3) if reflection_gains else 0
+          avg_stability = round(statistics.mean(bias_stabilities), 3) if bias_stabilities else 0
+          timestamp = datetime.datetime.utcnow().isoformat() + "Z"
+
+          report = {
+              "timestamp": timestamp,
+              "average_integrity": avg_integrity,
+              "average_reflection_gain": avg_gain,
+              "average_bias_stability": avg_stability,
+              "reflective_health": (
+                  "Stable" if avg_integrity >= 0.90 else
+                  "Warning" if 0.85 <= avg_integrity < 0.90 else
+                  "Critical"
+              )
+          }
+
+          print("🧾 Reflective Audit Report:")
+          for k, v in report.items():
+              print(f"   {k}: {v}")
+
+          os.makedirs("journal/audit", exist_ok=True)
+          with open("journal/audit/reflective_audit_report.json", "w") as f:
+              json.dump(report, f, indent=4)
+
+          if avg_integrity < 0.90:
+              print("⚠️ Integrity below threshold — triggering meta-learning recovery...")
+              os.system("python core/reflective/reflection_trainer.py || true")
+          else:
+              print("✅ Integrity stable — no action required.")
+          EOF
+
+      - name: 📦 Upload Audit Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reflective_audit_report
+          path: journal/audit/reflective_audit_report.json
+
+      - name: 🧾 Commit Audit Results to Journal Repo
+        run: |
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyulfx.ai"
+          git add journal/audit/reflective_audit_report.json
+          git commit -m "🪞 Reflective Integrity Audit Report (v5.7.3r++)" || echo "No changes to commit"
+          git push || echo "Push skipped (read-only mode)"

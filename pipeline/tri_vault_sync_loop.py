@@ -1,20 +1,21 @@
-"""
-Tri Vault Sync Loop
--------------------
-Sinkronisasi otomatis antara FX, Kartel, dan Journal Vaults.
+"""Tri Repo Sync Loop
+---------------------
+Sinkronisasi adaptif antar Repo melalui Reflective Bridge Protocol.
 """
 
-from core.vaults.vault_diff_sync import VaultDiffSync
+from typing import Optional
 
-class TriVaultSyncLoop:
-    def __init__(self):
-        self.sync_fx_journal = VaultDiffSync("vaults/fx_vault/", "vaults/journal_vault/")
-        self.sync_kartel_journal = VaultDiffSync("vaults/kartel_vault/", "vaults/journal_vault/")
+from core.repo.repo_bridge_manager import RepoBridgeManager
+
+
+class TriRepoSyncLoop:
+    def __init__(self, bridge_manager: Optional[RepoBridgeManager] = None):
+        self.bridge_manager = bridge_manager or RepoBridgeManager()
 
     def run(self):
-        fx_result = self.sync_fx_journal.compare_and_sync()
-        kartel_result = self.sync_kartel_journal.compare_and_sync()
-        return {
-            "fx_to_journal": fx_result,
-            "kartel_to_journal": kartel_result
-        }
+        sync_result = self.bridge_manager.sync_repos()
+        return {"quad_repo_bridge": sync_result}
+
+
+# Backward compatibility for legacy callers
+TriVaultSyncLoop = TriRepoSyncLoop

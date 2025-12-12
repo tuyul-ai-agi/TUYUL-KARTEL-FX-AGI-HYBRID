@@ -7,6 +7,7 @@
 from .relearning_cycle import RelearningCycle
 from .repo_bridge_manager import RepoBridgeManager
 from .repo_health_monitor import RepoHealthMonitor
+from .repo_output_helper import RepoOutputHelper
 from .repo_recovery_manager import RepoRecoveryManager
 from .vault_writer import VaultWriter
 
@@ -18,6 +19,7 @@ __all__ = [
     "RelearningCycle",
     "RepoBridgeManager",
     "RepoHealthMonitor",
+    "RepoOutputHelper",
     "RepoRecoveryManager",
     "VaultWriter",
 ]

@@ -1,14 +1,14 @@
 """
-Vault Sync Reflective Fusion
-----------------------------
-Sinkronisasi vault dan jalankan refleksi AGI Hybrid sekaligus.
+Repo Sync Reflective Fusion
+---------------------------
+Sinkronisasi repos dan jalankan refleksi AGI Hybrid sekaligus.
 """
 
-from pipeline.tri_vault_sync_loop import TriVaultSyncLoop
+from pipeline.tri_vault_sync_loop import TriRepoSyncLoop
 from pipeline.wolf_reflective_loop import WolfReflectiveLoop
 
 if __name__ == "__main__":
-    sync = TriVaultSyncLoop()
+    sync = TriRepoSyncLoop()
     reflective = WolfReflectiveLoop()
     sync_result = sync.run()
     reflection = reflective.run()

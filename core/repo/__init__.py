@@ -7,8 +7,9 @@
 from .relearning_cycle import RelearningCycle
 from .repo_bridge_manager import RepoBridgeManager
 from .repo_health_monitor import RepoHealthMonitor
+from .repo_output_helper import RepoOutputHelper
 from .repo_recovery_manager import RepoRecoveryManager
-from .vault_writer import VaultWriter
+from .vault_writer import RepoWriter
 
 __version__ = "v5.7.3r++"
 __protocol__ = "RBP v2.2"
@@ -18,8 +19,9 @@ __all__ = [
     "RelearningCycle",
     "RepoBridgeManager",
     "RepoHealthMonitor",
+    "RepoOutputHelper",
     "RepoRecoveryManager",
-    "VaultWriter",
+    "RepoWriter",
 ]
 
 

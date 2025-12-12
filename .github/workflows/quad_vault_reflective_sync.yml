@@ -1,33 +1,94 @@
-name: Quad Vault Reflective Sync
+name: "🐺 Quad Vault Reflective Sync — TUYUL FX AGI HYBRID v5.7.3r++"
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 * * * *"  # Jalankan setiap jam
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
 
 jobs:
-  sync:
+  reflective-sync:
+    name: "🧠 Layer–14 Reflective Cycle Execution"
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
-      - name: Checkout Repo
+      - name: 🧩 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: ⚙️ Setup Python Environment
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
-      - name: Install Dependencies
+      - name: 🧠 Install Dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements.txt || true
+          pip install numpy pandas matplotlib
 
-      - name: Run Reflective Sync
-        env:
-          REFLECTIVE_BRIDGE_VERSION: RBP_v2.2
-          MONTECARLO_SPEC: 20k/90d
-          ENABLE_VAULT_SYNC: true
-          ENABLE_JOURNAL_LOG: true
+      - name: 🧬 Run TWMS → Fusion → Reflective → Regime → Sync Pipeline
         run: |
-          python pipeline/reflective_meta_cycle.py
+          echo "🔥 Starting Reflective Sync v5.7.3r++ ..."
+          python - <<'EOF'
+          from core.twms.twms_fusion_macro_mn import TWMSFusionMacroMN
+          from core.twms.twms_midframe_analyzer_w1 import TWMSMidframeW1
+          from core.twms.twms_tactical_d1 import TWMSTacticalD1
+          from core.twms.twms_entry_h4 import TWMSEntryH4
+          from core.twms.twms_trigger_h1 import TWMSTriggerH1
+          from core.fusion.fusion_layer12_reflective import FusionLayer12Reflective
+          from core.reflective.reflective_cycle_layer13 import ReflectiveCycleEngine
+          from core.reflective.reflective_global_regime_awareness import ReflectiveGlobalRegimeAwareness
+          from core.reflective.reflective_sync_final import ReflectiveSyncFinal
+
+          print("🔹 Running TWMS–Reflective Full Cycle...")
+
+          twms_mn = TWMSFusionMacroMN().analyze_macro("EUR/USD")
+          twms_w1 = TWMSMidframeW1().analyze_weekly("EUR/USD")
+          twms_d1 = TWMSTacticalD1().analyze_daily("EUR/USD")
+          twms_h4 = TWMSEntryH4().analyze_entry_zone("EUR/USD")
+          twms_h1 = TWMSTriggerH1().analyze_trigger("EUR/USD")
+
+          twms_data = {
+              "mn_bias": twms_mn["bias_macro"],
+              "w1_bias": twms_w1["bias_weekly"],
+              "d1_bias": twms_d1["bias_d1"],
+              "h4_bias": twms_h4["bias_h4"],
+              "h1_direction": twms_h1["direction"]
+          }
+
+          fusion = FusionLayer12Reflective().integrate(twms_data)
+          cycle = ReflectiveCycleEngine().run_cycle(fusion)
+          regime = ReflectiveGlobalRegimeAwareness().assess_regime(cycle)
+          final = ReflectiveSyncFinal().export(fusion, cycle, regime)
+
+          print("✅ Reflective Sync Completed")
+          EOF
+
+      - name: 🧾 Commit Reflective Journal Output
+        run: |
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyulfx.ai"
+          git add journal/*.json || true
+          git commit -m "🧠 Reflective Journal Sync Update (v5.7.3r++)" || echo "No changes to commit"
+          git push || echo "Push skipped — read-only mode"
+
+      - name: 📡 Upload Reflective Logs as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reflective_journal_logs
+          path: journal/
+
+      - name: 🧩 Integrity Validation
+        run: |
+          echo "Running Integrity Validation..."
+          if grep -q "✅ Completed" journal/final_reflective_output.json; then
+            echo "✅ Reflective Sync Passed Integrity Validation"
+          else
+            echo "❌ Reflective Sync Incomplete"
+            exit 1
+          fi
+
+      - name: 🧠 Trigger Meta-Learning Cycle
+        if: success()
+        run: |
+          echo "🧬 Triggering Reflective Meta-Learning Update..."
+          python core/reflective/reflection_trainer.py || echo "Meta-learning skipped"

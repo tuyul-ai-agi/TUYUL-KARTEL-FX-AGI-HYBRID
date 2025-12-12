@@ -1,26 +1,25 @@
 """
-Reflex Layer Initialization
----------------------------
-Lapisan kesadaran cepat TUYUL FX AGI Hybrid.
-Menangkap respon pasar mikro untuk mendukung Fusion dan Reflective Layers.
+TWMS Layer Initialization
+-------------------------
+Trend–Wave–Momentum–Structure Layer untuk TUYUL FX AGI HYBRID.
+Membaca arah makro pasar sebagai dasar bias reflektif.
 """
 
-from core.reflex.reflex_core import ReflexCore
-from core.reflex.reflex_fastlane import ReflexFastlane
+from core.twms.twms_fusion_macro_mn import TWMSFusionMacroMN
 
 __version__ = "5.7.3r++"
 __author__ = "Tuyul Kartel AGI Core Team"
 __protocol__ = "RBP v2.2"
 
-__all__ = ["ReflexCore", "ReflexFastlane"]
+__all__ = ["TWMSFusionMacroMN"]
 
 
 def init_summary():
     print("────────────────────────────────────────────")
-    print("⚡ REFLEX LAYER INITIALIZED")
+    print("🌊 TWMS LAYER INITIALIZED (Macro Direction Engine)")
     print(f"Version  : {__version__}")
     print(f"Protocol : {__protocol__}")
-    print("Reflex Engine aktif — reaksi pasar mikro sinkron dengan Fusion.")
+    print("TWMS aktif — membaca arah tren makro untuk bias reflektif sistem.")
     print("────────────────────────────────────────────")
 
 

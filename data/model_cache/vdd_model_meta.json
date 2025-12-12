@@ -1,0 +1,10 @@
+{
+  "model_name": "ReflectiveVolatilityModel",
+  "version": "v5.7.3r++",
+  "trained_on": "2025-12-11T11:00:00Z",
+  "features": ["price_dev", "std_ratio", "momentum_flux", "wave_density", "coherence_drift"],
+  "coherence_index": 0.918,
+  "reflective_coherence_target": 0.92,
+  "reflective_protocol": "RBP v2.2",
+  "description": "Reflective volatility–deviation–distribution model with adaptive awareness for TUYUL FX AGI v5.7.3r++."
+}

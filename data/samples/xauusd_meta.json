@@ -1,0 +1,15 @@
+{
+  "pair": "XAU/USD",
+  "source": "TwelveData API (Gold Futures)",
+  "interval": "1h",
+  "last_update": "2025-12-10T00:00:00Z",
+  "records": 5000,
+  "reflective_index": 0.927,
+  "vix_state": "Stressed",
+  "regime_state": "Expansion",
+  "fusion_confidence": 0.90,
+  "bias": "Bullish Macro",
+  "integrity_index": 0.93,
+  "reflective_protocol": "RBP v2.2",
+  "description": "Gold cross-asset dataset used for bias alignment between XAUUSD, DXY, and BTCUSD pairs in Reflective Fusion Layer–12."
+}

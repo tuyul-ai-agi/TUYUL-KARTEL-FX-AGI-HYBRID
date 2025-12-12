@@ -6,12 +6,14 @@
 httpx==0.27.0
 requests==2.32.3
 PyYAML==6.0.2
-pandas==2.2.2
+pandas==2.2.3
 rich==13.8.0
 
 # API Framework
 fastapi==0.115.0
-uvicorn==0.32.0
+uvicorn==0.30.1
+prometheus-client==0.21.0
+pydantic==2.8.2
 aiofiles==23.2.1
 
 # ML & Math
@@ -23,6 +25,9 @@ python-dotenv==1.0.1
 
 # Monitoring & Logging
 loguru==0.7.3
+
+# Model persistence
+joblib==1.4.2
 
 # Monte Carlo & Simulation
 simpy==4.1.1

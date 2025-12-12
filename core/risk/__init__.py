@@ -1,31 +1,28 @@
-# TUYUL FX AGI HYBRID v5.7.3r++
-# core/risk/__init__.py
-# Adaptive Risk Layer Initialization — Reflective Protocol v2.2
-# ---------------------------------------------------------------
-# “Risiko bukan angka — tapi resonansi antara niat dan disiplin.” ⚡
+"""
+Risk Layer Initialization
+-------------------------
+Mengelola perhitungan risiko adaptif (lot, RR, regime awareness)
+untuk TUYUL FX AGI HYBRID v5.7.3r++.
+"""
 
-from .adaptive_risk_calculator import AdaptiveRiskCalculator
-from .regime_state_detector import RegimeStateDetector
-from .risk_scenario_simulator import RiskScenarioSimulator
-from .reflective_volatility_model import ReflectiveVolatilityModel
+from core.risk.adaptive_risk_calculator import AdaptiveRiskCalculator
+from core.risk.regime_state_detector import RegimeStateDetector
 
-__version__ = "v5.7.3r++"
+__version__ = "5.7.3r++"
+__author__ = "Tuyul Kartel AGI Core Team"
 __protocol__ = "RBP v2.2"
-__layer__ = "Reflective Adaptive Risk Layer"
 
-__all__ = [
-    "AdaptiveRiskCalculator",
-    "RegimeStateDetector",
-    "RiskScenarioSimulator",
-    "ReflectiveVolatilityModel"
-]
+__all__ = ["AdaptiveRiskCalculator", "RegimeStateDetector"]
 
-def risk_handshake():
-    import datetime, random
-    risk_coherence = round(random.uniform(0.91, 0.94), 3)
-    wl = round(random.uniform(0.9, 0.93), 3)
-    print(f"⚖️ Risk Layer Handshake — Coherence {risk_coherence} | WLWCI {wl} | {datetime.datetime.utcnow().isoformat()}Z")
-    return {"risk_coherence": risk_coherence, "wlwci": wl, "status": "ok"}
 
-_status = risk_handshake()
-print(f"✅ Adaptive Risk Layer Initialized — Coherence {_status['risk_coherence']}, WLWCI {_status['wlwci']}")
+def init_summary():
+    print("────────────────────────────────────────────")
+    print("⚖️ RISK LAYER INITIALIZED")
+    print(f"Version  : {__version__}")
+    print(f"Protocol : {__protocol__}")
+    print("Adaptive Risk Layer aktif — kesadaran risiko dinamis berjalan.")
+    print("────────────────────────────────────────────")
+
+
+if __name__ == "__main__":
+    init_summary()

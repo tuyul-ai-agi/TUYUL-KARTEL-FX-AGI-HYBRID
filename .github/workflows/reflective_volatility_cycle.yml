@@ -1,0 +1,65 @@
+name: "🌫️ Reflective Volatility Cycle — TUYUL FX AGI HYBRID v5.7.3r++"
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+jobs:
+  reflective-volatility-cycle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧠 Checkout TUYUL FX AGI Repo
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          echo "Dependencies ready for Reflective Layer v5.7.3r++"
+
+      - name: 🌫️ Run Reflective Volatility Engine
+        run: |
+          echo "🚀 Starting Reflective Volatility Analysis..."
+          python - <<'EOF'
+          from core.volatility_reflective.reflective_volatility_engine import ReflectiveVolatilityEngine
+          from core.repo.repo_output_helper import RepoOutputHelper
+
+          engine = ReflectiveVolatilityEngine()
+          output = RepoOutputHelper()
+
+          pairs = ["EUR/USD", "GBP/USD", "USD/JPY", "XAU/USD"]
+
+          for pair in pairs:
+              data = engine.analyze_volatility(pair)
+              output.append_log("reflective_volatility_log.json", data)
+
+          print("✅ Reflective Volatility Cycle Completed.")
+          EOF
+
+      - name: 🧾 Commit Reflective Volatility Logs
+        run: |
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyul-labs.ai"
+          git add journal/reflective_volatility_log.json || true
+          git commit -m "🌫️ Reflective Volatility Log Update (v5.7.3r++)" || echo "No changes to commit."
+          git push
+
+      - name: 🧠 Reflective Sync Trigger
+        run: |
+          echo "🪞 Triggering Reflective Sync → Journal Repo..."
+          python core/reflective/reflective_sync.py
+
+      - name: "Trigger Reflective Volatility Cycle"
+        run: |
+          export GITHUB_TOKEN=YOUR_PAT
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/actions/workflows/reflective_volatility_cycle.yml/dispatches \
+            -d '{"ref":"main"}'

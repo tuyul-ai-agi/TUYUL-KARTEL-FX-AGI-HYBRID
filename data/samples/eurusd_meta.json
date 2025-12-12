@@ -1,0 +1,15 @@
+{
+  "pair": "EUR/USD",
+  "source": "TwelveData API (Sample Stream)",
+  "interval": "1h",
+  "last_update": "2025-12-10T00:00:00Z",
+  "records": 5000,
+  "reflective_index": 0.934,
+  "vix_state": "Neutral",
+  "regime_state": "Tranquil",
+  "fusion_confidence": 0.91,
+  "bias": "Bullish Stable",
+  "integrity_index": 0.95,
+  "reflective_protocol": "RBP v2.2",
+  "description": "Primary FX dataset for TWMS and Reflex baseline calibration, integrated to Journal Vault reflective feedback loop."
+}

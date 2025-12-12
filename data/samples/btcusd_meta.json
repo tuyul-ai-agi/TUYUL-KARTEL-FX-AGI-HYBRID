@@ -1,0 +1,15 @@
+{
+  "pair": "BTC/USD",
+  "source": "Binance Historical Data API",
+  "interval": "1h",
+  "last_update": "2025-12-10T00:00:00Z",
+  "records": 5000,
+  "reflective_index": 0.921,
+  "vix_state": "Stressed",
+  "regime_state": "Expansion",
+  "fusion_confidence": 0.88,
+  "bias": "Bullish Volatile",
+  "integrity_index": 0.94,
+  "reflective_protocol": "RBP v2.2",
+  "description": "High-volatility crypto dataset for reflective fusion calibration and VDD validation in TUYUL FX AGI v5.7.3r++."
+}

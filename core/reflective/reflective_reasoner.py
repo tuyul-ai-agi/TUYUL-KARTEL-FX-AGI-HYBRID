@@ -1,3 +1,6 @@
+"""Reflective Reasoner — TUYUL FX AGI HYBRID v5.7.3r++."""
+
+from datetime import UTC, datetime
 """Reflective Reasoner — TUYUL FX AGI HYBRID v5.7.3r++"""
 """
 Reflective Reasoner — TUYUL FX AGI HYBRID v5.7.3r++
@@ -9,6 +12,7 @@ import random
 
 
 class ReflectiveReasoner:
+    """Melakukan reasoning kesadaran lintas layer (Fusion–Reflex–Vault)"""
     """Melakukan reasoning kesadaran lintas layer (Fusion–Reflex–Vault)."""
 
     def evaluate_cycle(self):
@@ -22,6 +26,9 @@ class ReflectiveReasoner:
             "🧠 Reflective Reasoner — CONF₁₂: "
             f"{conf}, WLWCI: {wlwci}, RCAdj: {rcadj}, Bias: {bias}"
         )
+        return {
+            "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+            "fusion_confidence": conf,
         timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
 
         return {

@@ -1,33 +1,34 @@
-"""
-🐺 Reflective Cycle – TUYUL FX AGI HYBRID
------------------------------------------
-Menjalankan siklus reflektif penuh:
-Fusion → Monte Carlo → Vault Sync → Logging
------------------------------------------
-"""
+"""Reflective Cycle – TUYUL FX AGI HYBRID."""
 
-from datetime import datetime
+from datetime import UTC, datetime
+
 from core.reflective.reflective_analyzer import analyze_reflective_layers
-from core.reflective.reflective_live_bridge import run_live_montecarlo
+from core.reflective.reflective_cycle_core import ReflectiveCycleCore
+from core.reflective.reflective_status import ReflectiveStatus
 from core.reflective.reflective_sync import sync_quad_repo
-from core.reflective.reflective_status import update_status_log
+
 
 def run_reflective_cycle(pair="XAUUSD", timeframe="H4"):
+    """Menjalankan siklus reflektif penuh dengan meta-konsolidasi."""
+
     print(f"🐺 [REFLECTIVE] Menjalankan siklus penuh untuk {pair} ({timeframe})")
 
-    fusion = analyze_reflective_layers(pair, timeframe)
-    monte = run_live_montecarlo(pair)
+    analysis = analyze_reflective_layers(pair, timeframe)
+    core_cycle = ReflectiveCycleCore().execute()
     sync_info = sync_quad_repo()
+    status_snapshot = ReflectiveStatus().get_status()
 
     reflective_state = {
-        **fusion,
-        **monte,
-        "integrity_index": sync_info["integrity_index"],
-        "reflective_sync": sync_info["reflective_sync"],
-        "timestamp": datetime.utcnow().isoformat()
+        **analysis,
+        **core_cycle,
+        "integrity_index": sync_info.get("integrity_index", core_cycle["integrity_index"]),
+        "reflective_sync": sync_info.get("reflective_sync", core_cycle["reflective_sync"]),
+        "regime_state": status_snapshot["regime_state"],
+        "coherence_score": status_snapshot["coherence_score"],
+        "status_timestamp": status_snapshot["timestamp"],
+        "cycle_timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
     }
 
-    update_status_log(reflective_state)
     print("✅ Siklus reflektif selesai Bossku. Gaskeun serigala! 🐺⚡")
     return reflective_state
 

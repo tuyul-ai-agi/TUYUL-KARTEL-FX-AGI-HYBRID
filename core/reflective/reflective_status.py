@@ -1,3 +1,6 @@
+"""Reflective Status — TUYUL FX AGI HYBRID v5.7.3r++."""
+
+from datetime import UTC, datetime
 """Reflective Status — TUYUL FX AGI HYBRID v5.7.3r++"""
 import datetime
 import random
@@ -30,6 +33,7 @@ import random
 
 
 class ReflectiveStatus:
+    """Menampilkan status real-time kesadaran reflektif"""
     """Menyediakan snapshot kesadaran reflektif runtime."""
 
     def get_status(self):
@@ -42,6 +46,8 @@ class ReflectiveStatus:
             "🪞 Reflective Status — Integrity "
             f"{integrity}, Coherence {coherence}, Drift {bias_drift}, Regime {regime}"
         )
+        return {
+            "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
 
         return {

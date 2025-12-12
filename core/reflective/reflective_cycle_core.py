@@ -1,3 +1,6 @@
+"""Reflective Cycle Core — TUYUL FX AGI HYBRID v5.7.3r++."""
+
+from datetime import UTC, datetime
 """Reflective Cycle Core — TUYUL FX AGI HYBRID v5.7.3r++"""
 import datetime
 import json
@@ -19,6 +22,7 @@ class ReflectiveCycleCore:
         self.log_path = "journal/reflective_cycle_core_log.json"
 
     def execute(self):
+        """Full meta-cycle"""
         """Jalankan meta-cycle penuh dan simpan hasilnya."""
 
         """Jalankan full meta-cycle reflektif dan tulis log hasil sinkronisasi."""
@@ -26,6 +30,10 @@ class ReflectiveCycleCore:
         reasoning = self.reasoner.evaluate_cycle()
         meta_core = self.mcp.reflective_compute(bridge_status, reasoning)
 
+        timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
+
+        result = {
+            "timestamp": timestamp,
         timestamp = datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
 
         result = {
@@ -41,6 +49,8 @@ class ReflectiveCycleCore:
         }
 
         os.makedirs("journal", exist_ok=True)
+        with open(self.log_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(result) + "\n")
         with open(self.log_path, "a", encoding="utf-8") as log_file:
             log_file.write(json.dumps(result) + "\n")
 

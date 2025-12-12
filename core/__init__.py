@@ -4,7 +4,7 @@ Core Package Init
 Inisialisasi seluruh submodul AGI Hybrid Core.
 """
 
-__version__ = "5.7.3"
+__version__ = "5.7.3r++"
 __author__ = "Tuyul Kartel AGI Core Team"
 
 from core.fushion.final_output_12_engine_v5_4_1 import FinalOutput12Engine
@@ -16,5 +16,3 @@ __all__ = [
     "ReflectiveCycleCore",
     "VDDHybridModule",
 ]
-__version__ = "5.7.3r++"
-__author__ = "Tuyul Kartel AGI Core Team"

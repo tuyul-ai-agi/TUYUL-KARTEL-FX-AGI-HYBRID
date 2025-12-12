@@ -15,6 +15,8 @@ from core.fusion import (
     ReflectiveFusionOrchestrator,
 )
 from core.reflex.reflex_core_v540 import ReflexCore
+from core.fushion.tuyul_fusion_engine_v540 import TuyulFusionEngine
+from core.reflective.reflective_cycle_core import ReflectiveCycleCore
 from core.reflective.reflective_cycle_core_v540 import ReflectiveCycleCore
 from core.vdd.vddhybrid_module_v540 import VDDHybridModule
 
@@ -44,6 +46,9 @@ class TuyulHybridPipeline:
         df = pd.DataFrame(feed["data"])
 
         reflex_out = self.reflex.analyze(df)
+        fusion_out = self.fusion.run(reflex_out["RLSI"] / 100, 0.9, df)
+        reflective_out = self.reflective.execute()
+        vdd_out = self.vdd.detect_regime(df, reflex_out["RLSI"], fusion_out["FusionConfidence"], 0.9)
         macro_data = self._macro_signature(df)
         fusion_state = self.orchestrator.run_fusion_cycle(reflex_out, macro_data)
         quantum_snapshot = self.quantum_adapter.analyze_coherence(

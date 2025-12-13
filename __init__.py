@@ -1,16 +1,21 @@
-"""
-TUYUL-KARTEL-FX-AGI-HYBRID
-===========================
+# ============================================================
+# 🧠 TUYUL FX AGI HYBRID v5.7.8
+# Reflective Quad Repo Intelligence Core
+# ============================================================
 
-Hybrid AGI Reflex–Fusion–Reflective System v5.4.x
+__version__ = "5.7.8"
+__codename__ = "Alpha Serigala Reflective Discipline"
+__bridge_protocol__ = "RBP_v2.2"
+__author__ = "TUYUL Labs – Reflective Systems Division"
+__system__ = "Adaptive Quad Repo Hybrid"
+__integrity__ = 0.93
 
-Mengorkestrasi tiga vault:
-- FX Vault (Reflex)
-- Kartel Vault (Smart Money)
-- Journal Vault (Reflective)
-
-Ekspos fungsi utama untuk pipeline hybrid dan sinkronisasi.
-"""
-
-__version__ = "5.4.1"
-__author__ = "Tuyul Kartel AGI Team"
+def system_manifest():
+    return {
+        "version": __version__,
+        "bridge_protocol": __bridge_protocol__,
+        "integrity": __integrity__,
+        "system": __system__,
+        "codename": __codename__,
+        "author": __author__,
+    }

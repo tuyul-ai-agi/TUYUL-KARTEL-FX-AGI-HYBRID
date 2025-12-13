@@ -1,5 +1,18 @@
-from ai_bridge.github_api_bridge import get_repo_data
+# ============================================================
+# 🧠 Test: Reflective Bridge API
+# ============================================================
 
-def test_github_bridge():
-    data = get_repo_data(owner="tjx578", repo="TUYUL-KARTEL-FX-AGI-HYBRID")
-    assert isinstance(data, dict)
+from friendly_lamp_x54j5rxggj9wfrwr_5526_app_github_dev__jit_plugin import (
+    gptBridge,
+)
+
+
+def test_reflective_bridge():
+    """Uji komunikasi GPT Bridge antar layer reflektif."""
+    result = gptBridge(
+        {"prompt": "analyze EURUSD fusion bias", "layer": "Fusion", "model": "GPT-5"}
+    )
+    assert "conf12" in result or "wlwci" in result, (
+        "❌ Bridge tidak mengembalikan data reflektif!"
+    )
+    print("✅ GPT Bridge test OK — Response:", result)

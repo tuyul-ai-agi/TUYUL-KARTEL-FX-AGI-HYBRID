@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "version": "5.7.8",
+    "bridge_protocol": "RBP_v2.2",
+    "repo_type": "FusionReflective",
+    "last_update": "2025-12-13T09:00:00Z"
+  },
+  "fusion_output": {
+    "pair": "XAUUSD",
+    "conf12": 0.924,
+    "wlwci": 0.911,
+    "rcadj": 0.79,
+    "integrity_index": 0.922,
+    "bias": "Bullish continuation",
+    "regime_state": "Expansion",
+    "fusion_confidence": 0.90,
+    "reflective_sync": "Completed"
+  },
+  "source": "Fusion Layer–12",
+  "notes": "Fusion sinkron dengan Reflective Bridge dan Journal Repo"
+}

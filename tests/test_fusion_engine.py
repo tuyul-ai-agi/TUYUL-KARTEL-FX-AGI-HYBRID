@@ -1,13 +1,17 @@
-import pytest
+# ============================================================
+# 🧠 Test: Fusion Engine Reflective v5.7.8
+# ============================================================
 
-from core.fusion.fusion_confidence_core import FusionConfidenceCore
+from friendly_lamp_x54j5rxggj9wfrwr_5526_app_github_dev__jit_plugin import (
+    fusionAnalyze,
+)
 
 
-def test_confidence_metrics_structure():
-    core = FusionConfidenceCore()
-    metrics = core.compute([0.92, 0.9, 0.08])
-
-    assert 0 <= metrics["conf12"] <= 1
-    assert "reflective_state" in metrics
-    assert metrics["wlwci"] >= 0
-    assert metrics["timestamp"].endswith("+00:00")
+def test_fusion_engine_reflective():
+    """Uji sinkronisasi lintas-layer Fusion–Reflective."""
+    fusion = fusionAnalyze({"pair": "XAUUSD", "timeframe": "H4"})
+    assert fusion["conf12"] >= 0.9, f"❌ CONF₁₂ terlalu rendah: {fusion['conf12']}"
+    assert fusion["wlwci"] >= 0.9, f"❌ WLWCI tidak stabil: {fusion['wlwci']}"
+    print(
+        f"✅ Fusion Engine test OK — CONF₁₂={fusion['conf12']} | WLWCI={fusion['wlwci']}"
+    )

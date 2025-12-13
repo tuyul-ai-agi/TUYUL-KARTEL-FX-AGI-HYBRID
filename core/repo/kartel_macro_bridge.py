@@ -1,3 +1,4 @@
+"""Kartel Macro Bridge utilities for reflective macro context retrieval."""
 # ===============================================================
 # 🌍 Kartel Macro Bridge – Integrasi Data Makro Global
 # TUYUL FX AGI v5.7.3r++ – Adaptive Reflective Macro Feed
@@ -17,6 +18,14 @@ from typing import Any, Dict
 def get_macro_context(
     repo_path: str = "../repos/kartel_repo/macro_context_cache.json",
 ) -> Dict[str, Any]:
+    """
+    Retrieve macro data from Kartel Repo for Fusion Confidence Engine.
+
+    Args:
+        repo_path: Path to the macro context cache JSON file.
+
+    Returns:
+        Mapping with VIX, RVI, GlobalRegime, integrity_index, and timestamp fields.
     """Ambil data makro reflektif dengan fallback adaptif.
 
     Args:
@@ -28,6 +37,18 @@ def get_macro_context(
 
     try:
         if not os.path.exists(repo_path):
+            raise FileNotFoundError(
+                "Macro context cache belum tersedia di Kartel Repo."
+            )
+
+        with open(repo_path, "r", encoding="utf-8") as cache:
+            macro = json.load(cache)
+
+        vix = float(macro.get("VIX", 21.7))
+        rvi = float(macro.get("RVI", 0.43))
+        regime = macro.get("GlobalRegime", "Neutral")
+
+        integrity_index = 1.0 if (0 < vix < 50 and 0 < rvi < 1) else 0.85
             raise FileNotFoundError("Macro cache not found")
 
         with open(repo_path, "r", encoding="utf-8") as file:
@@ -45,6 +66,19 @@ def get_macro_context(
             "RVI": round(rvi, 3),
             "GlobalRegime": regime,
             "integrity_index": round(integrity_index, 3),
+            "reflective_sync_status": "OK",
+        }
+
+    except Exception as exc:  # noqa: BLE001
+        print(f"[WARN] Kartel Macro Bridge fallback aktif: {exc}")
+        return {
+            "timestamp": datetime.utcnow().isoformat(),
+            "VIX": 23.8,
+            "RVI": 0.38,
+            "GlobalRegime": "Tranquil",
+            "integrity_index": 0.82,
+            "reflective_sync_status": "FALLBACK",
+        }
         }
 
     except Exception as exc:

@@ -1,13 +1,12 @@
-"""
-Wolf Reflective Loop
---------------------
+"""Wolf Reflective Loop.
+
 Siklus reflektif otomatis untuk memperbarui reasoning dan bias AGI Hybrid.
 """
 
 from core.journal.journal_writer_v540 import JournalWriter
-from pipeline.quad_repo_sync_loop import quad_repo_sync_loop
 from core.reflective.relearning_cycle import RelearningCycle
-from pipeline.quad_repo_sync_loop import QuadRepoSyncLoop
+from pipeline.quad_repo_sync_loop import QuadRepoSyncLoop, quad_repo_sync_loop
+
 
 class WolfReflectiveLoop:
     def __init__(self):
@@ -15,22 +14,9 @@ class WolfReflectiveLoop:
         self.relearn = RelearningCycle()
         self.journal = JournalWriter()
 
-    def run(self):
+    def run(self) -> dict:
         sync_result = self.repo_sync.run()
         result = self.relearn.execute()
-        self.journal.write_entry({
-            "type": "reflective_update",
-            "result": result
-        })
-        return {"status": "completed", "details": result}
-
-    def start_quad_repo_sync(self, interval_minutes=10):
-        quad_repo_sync_loop(interval_minutes=interval_minutes)
-
-
-def wolf_reflective_loop(interval_minutes=10):
-    print("🐺 Starting WOLF Reflective Supervisor Loop v5.7.8...")
-    quad_repo_sync_loop(interval_minutes=interval_minutes)
         self.journal.write_entry(
             {
                 "type": "reflective_update",
@@ -39,3 +25,11 @@ def wolf_reflective_loop(interval_minutes=10):
             }
         )
         return {"status": "completed", "sync": sync_result, "details": result}
+
+    def start_quad_repo_sync(self, interval_minutes: int = 10) -> None:
+        quad_repo_sync_loop(interval_minutes=interval_minutes)
+
+
+def wolf_reflective_loop(interval_minutes: int = 10) -> None:
+    print("🐺 Starting WOLF Reflective Supervisor Loop v5.7.8...")
+    quad_repo_sync_loop(interval_minutes=interval_minutes)

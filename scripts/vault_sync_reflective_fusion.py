@@ -4,11 +4,11 @@ Repo Sync Reflective Fusion
 Sinkronisasi repos dan jalankan refleksi AGI Hybrid sekaligus.
 """
 
-from pipeline.tri_vault_sync_loop import TriRepoSyncLoop
+from pipeline.quad_repo_sync_loop import QuadRepoSyncLoop
 from pipeline.wolf_reflective_loop import WolfReflectiveLoop
 
 if __name__ == "__main__":
-    sync = TriRepoSyncLoop()
+    sync = QuadRepoSyncLoop()
     reflective = WolfReflectiveLoop()
     sync_result = sync.run()
     reflection = reflective.run()

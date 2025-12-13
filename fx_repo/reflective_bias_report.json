@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "version": "5.7.8",
+    "bridge_protocol": "RBP_v2.2",
+    "repo_type": "ReflectiveBiasRepo",
+    "generated": "2025-12-13T09:30:00Z"
+  },
+  "pair": "XAUUSD",
+  "twms_bias": "Bullish",
+  "fusion_conf12": 0.923,
+  "reflective_integrity": 0.921,
+  "bias_summary": "Strong bullish continuation confirmed by reflective coherence > 0.9",
+  "global_regime": "Tranquil",
+  "fear_greed_index": "Greed",
+  "vix_level": 14.8,
+  "rvi": 0.93,
+  "reflection_score": 0.94,
+  "notes": "Bias valid untuk strategi Buy-the-Dip pada sesi London–NY"
+}

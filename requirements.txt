@@ -1,33 +1,10 @@
-# ============================================================
-# 🧠 TUYUL FX AGI HYBRID v5.7.3r++ Dependencies
-# ============================================================
+pandas>=2.2.0
+numpy>=1.26.0
+matplotlib>=3.8.0
+requests>=2.31.0
+pyyaml>=6.0
+pytest>=7.4.0
+streamlit>=1.30.0
+openai>=1.11.0
+plotly>=5.18.0
 
-# Core Stack
-httpx==0.27.0
-requests==2.32.3
-PyYAML==6.0.2
-pandas==2.2.3
-rich==13.8.0
-
-# API Framework
-fastapi==0.115.0
-uvicorn==0.30.1
-prometheus-client==0.21.0
-pydantic==2.8.2
-aiofiles==23.2.1
-
-# ML & Math
-numpy==2.1.2
-scipy==1.13.0
-
-# Security / Auth
-python-dotenv==1.0.1
-
-# Monitoring & Logging
-loguru==0.7.3
-
-# Model persistence
-joblib==1.4.2
-
-# Monte Carlo & Simulation
-simpy==4.1.1

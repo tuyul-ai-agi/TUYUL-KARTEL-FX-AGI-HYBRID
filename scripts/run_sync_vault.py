@@ -12,3 +12,10 @@ def run_repo_sync():
 
 if __name__ == "__main__":
     run_repo_sync()
+from pipeline.quad_repo_sync_loop import QuadRepoSyncLoop
+
+if __name__ == "__main__":
+    sync = QuadRepoSyncLoop()
+    result = sync.run()
+    print("[SYNC RESULT]")
+    print(result)

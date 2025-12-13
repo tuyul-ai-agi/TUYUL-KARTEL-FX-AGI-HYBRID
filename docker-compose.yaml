@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  tuyul_reflective_core:
+  tuyul_core:
     build:
       context: .
       dockerfile: dockerfile
@@ -10,18 +10,19 @@ services:
     environment:
       - MODE=reflective
       - VERSION=5.7.8
-      - BRIDGE=RBP_v2.2
+      - BRIDGE_PROTOCOL=RBP_v2.2
     volumes:
       - ./repos:/app/repos
       - ./logs:/app/logs
     command: ["python", "main.py"]
 
-  tuyul_reflective_dashboard:
+  reflective_dashboard:
     image: streamlit:latest
-    container_name: tuyul_dashboard
+    container_name: reflective_dashboard
+    restart: unless-stopped
     ports:
       - "8501:8501"
     volumes:
       - ./repos:/app/repos
       - ./tests:/app/tests
-    command: ["streamlit", "run", "reflective_test_dashboard.py"]
+    command: ["streamlit", "run", "reflective_dashboard.py"]

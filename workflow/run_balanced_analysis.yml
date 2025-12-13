@@ -1,10 +1,10 @@
-name: 🧠 Run TUYUL FX 5.7.8 Balanced Analysis
+name: 🧠 Run TUYUL FX 5.7.8 Balanced Analysis (Quad Repo Reflective)
 
 on:
   workflow_dispatch:
     inputs:
       pair:
-        description: "Currency pair to analyze"
+        description: "Currency pair to analyze (e.g. XAUUSD, EURUSD)"
         required: true
       timeframe:
         description: "Timeframe (H1/H4/D1/W1)"
@@ -13,32 +13,73 @@ on:
 jobs:
   run-balanced:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🔹 Checkout Hybrid Repo
+      # ============================================================
+      # 1️⃣ Checkout & Environment Preparation
+      # ============================================================
+      - name: 🔹 Checkout Hybrid Reflective Repo
         uses: actions/checkout@v4
 
-      - name: ⚙️ Initialize Balanced Reflex–Fusion–Reflective Cycle
+      - name: ⚙️ Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
         run: |
-          echo "Starting Balanced Cycle v5.7.8..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ============================================================
+      # 2️⃣ Initialize Reflective Cycle
+      # ============================================================
+      - name: 🧠 Initialize Balanced Reflex–Fusion–Reflective Cycle
+        run: |
+          echo "🚀 Starting Balanced Cycle v5.7.8 (Quad Repo Reflective)..."
           python scripts/init_balanced_pipeline.py --pair ${{ inputs.pair }} --tf ${{ inputs.timeframe }}
 
+      # ============================================================
+      # 3️⃣ Reflex + Fusion Sync
+      # ============================================================
       - name: 🔁 Run Reflex & Fusion Rebalance
         run: |
           python scripts/reflex_fusion_sync.py --pair ${{ inputs.pair }} --sync true
 
-      - name: 🔄 Reflective Feedback Injection
+      # ============================================================
+      # 4️⃣ Reflective Feedback & Meta Injection
+      # ============================================================
+      - name: 🔄 Reflective Feedback Injection (Layer–12 Refinement)
         run: |
-          python scripts/reflective_feedback.py --pair ${{ inputs.pair }}
+          python tools/layer12_refinement_injector.py --pair ${{ inputs.pair }}
 
-      - name: 📊 Update Risk RCAdj & Integrity Audit
+      # ============================================================
+      # 5️⃣ Adaptive Risk + Integrity Check
+      # ============================================================
+      - name: 📊 Update Adaptive Risk & Integrity Audit
         run: |
           python scripts/adaptive_risk_update.py --pair ${{ inputs.pair }}
-          python scripts/integrity_proxy_check.py --pair ${{ inputs.pair }}
+          python tools/check_quad_repo_sync.py --pair ${{ inputs.pair }}
 
-      - name: 🧩 Log to Journal Vault
+      # ============================================================
+      # 6️⃣ Repo Logging & Reflective Journal Sync
+      # ============================================================
+      - name: 🧩 Log to Journal Repo (Reflective Mode)
         run: |
-          python scripts/journal_sync.py --pair ${{ inputs.pair }}
+          python pipeline/quad_repo_sync_handler.py
+          python tools/hybrid_balance_logger.py
+
+      # ============================================================
+      # 7️⃣ Final Report & Integrity Manifest
+      # ============================================================
+      - name: 🧾 Generate Reflective Balance Report
+        run: |
+          python tools/report_generator.py
+          python reflective_audit_reporter.py
+          python -m tests.test_quad_repo_sync
 
       - name: ✅ Finalize Balanced Report
         run: |
           echo "Fusion–Reflective Balance Complete ✅"
+          echo "Pair: ${{ inputs.pair }} | TF: ${{ inputs.timeframe }}"
+          echo "Integrity & Reflection logs saved to repos/fx_repo/"

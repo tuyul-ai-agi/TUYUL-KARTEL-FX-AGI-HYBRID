@@ -1,138 +1,36 @@
-# Byte-compiled / optimized / DLL files
+# ============================================================
+# 🧠 TUYUL FX AGI v5.7.8 – .gitignore
+# ============================================================
+
+# 🧩 Python
 __pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-Pipfile.lock
-
-# PEP 582
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+*.pyc
+*.pyo
+*.pyd
 .env
 .venv
-env/
 venv/
-ENV/
-env.bak/
-venv.bak/
+build/
+dist/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# 🧾 Logs & Cache
+logs/
+*.log
+*.tmp
+*.cache
 
-# Rope project settings
-.ropeproject
+# ⚙️ Reflective Runtime
+journal_repo/
+repos/fx_repo/live_feed.json
+repos/fx_repo/repo_integrity_manifest.json
+tests/__pycache__/
 
-# mkdocs documentation
-/site
+# 🧠 Legacy Vault (deprecated)
+vaults/
+vault_backup/
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# IDEs
+# 🧩 IDE Config
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
-
-# OS
 .DS_Store
-Thumbs.db
-
-# Temporary files
-/tmp/
-*.tmp

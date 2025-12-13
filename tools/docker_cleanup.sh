@@ -1,13 +1,10 @@
 #!/bin/bash
-# Docker Cleanup Utility
-# ----------------------
-# Membersihkan container, image, dan volume lama dari environment AGI Hybrid.
+# ============================================================
+# 🧠 TUYUL FX AGI – Docker Cleanup Utility
+# ============================================================
 
-echo "🧹 Cleaning up old Docker containers and images..."
-
+echo "🧹 Membersihkan container & image lama..."
 docker container prune -f
 docker image prune -a -f
 docker volume prune -f
-docker system prune -a -f --volumes
-
-echo "✅ Docker cleanup completed."
+echo "✅ Docker environment TUYUL FX AGI dibersihkan."

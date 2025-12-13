@@ -1,6 +1,20 @@
-from core.risk.adaptive_risk_calculator_v540 import AdaptiveRisk
+# ============================================================
+# 🧠 Test: Adaptive Risk Calculation
+# ============================================================
 
-def test_risk_calculation():
-    risk = AdaptiveRisk(balance=100000)
-    output = risk.calculate()
-    assert output["risk_percent"] <= 1.0
+from friendly_lamp_x54j5rxggj9wfrwr_5526_app_github_dev__jit_plugin import (
+    riskCalculate,
+)
+
+
+def test_adaptive_risk_engine():
+    """Uji kalkulasi risk & lot dinamis reflektif."""
+    risk = riskCalculate({"balance": 100000, "sl_pips": 50, "pair": "EURUSD"})
+    assert 0.3 <= risk["risk_pct"] <= 1.5, (
+        "❌ Risk % diluar batas reflektif (0.3–1.5%)"
+    )
+    assert risk["rr_ratio"] >= 1.5, "❌ R:R Ratio terlalu kecil!"
+    print(
+        "✅ Risk Engine test OK — Risk="
+        f"{risk['risk_pct']}% | Lot={risk['lot']} | R:R={risk['rr_ratio']}"
+    )

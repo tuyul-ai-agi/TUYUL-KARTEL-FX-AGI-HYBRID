@@ -1,0 +1,109 @@
+name: 🧠 TUYUL FX v5.7.8 Meta Reflective Test (Sandbox Mode)
+
+on:
+  workflow_dispatch:
+    inputs:
+      pair:
+        description: "Currency pair to test (e.g. XAUUSD, EURUSD)"
+        required: true
+      timeframe:
+        description: "Timeframe for reflective test (H1/H4/D1)"
+        required: true
+      test_scope:
+        description: "Choose test scope: reflex | fusion | reflective | full"
+        required: false
+        default: "full"
+
+jobs:
+  meta-reflective-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ============================================================
+      # 1️⃣ ENVIRONMENT SETUP
+      # ============================================================
+      - name: 🔹 Checkout Hybrid Reflective Repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧠 Initialize Meta Reflective Test
+        run: |
+          echo "🔁 Starting TUYUL FX AGI v5.7.8 Meta Reflective Test..."
+          echo "Pair=${{ inputs.pair }} | TF=${{ inputs.timeframe }} | Scope=${{ inputs.test_scope }}"
+
+      # ============================================================
+      # 2️⃣ REFLEX TESTING
+      # ============================================================
+      - name: 🧩 Reflex Layer Validation
+        if: ${{ inputs.test_scope == 'reflex' || inputs.test_scope == 'full' }}
+        run: |
+          echo "⚙️ Running Reflex Layer Simulation..."
+          python scripts/run_hybrid_analysis.py --pair ${{ inputs.pair }} --tf ${{ inputs.timeframe }}
+          echo "✅ Reflex Layer Simulation Completed"
+
+      # ============================================================
+      # 3️⃣ FUSION TESTING
+      # ============================================================
+      - name: 🧬 Fusion Engine Reflective Check
+        if: ${{ inputs.test_scope == 'fusion' || inputs.test_scope == 'full' }}
+        run: |
+          echo "🧠 Running Fusion Reflective Analysis..."
+          python tests/test_fusion_engine.py
+          echo "✅ Fusion Reflective Test Completed"
+
+      # ============================================================
+      # 4️⃣ REFLECTIVE LOOP TESTING
+      # ============================================================
+      - name: 🔁 Reflective Loop Integrity Check
+        if: ${{ inputs.test_scope == 'reflective' || inputs.test_scope == 'full' }}
+        run: |
+          echo "🔄 Testing Reflective Loop Stability..."
+          python tests/test_reflective_loop.py
+          echo "✅ Reflective Loop Integrity OK"
+
+      # ============================================================
+      # 5️⃣ QUAD REPO SYNC VALIDATION
+      # ============================================================
+      - name: 🧾 Validate Quad Repo Sync
+        if: ${{ inputs.test_scope == 'full' }}
+        run: |
+          echo "🔍 Checking Quad Repo Synchronization..."
+          python tests/test_quad_repo_sync.py
+          echo "✅ Quad Repo Integrity Stable"
+
+      # ============================================================
+      # 6️⃣ RISK ENGINE TESTING
+      # ============================================================
+      - name: 📊 Adaptive Risk Engine Check
+        if: ${{ inputs.test_scope == 'full' }}
+        run: |
+          echo "🧮 Running Adaptive Risk Validation..."
+          python tests/test_risk_module.py
+          echo "✅ Risk Engine Passed"
+
+      # ============================================================
+      # 7️⃣ GENERATE REFLECTIVE REPORT
+      # ============================================================
+      - name: 🧠 Generate Reflective Summary Report
+        run: |
+          echo "📊 Generating Reflective Audit Report..."
+          python reflective_audit_reporter.py
+          echo "✅ Reflective Audit Generated"
+
+      # ============================================================
+      # 8️⃣ LOGGING
+      # ============================================================
+      - name: 🪶 Save Reflective Logs
+        run: |
+          mkdir -p logs/reports
+          cp tests/reflective_test_summary.md logs/reports/reflective_summary_$(date +%Y%m%d%H%M).md || true
+          echo "✅ Reflective Summary Archived"

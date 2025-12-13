@@ -10,6 +10,10 @@ import json
 import os
 
 
+__protocol__ = "RBP_v2.2"
+__bot__ = "TUYULBOT-TJX"
+
+
 def run_reflective_montecarlo(bias="Bullish", conf12=0.92, wlwci=0.90):
     """Simulasi reflektif berbasis CONF₁₂ dan WLWCI."""
     base_prob = conf12 * wlwci
@@ -24,11 +28,13 @@ def run_reflective_montecarlo(bias="Bullish", conf12=0.92, wlwci=0.90):
         "sl_probability": sl_prob,
         "drawdown": round(random.uniform(-2.0, -1.0), 2),
         "distribution": "Bullish Extension" if bias.lower() == "bullish" else "Bearish Retracement",
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "reflective_bridge": __protocol__,
+        "bot": __bot__,
     }
 
     os.makedirs("journal_repo", exist_ok=True)
-    with open("journal_repo/montecarlo_local.json", "w", encoding="utf-8") as f:
+    with open("journal_repo/montecarlo_reflective.json", "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2)
 
     print(f"🎲 MonteCarlo Reflective → Bias={bias} | Win={win_prob}% | SL={sl_prob}%")

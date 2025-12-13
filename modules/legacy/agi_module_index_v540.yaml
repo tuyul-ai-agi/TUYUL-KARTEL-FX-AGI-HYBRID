@@ -1,0 +1,10 @@
+# AGI Module Index v5.4.0 (archived)
+modules:
+  - reflex_core_v540
+  - tuyul_fusion_engine_v540
+  - reflective_reasoner
+  - vddhybrid_module_v540
+  - adaptive_risk_calculator_v540
+  - vault_integrity_checker
+  - bridge_module_v540
+  - vdd_signal_broadcat

@@ -1,4 +1,13 @@
 """Kartel Macro Bridge utilities for reflective macro context retrieval."""
+# ===============================================================
+# 🌍 Kartel Macro Bridge – Integrasi Data Makro Global
+# TUYUL FX AGI v5.7.3r++ – Adaptive Reflective Macro Feed
+# ===============================================================
+# Layer: Fusion Reflective (L11–L12)
+# Purpose:
+#   Mengambil dan menyelaraskan data makro (VIX, RVI, Regime)
+#   dari Kartel Repo untuk integrasi CONF₁₂ dan RCAdj
+# ===============================================================
 
 import json
 import os
@@ -17,6 +26,13 @@ def get_macro_context(
 
     Returns:
         Mapping with VIX, RVI, GlobalRegime, integrity_index, and timestamp fields.
+    """Ambil data makro reflektif dengan fallback adaptif.
+
+    Args:
+        repo_path: Lokasi cache makro dari Kartel Repo.
+
+    Returns:
+        Dict berisi VIX, RVI, GlobalRegime, timestamp, dan integrity_index.
     """
 
     try:
@@ -33,6 +49,16 @@ def get_macro_context(
         regime = macro.get("GlobalRegime", "Neutral")
 
         integrity_index = 1.0 if (0 < vix < 50 and 0 < rvi < 1) else 0.85
+            raise FileNotFoundError("Macro cache not found")
+
+        with open(repo_path, "r", encoding="utf-8") as file:
+            macro = json.load(file)
+
+        vix = float(macro.get("VIX", 22.0))
+        rvi = float(macro.get("RVI", 0.45))
+        regime = macro.get("GlobalRegime", "Neutral")
+
+        integrity_index = 1.0 if all([vix, rvi, regime]) else 0.85
 
         return {
             "timestamp": datetime.utcnow().isoformat(),
@@ -53,3 +79,15 @@ def get_macro_context(
             "integrity_index": 0.82,
             "reflective_sync_status": "FALLBACK",
         }
+        }
+
+    except Exception as exc:
+        fallback = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "VIX": 24.2,
+            "RVI": 0.38,
+            "GlobalRegime": "Tranquil",
+            "integrity_index": 0.82,
+        }
+        print(f"[WARN] Kartel Macro Bridge fallback aktif: {exc}")
+        return fallback

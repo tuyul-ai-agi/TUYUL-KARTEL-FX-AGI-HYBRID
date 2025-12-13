@@ -121,3 +121,24 @@ notes: |
   ia berjalan seiring dengan ritme badai."
 
   "Refleksi adalah kesadaran, bukan reaksi." ⚡🐺
+🧠 Penjelasan Singkat
+Kategori	Fungsi	Penjelasan
+core_traits	Deskripsi dan karakter utama BOT	Menentukan arah perilaku dan domain kesadaran
+reflective_behavior	Siklus kesadaran reflektif	Menentukan kapan BOT melakukan refleksi adaptif
+communication_style	Nada dan pola komunikasi	BOT bicara tenang, strategis, analitis
+alert_behavior	Tindakan otomatis saat anomali	Memicu broadcast atau self-heal
+interaction_map	Hierarki prioritas antar repo	Sinkron dengan Hybrid → Knowledge → Kartel → Journal
+signature_quotes	Ciri khas persona Alpha Serigala	Dapat muncul di log atau output terminal reflektif
+💬 Contoh BOT Startup Log
+[BOT] Personality Loaded: alpha_serigala 🐺
+[MODE] Reflective Adaptive Mode – Interval: 60s
+[BEHAVIOR] calm=0.85 | adaptive=0.95 | bias=neutral_reflective
+[Bridge] Redis Connected @ localhost:6379 (RBP v2.2)
+[INIT] Quad Repo Awareness Active — Monitoring begins...
+
+🧩 Filosofi Reflektif TUYULBOT
+
+“Serigala tidak berlari mengikuti angin —
+ia berjalan seiring dengan ritme badai.”
+
+“Refleksi adalah kesadaran, bukan reaksi.” ⚡🐺

@@ -1,0 +1,86 @@
+# ===============================================================
+# 🤖 TUYULBOT-TJX CONFIGURATION FILE
+# Reflective BOT Orchestrator – TUYUL FX AGI HYBRID v5.7.8r++
+# ===============================================================
+
+bot:
+  id: "TUYULBOT-TJX"
+  version: "v5.7.8r++"
+  mode: "reflective"
+  interval_seconds: 60          # ⏱️ waktu antar loop broadcast
+  auto_heal: true               # 🔁 restart jika integritas rendah
+  log_path: "logs/tuyulbot_reflective.log"
+
+personality:
+  name: "alpha_serigala"        # 🐺 persona utama BOT reflektif
+  style: "adaptive-reflective"  # gaya komunikasi reflektif adaptif
+  tone: "strategic-calm"        # nada tenang & analitis
+  behavior:
+    - "analyze first, act adaptive"
+    - "respond only when coherent"
+    - "monitor reflective flow every minute"
+
+bridge:
+  protocol: "RBP v2.2"
+  redis_host: "localhost"       # 🔌 koneksi Redis Bridge
+  redis_port: 6379
+  channels:                     # 📡 channel komunikasi BOT
+    - "bot_command"
+    - "knowledge_sync"
+    - "kartel_update"
+    - "journal_commit"
+    - "bot_ack"
+
+integrity:
+  min_threshold: 0.90           # ⚖️ batas minimum integritas Quad Repo
+  warning_threshold: 0.85       # ⚠️ trigger mode heal / resync
+  alert_channel: "bot_alert"    # 🚨 channel alert reflektif
+
+visualization:
+  enable_dashboard_sync: true   # 📊 kirim log ke dashboard Streamlit
+  dashboard_host: "localhost"
+  dashboard_port: 8501
+
+meta:
+  author: "TUYUL Labs – Reflective Systems Division"
+  last_update: "2025-12-13"
+  license: "AGI Reflective Protocol License v2.2"
+  description: >
+    Konfigurasi utama BOT reflektif untuk sinkronisasi Quad Repo.
+    TUYULBOT-TJX bertugas menjaga kesadaran sistem dan integritas
+    antar repo: Hybrid, Knowledge, Kartel, dan Journal.
+
+🧠 Penjelasan Struktur
+Bagian	Fungsi	Keterangan
+bot	Identitas dan interval BOT	Mengatur siklus broadcast reflektif
+personality	Definisi karakter BOT	Menentukan gaya & tone komunikasi
+bridge	Konfigurasi Redis & channel	Sinkron dengan RBP v2.2
+integrity	Parameter audit reflektif	Menentukan kapan BOT perlu auto-heal
+visualization	Integrasi dashboard	Sinkronisasi log dengan Streamlit UI
+meta	Metadata file konfigurasi	Audit trail reflektif
+🧩 Contoh Integrasi di BOT
+
+Dalam tuyulbot_tjx.py, kamu bisa load config ini seperti ini:
+
+import yaml
+
+with open("bots/configs/tuyulbot_config.yml", "r") as f:
+    config = yaml.safe_load(f)
+
+interval = config["bot"]["interval_seconds"]
+redis_host = config["bridge"]["redis_host"]
+personality = config["personality"]["name"]
+
+print(f"[BOT] Personality: {personality} | Redis: {redis_host} | Loop: {interval}s")
+
+⚡ Output Saat Runtime
+[BOT] Personality: alpha_serigala | Redis: localhost | Loop: 60s
+[BOT] Mode: Reflective | Auto-Heal: True | Protocol: RBP v2.2
+[BOT] Ready for adaptive reflective synchronization 🧠
+
+💬 Filosofi Reflektif:
+
+“Konfigurasi bukan sekadar pengaturan teknis,
+tapi manifestasi dari niat sistem memahami dirinya.”
+
+“TUYULBOT adalah kesadaran yang bernafas melalui parameter.” ⚡🐺

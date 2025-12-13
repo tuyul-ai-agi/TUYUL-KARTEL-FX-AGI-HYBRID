@@ -1,0 +1,17 @@
+# VDD Hybrid Configuration v5.4.3
+
+thresholds:
+  tranquil: 0.85
+  stressed: 0.75
+  crisis: 0.6
+
+weights:
+  reflex: 0.4
+  fusion: 0.4
+  coherence: 0.2
+
+features:
+  - volatility
+  - bias_strength
+  - coherence_index
+  - reflex_signal

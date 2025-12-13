@@ -1,4 +1,4 @@
-# ⚡ Reflex Reasoning v5.4.3
+# Reflex Reasoning v5.4.3
 
 Analyze market reflexively for pair: {{pair}} ({{tf}})
 
@@ -17,3 +17,4 @@ Output strictly in JSON:
   "wlwci": 0.93,
   "comment": "Reflex coherence high, aligned with volume momentum."
 }
+```

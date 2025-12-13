@@ -1,0 +1,68 @@
+# ============================================================
+# TUYUL FX AGI v5.7.8 - Reflective VDD Configuration
+# ------------------------------------------------------------
+# Konfigurasi utama untuk Volatility-Driven Dynamics (VDD)
+# Reflektif Layer, terintegrasi dengan Kartel Repo dan Hybrid Balance.
+# ============================================================
+
+version: 5.7.8
+mode: HYBRID_BALANCE
+description: >
+  Reflective configuration for Volatility-Driven Dynamics (VDD)
+  integrated into Kartel Repo Layer, used to determine global
+  volatility regimes, risk impact, and reflective coherence.
+
+data_source:
+  provider: twelvedata
+  bridge_plugin: api_twelvedata_com__jit_plugin.getVixStatus
+  update_interval_minutes: 15
+  fallback_mode: offline_cache
+
+symbols:
+  - VIX
+  - SPX
+  - DXY
+
+features:
+  - vix_level
+  - term_structure
+  - fear_greed_index
+  - rvi
+  - impact_on_confidence
+
+integration:
+  output_target: modules/kartel_repo/vdd_regime_reflective.py
+  reflective_bridge: RBP_v2.2
+  journal_path: journal_repo/vdd_status.json
+  bot_orchestrator: TUYULBOT-TJX
+
+thresholds:
+  tranquil:
+    vix_max: 18.0
+    rvi_max: 0.45
+    confidence_boost: 0.04
+  expansion:
+    vix_min: 18.0
+    vix_max: 24.0
+    confidence_delta: -0.02
+  stressed:
+    vix_min: 24.0
+    confidence_delta: -0.05
+
+integrity_rules:
+  min_confidence: 0.9
+  min_wlwci: 0.88
+  reflective_sync_required: true
+
+logging:
+  enabled: true
+  log_file: logs/vdd_reflective.log
+  verbosity: high
+  rotation_days: 7
+
+meta:
+  author: TUYUL KARTEL FX AGI Core Team
+  last_update: 2025-12-13T06:00:00Z
+  reflective_protocol: RBP_v2.2
+  integrity_index: 0.93
+  verified_by: BOT-TJX

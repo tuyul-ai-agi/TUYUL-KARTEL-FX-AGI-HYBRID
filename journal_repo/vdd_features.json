@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-12-13T00:11:11.694822Z",
+  "vix_level": 17.4,
+  "rvi": 0.75,
+  "fear_greed_index": 56,
+  "term_structure": "Contango",
+  "reflective_bridge": "RBP_v2.2",
+  "bot": "TUYULBOT-TJX"
+}

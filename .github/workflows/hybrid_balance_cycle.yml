@@ -1,0 +1,64 @@
+name: TUYUL FX HYBRID BALANCE CYCLE v5.7.8
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  hybrid_balance_cycle:
+    runs-on: ubuntu-latest
+
+    env:
+      HYBRID_API_TOKEN: ${{ secrets.HYBRID_API_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REFLECTIVE_MODE: "HYBRID_BALANCE"
+      BALANCE_THRESHOLD: "0.9"
+      VIX_THRESHOLD: "30"
+      ICI_MIN: "0.85"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+          pip install httpx pyyaml requests
+
+      - name: Run Hybrid Balance Engine
+        run: |
+          echo "Running TUYUL FX Hybrid Balance Cycle..."
+          python3 tools/hybrid_balance_controller.py
+
+      - name: Save Balance Log to Journal Repo
+        run: |
+          mkdir -p journal_repo/logs
+          python3 tools/hybrid_balance_logger.py
+
+      - name: Reflective Sync to Vault (Quad Repo)
+        run: |
+          echo "Syncing Reflective State..."
+          python3 tools/quad_repo_sync.py
+
+      - name: Update Reflective Metrics
+        run: |
+          echo "Recalculating CONF12, WLWCI, RCAdj..."
+          python3 reflective/update_metrics.py
+
+      - name: Commit Reflective Balance State
+        run: |
+          git config --global user.name "TUYULBOT-TJX"
+          git config --global user.email "tuyulbot@tuyullabs.ai"
+          git add journal_repo/logs/hybrid_balance_feedback.json || true
+          git add logs/hybrid_balance_cycle.log || true
+          git commit -m "Reflective Balance Sync @$(date -u)" || echo "No changes"
+          git push origin main || echo "Push skipped"
+
+      - name: Log Completion
+        run: echo "Hybrid Balance Cycle completed successfully."

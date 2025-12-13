@@ -1,43 +1,36 @@
-"""
-generate_openapi_docs.py
-========================
+# ============================================================
+# 🧠 TUYUL FX AGI v5.7.8 – Generate OpenAPI Reflective Docs
+# ============================================================
 
-🔥 TUYUL AGI Hybrid v5.4.4-ULTRA
-Script untuk auto-generate dokumentasi Swagger/OpenAPI statis (.html)
-dari file `docs/openapi_tuyul_agi_hybrid_v5.4.4-ultra.yml`.
-
-✅ Bisa dijalankan otomatis di Codespace, CI/CD workflow, atau manual di terminal:
-   $ python scripts/generate_openapi_docs.py
-"""
-
+import datetime
 import os
-import subprocess
-import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-OPENAPI_FILE = ROOT / "docs" / "openapi_tuyul_agi_hybrid_v5.4.4-ultra.yml"
-OUTPUT_FILE = ROOT / "docs" / "openapi_docs.html"
+import yaml
 
-def generate_docs():
-    if not OPENAPI_FILE.exists():
-        sys.exit(f"❌ File OpenAPI tidak ditemukan: {OPENAPI_FILE}")
+OPENAPI_FILE = "docs/openapi_tuyul_agi_hybrid_v5.7.8.yml"
 
-    print("🚀 Menghasilkan dokumentasi Swagger statis...")
-    cmd = [
-        "npx",
-        "redoc-cli",
-        "bundle",
-        str(OPENAPI_FILE),
-        "-o",
-        str(OUTPUT_FILE)
-    ]
 
-    try:
-        subprocess.run(cmd, check=True)
-        print(f"✅ Dokumentasi berhasil dibuat: {OUTPUT_FILE}")
-    except subprocess.CalledProcessError as e:
-        sys.exit(f"❌ Gagal membuat dokumentasi: {e}")
+def generate_openapi():
+    schema = {
+        "info": {
+            "title": "TUYUL FX AGI Reflective API",
+            "version": "5.7.8",
+            "description": "Reflective Quad Repo API documentation (RBP_v2.2).",
+        },
+        "reflective_schema": [
+            "conf12",
+            "wlwci",
+            "rcadj",
+            "integrity_index",
+            "reflective_sync",
+        ],
+        "generated": datetime.datetime.utcnow().isoformat() + "Z",
+    }
+    os.makedirs("docs", exist_ok=True)
+    with open(OPENAPI_FILE, "w", encoding="utf-8") as f:
+        yaml.dump(schema, f)
+    print(f"✅ Reflective OpenAPI file generated → {OPENAPI_FILE}")
+
 
 if __name__ == "__main__":
-    generate_docs()
+    generate_openapi()

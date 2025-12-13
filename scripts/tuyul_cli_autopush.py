@@ -1,14 +1,17 @@
-"""
-Tuyul CLI Autopush
-------------------
-Auto-push commit ke GitHub untuk log dan vault reasoning.
-"""
+# ============================================================
+# 🧠 TUYUL FX AGI v5.7.8 – CLI AutoPush BOT
+# ============================================================
 
 import os
-import subprocess
+
+
+def autopush(commit_msg: str = "Reflective update"):
+    print("🐺 AutoPush Reflective Repo Changes to GitHub...")
+    os.system("git add .")
+    os.system(f'git commit -m "{commit_msg}"')
+    os.system("git push origin main")
+    print("✅ AutoPush Complete.")
+
 
 if __name__ == "__main__":
-    os.system("git add .")
-    os.system('git commit -m "Auto update: reasoning log & vault sync"')
-    os.system("git push origin main")
-    print("🚀 Auto-push complete.")
+    autopush()

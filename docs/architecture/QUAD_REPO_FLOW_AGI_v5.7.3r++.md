@@ -36,6 +36,13 @@ Semua sinkronisasi dijalankan otomatis oleh:
 - **Repo Sync:** `quad_repo_sync_loop.py` (replaces legacy `tri_vault_sync_loop.py`)
 - **Workflow:** `.github/workflows/quad_vault_reflective_sync.yml`
 
+### 🧩 QUAD REPO SYNC LOOP
+Sinkronisasi lintas empat domain reflektif:
+Hybrid ↔ Knowledge ↔ Kartel ↔ Journal
+- Bridge Protocol: RBP_v2.2
+- BOT: TUYULBOT–TJX
+- Integrity Baseline ≥ 0.90
+
 ---
 
 ## 4️⃣ Pipeline Operasional

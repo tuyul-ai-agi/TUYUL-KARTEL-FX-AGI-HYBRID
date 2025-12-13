@@ -1,5 +1,11 @@
 version: "3.9"
 
+x-common-env: &common-env
+  REDIS_HOST: redis_reflective_bus
+  REDIS_PORT: 6379
+  BRIDGE_PROTOCOL: "RBP v2.2"
+  REFLECTIVE_MODE: "adaptive_sync"
+
 services:
   redis_bridge:
     image: redis:7
@@ -125,6 +131,159 @@ services:
     depends_on:
       - redis_bridge
 
+  # ---------------------------------------------------------------
+  # 🔌 Redis Reflective Bridge – Pusat Komunikasi Quad Repo
+  # ---------------------------------------------------------------
+  redis_reflective_bus:
+    image: redis:7.2
+    container_name: tuyul_reflective_bus
+    restart: always
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------
+  # 🧠 Hybrid Core – Otak utama reflektif (Layer 9–12)
+  # ---------------------------------------------------------------
+  hybrid_core:
+    build: .
+    container_name: tuyul_fx_agi_hybrid_core
+    restart: always
+    environment:
+      <<: *common-env
+      MODE: reflective
+      REPO_ROLE: hybrid
+    command: >
+      bash -c "
+      python3 core/core_reflective_boot.py &&
+      python3 core/reflective/reflective_loop_handler.py
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./utils:/app/utils
+      - ./logs:/app/logs
+
+  # ---------------------------------------------------------------
+  # 📘 Knowledge Repo – Memori adaptif (Heuristic & Meta-learning)
+  # ---------------------------------------------------------------
+  knowledge_repo:
+    build: .
+    container_name: tuyul_fx_knowledge_repo
+    restart: always
+    environment:
+      <<: *common-env
+      REPO_ROLE: knowledge
+    command: >
+      bash -c "
+      python3 core/repo/knowledge_sync_daemon.py
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+
+  # ---------------------------------------------------------------
+  # 🧩 Kartel Repo – Sumber data makro global (VIX, RVI, Regime)
+  # ---------------------------------------------------------------
+  kartel_repo:
+    build: .
+    container_name: tuyul_fx_kartel_repo
+    restart: always
+    environment:
+      <<: *common-env
+      REPO_ROLE: kartel
+    command: >
+      bash -c "
+      python3 core/repo/kartel_macro_bridge.py --sync-loop
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+
+  # ---------------------------------------------------------------
+  # 🧾 Journal Repo – Vault sinkronisasi reflektif akhir
+  # ---------------------------------------------------------------
+  journal_repo:
+    build: .
+    container_name: tuyul_fx_journal_repo
+    restart: always
+    environment:
+      <<: *common-env
+      REPO_ROLE: journal
+    command: >
+      bash -c "
+      python3 core/journal/reflective_journal_sync.py
+      "
+    depends_on:
+      - hybrid_core
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+      - ./vaults:/app/vaults
+
+  # ---------------------------------------------------------------
+  # 🤖 TUYULBOT-TJX – Orkestrator Reflektif & Bridge Controller
+  # ---------------------------------------------------------------
+  tuyulbot_tjx:
+    build: .
+    container_name: tuyul_fx_bot_tjx
+    restart: always
+    environment:
+      <<: *common-env
+      BOT_PERSONALITY: alpha_serigala
+    command: >
+      bash -c "
+      python3 bots/tuyulagibot_tjx.py
+      "
+    depends_on:
+      - hybrid_core
+      - redis_reflective_bus
+    volumes:
+      - ./bots:/app/bots
+      - ./logs:/app/logs
+      - ./configs:/app/configs
+
+  # ---------------------------------------------------------------
+  # 🔄 Reflective Sync Controller – Integritas Quad Repo
+  # ---------------------------------------------------------------
+  reflective_sync_controller:
+    build: .
+    container_name: tuyul_reflective_sync
+    restart: always
+    environment:
+      <<: *common-env
+      BRIDGE_CONFIG: configs/redis_reflective_bridge.yml
+    command: >
+      bash -c "
+      python3 core/bridge/reflective_bridge_runtime.py
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+
+  # ---------------------------------------------------------------
+  # 📊 Reflective Dashboard – Streamlit Real-Time Visualization
+  # ---------------------------------------------------------------
   reflective_dashboard:
     build:
       context: .
@@ -185,3 +344,31 @@ volumes:
   kartel_logs:
   journal_logs:
   redis_data:
+    build: .
+    container_name: tuyul_reflective_dashboard
+    restart: always
+    ports:
+      - "8501:8501"
+    command: >
+      bash -c "
+      streamlit run tools/reflective_dashboard.py --server.port 8501
+      "
+    depends_on:
+      - hybrid_core
+      - tuyulbot_tjx
+    volumes:
+      - ./tools:/app/tools
+      - ./logs:/app/logs
+      - ./configs:/app/configs
+
+  # ---------------------------------------------------------------
+  # 🧾 Log Forwarder – Central Reflective Logger
+  # ---------------------------------------------------------------
+  reflective_logger:
+    image: busybox
+    container_name: tuyul_reflective_logger
+    restart: always
+    command: >
+      sh -c "tail -f /app/logs/*.log"
+    volumes:
+      - ./logs:/app/logs

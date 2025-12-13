@@ -1,7 +1,19 @@
 version: "3.9"
 
 services:
-  tuyul_core:
+  redis_bridge:
+    image: redis:7
+    container_name: redis_reflective_bridge
+    command: ["redis-server", "--appendonly", "yes"]
+    environment:
+      - REDIS_APPENDONLY=yes
+      - REDIS_MAXMEMORY=512mb
+    volumes:
+      - redis_data:/data
+    networks:
+      - reflective_net
+
+  hybrid_core:
     build:
       context: .
       dockerfile: dockerfile
@@ -11,18 +23,165 @@ services:
       - MODE=reflective
       - VERSION=5.7.8
       - BRIDGE_PROTOCOL=RBP_v2.2
+    command:
+      - sh
+      - -c
+      - python3 core/core_reflective_boot.py && python3 core/reflective_loop_handler.py
     volumes:
-      - ./repos:/app/repos
-      - ./logs:/app/logs
-    command: ["python", "main.py"]
+      - hybrid_logs:/app/logs
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  knowledge_repo:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyul_knowledge_repo
+    working_dir: /app
+    command: ["python3", "src/knowledge_listener.py"]
+    volumes:
+      - ./knowledge_repo:/app
+      - knowledge_logs:/app/logs
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
+
+  kartel_repo:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyul_kartel_repo
+    working_dir: /app
+    command: ["python3", "src/macro_broadcast.py"]
+    environment:
+      - MACRO_MODE=active
+    volumes:
+      - ./kartel_repo:/app
+      - kartel_logs:/app/logs
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
+
+  journal_repo:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyul_journal_repo
+    working_dir: /app
+    command: ["python3", "src/journal_listener.py"]
+    environment:
+      - AUTO_ARCHIVE=true
+      - ARCHIVE_INTERVAL_HOURS=12
+    volumes:
+      - ./journal_repo:/app
+      - journal_logs:/app/logs
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
+
+  tuyulbot_tjx:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: tuyulagibot_tjx
+    restart: unless-stopped
+    command: ["python3", "bots/tuyulagibot-tjx.py"]
+    environment:
+      - BOT_PERSONALITY=alpha_serigala
+      - REFLECTIVE_MODE=adaptive
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
+      - hybrid_core
+      - knowledge_repo
+      - kartel_repo
+      - journal_repo
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f tuyulagibot_tjx || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
+  reflective_sync_controller:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: reflective_sync_controller
+    restart: unless-stopped
+    command: ["python3", "core/reflective_sync_controller.py"]
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
 
   reflective_dashboard:
-    image: streamlit:latest
+    build:
+      context: .
+      dockerfile: dockerfile
     container_name: reflective_dashboard
     restart: unless-stopped
     ports:
       - "8501:8501"
+    working_dir: /app
     volumes:
-      - ./repos:/app/repos
-      - ./tests:/app/tests
-    command: ["streamlit", "run", "reflective_dashboard.py"]
+      - ./:/app
+    command:
+      - streamlit
+      - run
+      - tools/reflective_dashboard.py
+      - --server.port
+      - "8501"
+      - --server.headless
+      - "true"
+    networks:
+      - reflective_net
+    depends_on:
+      - redis_bridge
+
+  reflective_logger:
+    image: alpine:latest
+    container_name: reflective_logger
+    command:
+      - sh
+      - -c
+      - >-
+        touch /logs/hybrid/reflective.log /logs/knowledge/reflective.log
+        /logs/kartel/reflective.log /logs/journal/reflective.log &&
+        tail -f /logs/hybrid/*.log /logs/knowledge/*.log /logs/kartel/*.log
+        /logs/journal/*.log
+    volumes:
+      - hybrid_logs:/logs/hybrid
+      - knowledge_logs:/logs/knowledge
+      - kartel_logs:/logs/kartel
+      - journal_logs:/logs/journal
+    networks:
+      - reflective_net
+    depends_on:
+      - hybrid_core
+      - knowledge_repo
+      - kartel_repo
+      - journal_repo
+
+networks:
+  reflective_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+
+volumes:
+  hybrid_logs:
+  knowledge_logs:
+  kartel_logs:
+  journal_logs:
+  redis_data:

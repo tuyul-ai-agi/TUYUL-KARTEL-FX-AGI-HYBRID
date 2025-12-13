@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "version": "5.7.8",
+    "bridge_protocol": "RBP_v2.2",
+    "repo_type": "LiveFeedRepo",
+    "pair": "XAUUSD",
+    "last_update": "2025-12-13T09:15:12Z"
+  },
+  "data": {
+    "price": 2394.22,
+    "open": 2386.00,
+    "high": 2397.00,
+    "low": 2380.50,
+    "volume": 51293,
+    "spread": 0.03
+  },
+  "status": "Active",
+  "integrity_index": 0.921,
+  "coherence_drift": "Stable",
+  "reflection_score": 0.935
+}

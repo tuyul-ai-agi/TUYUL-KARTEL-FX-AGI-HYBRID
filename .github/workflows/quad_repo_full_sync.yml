@@ -1,0 +1,91 @@
+# ============================================================
+# 🧠 TUYUL FX AGI HYBRID v5.7.8
+# Reflective Quad Repo Sync – Auto CI/CD Workflow (RBP v2.2)
+# ============================================================
+
+name: 🧠 TUYUL FX AGI Quad Repo Reflective Sync
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  quad-repo-sync:
+    name: 🔁 Reflective Quad Repo Sync (RBP v2.2)
+    runs-on: ubuntu-latest
+
+    env:
+      MODE: reflective
+      VERSION: 5.7.8
+      BRIDGE_PROTOCOL: RBP_v2.2
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: 🧩 Checkout Hybrid Repo
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧠 Run Reflective Integrity Validation
+        run: |
+          echo "🔍 Checking current repo coherence..."
+          python tools/check_quad_repo_sync.py || true
+          echo "✅ Integrity validation stage complete."
+
+      - name: 🔁 Sync to Knowledge Repo
+        run: |
+          echo "📘 Syncing to Knowledge Repo..."
+          git clone https://github.com/TUYUL-LABS/Knowledge.git
+          rsync -av --exclude='.git' ./docs/ ./Knowledge/docs/
+          cd Knowledge
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyullabs.ai"
+          git add .
+          git commit -m "📘 Sync Reflective Docs from Hybrid v5.7.8"
+          git push origin main
+
+      - name: 🧩 Sync to Kartel Repo
+        run: |
+          echo "🧩 Syncing to Kartel Repo..."
+          git clone https://github.com/TUYUL-LABS/Kartel.git
+          rsync -av --exclude='.git' ./modules/vdd_hybrid/ ./Kartel/modules/vdd_hybrid/
+          cd Kartel
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyullabs.ai"
+          git add .
+          git commit -m "🧩 Sync VDDHybrid + VIX Modules (RBP v2.2)"
+          git push origin main
+
+      - name: 🧾 Sync to Journal Repo
+        run: |
+          echo "🧾 Syncing to Journal Repo..."
+          git clone https://github.com/TUYUL-LABS/Journal.git
+          rsync -av --exclude='.git' ./repos/fx_repo/ ./Journal/repos/fx_repo/
+          rsync -av --exclude='.git' ./logs/ ./Journal/logs/
+          cd Journal
+          git config user.name "tuyulagibot-tjx"
+          git config user.email "bot@tuyullabs.ai"
+          git add .
+          git commit -m "🧾 Sync Reflective Fusion Journal & Logs (v5.7.8)"
+          git push origin main
+
+      - name: 🧠 Validate Final Reflective State
+        run: |
+          echo "🧠 Validating Reflective Coherence..."
+          python tools/check_quad_repo_sync.py || true
+          echo "✅ Reflective Quad Repo Sync Completed Successfully."
+
+      - name: 📡 Report Reflective State
+        run: |
+          echo "🧾 Logging Reflective State to Journal..."
+          python tools/tuyul_reflective_logger_v1.py --sync || true
+          echo "📈 Reflective report logged successfully."

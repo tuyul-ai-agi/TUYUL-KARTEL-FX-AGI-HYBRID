@@ -141,6 +141,8 @@ journal_repo/🧾 Journalcore/journal/reflective_journal_sync.py
 reflective_sync_controllerBridgecore/bridge/reflective_bridge_runtime.py
 🧠 Contoh Visualisasi Redis Topology Map
 
+(ditampilkan di Streamlit Dashboard)
+
 Hybrid ───────▶ Knowledge ─────▶ Kartel ─────▶ Journal
    │                 ▲               │              │
    │                 └───────────────┘              │

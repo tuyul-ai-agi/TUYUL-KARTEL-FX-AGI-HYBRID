@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-12-13T09:00:00Z",
+  "hybrid_to_knowledge": "Synced",
+  "knowledge_to_kartel": "Synced",
+  "kartel_to_journal": "Synced",
+  "hybrid_to_repo": "Synced",
+  "repo_to_journal": "Synced",
+  "latency_ms": 84,
+  "integrity_index": 0.923,
+  "coherence_drift": "Stable",
+  "regime_adaptation": "Adaptive",
+  "reflection_score": 0.94,
+  "reflective_bridge": "RBP_v2.2",
+  "status": "Synced",
+  "bot": "TUYULBOT-TJX"
+}

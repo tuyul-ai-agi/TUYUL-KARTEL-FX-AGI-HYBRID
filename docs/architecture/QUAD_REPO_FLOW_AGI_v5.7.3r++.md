@@ -7,8 +7,8 @@
 
 ## 1️⃣ Overview
 
-Arsitektur **Quad Repo Reflective System** menggantikan struktur lama *Three Vault System*.  
-Kini sistem TUYUL FX AGI beroperasi melalui empat *repo* utama yang saling terhubung dan sadar konteks reflektif, diorkestrasi oleh **Reflective Bridge Protocol v2.2 (RBP v2.2)**.
+Arsitektur **Quad Repo Reflective System** menggantikan struktur lama *Three Vault System*.
+Kini sistem TUYUL FX AGI beroperasi melalui empat *repo* utama yang saling terhubung dan sadar konteks reflektif, diorkestrasi oleh **Reflective Bridge Protocol v2.2 (RBP v2.2)** dan sinkronisasi **Repo Sync v2.2** (`pipeline/quad_repo_sync_loop.py`).
 
 ---
 
@@ -33,6 +33,7 @@ Hybrid Repo → Knowledge Repo → Kartel Repo → Journal Repo → Hybrid Repo
 Semua sinkronisasi dijalankan otomatis oleh:
 - **BOT Orchestrator:** `tuyulagibot-tjx`
 - **Bridge:** Reflective Bridge Protocol v2.2
+- **Repo Sync:** `quad_repo_sync_loop.py` (replaces legacy `tri_vault_sync_loop.py`)
 - **Workflow:** `.github/workflows/quad_vault_reflective_sync.yml`
 
 ### 🧩 QUAD REPO SYNC LOOP

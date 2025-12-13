@@ -1,0 +1,39 @@
+# ============================================================
+# 🧠 TUYUL FX AGI v5.7.8 – Reflective Module Index
+# ------------------------------------------------------------
+# Daftar modul aktif yang digunakan oleh sistem reflektif TUYUL FX.
+# ============================================================
+
+version: 5.7.8
+protocol: RBP_v2.2
+description: >
+  Registry untuk modul aktif TUYUL FX AGI Hybrid Reflective System.
+  Semua modul mengikuti protokol RBP_v2.2 dan sinkron BOT–TJX.
+
+modules:
+  - name: reflex_reasoning_v578
+    layer: Reflex
+    status: active
+  - name: fusion_layer12_v573r
+    layer: Fusion
+    status: active
+  - name: bridge_module_v578
+    layer: Bridge
+    status: active
+  - name: montecarlo_engine_v22
+    layer: Simulation
+    status: active
+  - name: rlsi_module_v578
+    layer: Reflexive Strength
+    status: active
+  - name: validate_openapi_v578
+    layer: Validator
+    status: active
+  - name: vdd_feature_engine_reflective_logsafe
+    layer: Kartel Repo
+    status: active
+  - name: vdd_regime_reflective
+    layer: Kartel Repo
+    status: active
+integrity_index: 0.93
+last_update: 2025-12-13T07:40:00Z

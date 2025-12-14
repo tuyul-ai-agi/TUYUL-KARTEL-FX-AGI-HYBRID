@@ -59,7 +59,10 @@ def update_fusion_confidence():
         raise FileNotFoundError("❌ Journal log hasil tes reflektif tidak ditemukan!")
 
     with open(JOURNAL_LOG, encoding="utf-8") as file:
-        log_data = json.load(file)
+        try:
+            log_data = json.load(file)
+        except json.JSONDecodeError as exc:
+            raise ValueError("Journal log korup atau tidak valid JSON") from exc
 
     conf12 = calculate_confidence(log_data)
 

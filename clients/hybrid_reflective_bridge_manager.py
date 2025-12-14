@@ -41,16 +41,16 @@ class HybridReflectiveBridgeManager:
 
         # Step 1: Reflex–Fusion–Reflective Sync
         hybrid_data = await self.hybrid.run_reflex_cycle()
-        ReflectiveLogger.log("hybrid_cycle", hybrid_data)
+        self.logger.log("hybrid_cycle", hybrid_data)
 
         # Step 2: Update FX Vault Bias
         bias = "Bullish continuation" if hybrid_data["fusion_confidence"] > 0.9 else "Neutral"
         await self.fx.update_bias(bias, hybrid_data["fusion_confidence"])
-        ReflectiveLogger.log("fx_bias_update", {"bias": bias, "conf": hybrid_data["fusion_confidence"]})
+        self.logger.log("fx_bias_update", {"bias": bias, "conf": hybrid_data["fusion_confidence"]})
 
         # Step 3: Update Kartel Global Regime (VIX)
         await self.kartel.update_global_state(vix=22.3, regime="Expansion")
-        ReflectiveLogger.log("kartel_regime_update", {"vix": 22.3, "regime": "Expansion"})
+        self.logger.log("kartel_regime_update", {"vix": 22.3, "regime": "Expansion"})
 
         # Step 4: Journal Logging
         reflective_record = {
@@ -65,7 +65,7 @@ class HybridReflectiveBridgeManager:
 
         # Step 5: Vault Integrity Audit
         integrity_summary = await self.audit_vaults()
-        ReflectiveLogger.log("integrity_audit", integrity_summary)
+        self.logger.log("integrity_audit", integrity_summary)
 
         print("✅ [RBP v2.2] Reflective Cycle completed successfully.\n")
         return {
@@ -96,3 +96,11 @@ class HybridReflectiveBridgeManager:
             await self.run_full_reflective_cycle()
             print(f"⏱️ Waiting {interval_minutes} minutes until next cycle...")
             await asyncio.sleep(interval_minutes * 60)
+
+    async def aclose(self):
+        await asyncio.gather(
+            self.hybrid.aclose(),
+            self.fx.aclose(),
+            self.kartel.aclose(),
+            self.journal.aclose(),
+        )

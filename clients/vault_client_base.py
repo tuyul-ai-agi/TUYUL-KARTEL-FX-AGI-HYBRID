@@ -37,6 +37,9 @@ class VaultClientBase:
         """Simulasikan sinkronisasi reflektif ke Quad Repo"""
         await asyncio.sleep(0.3)
         self.last_sync = datetime.datetime.utcnow().isoformat() + "Z"
-        self.integrity_index = round(self.integrity_index - 0.01 + 0.02, 3)
+        self.integrity_index = round(min(1.0, max(0.0, self.integrity_index + 0.01)), 3)
         print(f"⚡ [{self.name}] Reflective sync complete → integrity: {self.integrity_index}")
         return {"status": "synced", "integrity": self.integrity_index}
+
+    async def aclose(self):
+        await self.session.aclose()

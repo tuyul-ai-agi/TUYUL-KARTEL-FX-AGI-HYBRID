@@ -12,7 +12,13 @@ def run_reflective_cycle(pair: str = "XAUUSD", timeframe: str = "H4") -> Dict[st
     result = base_run_reflective_cycle(pair, timeframe)
 
     print("🔁 Menjalankan Neurotech RAG Ingestor...")
-    subprocess.run(["python3", "rag_engine/knowledge_ingestion/optimized_neurotech_ingestor.py"])
+    try:
+        subprocess.run(
+            ["python3", "rag_engine/knowledge_ingestion/optimized_neurotech_ingestor.py"],
+            check=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise RuntimeError("Neurotech RAG ingestor failed") from exc
 
     return result
 

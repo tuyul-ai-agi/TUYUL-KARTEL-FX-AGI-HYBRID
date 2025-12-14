@@ -1,0 +1,48 @@
+name: 🧠 TUYUL HYBRID REFLECTIVE SYNC
+
+on:
+  schedule:
+    # Jalankan otomatis setiap 1 jam
+    - cron: "0 * * * *"
+  workflow_dispatch:  # Bisa dijalankan manual juga dari tab Actions
+
+jobs:
+  reflective-org-sync:
+    name: 🧩 Organization Context Sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧠 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: ⚙️ Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pyyaml
+
+      - name: 🔐 Setup Environment Variables
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Environment variable GITHUB_TOKEN configured."
+          echo "ORG_CONTEXT will sync from tuyul-ai-agi"
+
+      - name: 🧩 Organization Context Sync
+        run: |
+          python gpt_bridge_handler_v573r.py
+
+      - name: 📦 Commit updated org_context.json
+        run: |
+          git config --global user.name "tuyul-reflective-bot"
+          git config --global user.email "bot@tuyul.ai"
+          git add knowledge/org_context.json || echo "No context file found."
+          git commit -m "🔁 Auto-update org_context.json (Reflective Sync)" || echo "No changes to commit."
+          git push origin main || echo "No push needed."
+
+      - name: ✅ Finish
+        run: echo "🐺 Reflective Organization Context Sync completed successfully."

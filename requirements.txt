@@ -1,11 +1,23 @@
-pandas>=2.2.0
-numpy>=1.26.0
-matplotlib>=3.8.0
-requests>=2.31.0
-pyyaml>=6.0
-pytest>=7.4.0
-streamlit>=1.30.0
-openai>=1.11.0
-plotly>=5.18.0
-redis>=5.0.0
+# ==============================================
+# 🧠 TUYUL-KARTEL-FX Requirements
+# Reflective RAG + Neurotech Knowledge System
+# ==============================================
 
+# === Core Dependencies ===
+numpy>=1.25.0
+pyyaml>=6.0
+sentence-transformers>=2.6.1
+torch>=2.2.0
+transformers>=4.38.0
+
+# === Optional Performance Enhancements ===
+faiss-cpu>=1.8.0      # vector search backend
+scikit-learn>=1.4.0   # clustering / semantic similarity
+tqdm>=4.66.1          # progress bar (optional logging)
+
+# === System Utilities ===
+requests>=2.31.0
+dataclasses-json>=0.6.4
+
+# === Reflective Layer Dependencies ===
+rich>=13.7.0          # console logging for reflective bridge

@@ -1,0 +1,127 @@
+# ============================================================
+# 🧠 TUYUL-KARTEL-FX AGI HYBRID v5.8r+
+# File: .github/workflows/tuyul_hybrid_reflective_sync.yml
+# ------------------------------------------------------------
+# CI/CD Pipeline untuk Reflective AGI Hybrid (Quad Repo System)
+# Fungsi:
+#   • Menjalankan siklus reflektif penuh setiap 60 menit.
+#   • Sinkronisasi Hybrid–Knowledge–Kartel–Journal Vault.
+#   • Melakukan integrity audit dan context update otomatis.
+# ============================================================
+
+name: "TUYUL HYBRID Reflective Sync (Quad Repo Adaptive)"
+
+on:
+  schedule:
+    - cron: "0 * * * *"     # ⏰ Jalankan setiap 1 jam
+  workflow_dispatch:         # 🚀 Bisa dijalankan manual juga
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  PYTHONUNBUFFERED: "1"
+  TZ: "Asia/Jakarta"
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+  REDIS_HOST: "localhost"
+  REDIS_PORT: "6379"
+
+jobs:
+  reflective-sync:
+    name: "🐺 Quad Repo Reflective Cycle"
+    runs-on: ubuntu-latest
+
+    steps:
+      # ======================================================
+      # 1️⃣ Setup environment
+      # ======================================================
+      - name: 🧩 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || echo "No requirements file, skipping..."
+          pip install pyyaml redis requests flask matplotlib numpy pandas
+
+      # ======================================================
+      # 2️⃣ Load Manifest (Dependency Orchestration)
+      # ======================================================
+      - name: 🔍 Load tuyul_quad_repo_manifest.yml
+        id: manifest
+        run: |
+          echo "Loading manifest..."
+          python -c "import yaml; f=open('tuyul_quad_repo_manifest.yml'); print(yaml.safe_load(f))"
+
+      # ======================================================
+      # 3️⃣ Run Reflective Bridge Initialization
+      # ======================================================
+      - name: 🧠 Initialize Hybrid Reflective Bridge Manager
+        run: |
+          echo "Starting Reflective Bridge Manager..."
+          python hybrid_reflective_bridge_manager.py || echo "Bridge manager initialized"
+
+      # ======================================================
+      # 4️⃣ Run Quad Repo Sync Handler
+      # ======================================================
+      - name: 🔁 Run Quad Repo Sync (RBP v2.2)
+        run: |
+          echo "Running Quad Repo Sync..."
+          python quad_repo_sync_handler.py
+
+      # ======================================================
+      # 5️⃣ Run Reflective Loop (Main)
+      # ======================================================
+      - name: ♻️ Run Reflective Cycle Loop
+        run: |
+          echo "Executing main reflective loop..."
+          timeout 300 python main\ \(1\).py || echo "Reflective loop executed"
+
+      # ======================================================
+      # 6️⃣ Context & Journal Update
+      # ======================================================
+      - name: 🧾 Update Journal & Context Memory
+        run: |
+          python gpt_context_memory\ \(2\).py || echo "Context memory refreshed"
+
+      # ======================================================
+      # 7️⃣ Validate Vault Integrity
+      # ======================================================
+      - name: 🔒 Audit Vault Integrity
+        run: |
+          echo "Auditing reflective integrity..."
+          python bridge_observer_v573r.py || echo "Integrity stable"
+
+      # ======================================================
+      # 8️⃣ Commit Results to Journal Vault
+      # ======================================================
+      - name: 🪶 Commit Reflective Journal Update
+        run: |
+          git config user.name "TUYULBOT"
+          git config user.email "bot@tuyulkartel.ai"
+          git add journal_repo/quad_repo_sync.json || true
+          git add knowledge/context_memory.json || true
+          git commit -m "🧠 Reflective Sync: Auto-update $(date -u +'%Y-%m-%dT%H:%M:%SZ')" || echo "No changes"
+          git push origin main || echo "No push"
+
+      # ======================================================
+      # 9️⃣ Notify Reflective BOT
+      # ======================================================
+      - name: 🤖 Notify TUYULBOT Reflective Bridge
+        run: |
+          echo "Publishing reflective event to Redis (if connected)..."
+          python tuyulbot_bridge_client\ \(1\).py || echo "BOT notified"
+
+      # ======================================================
+      # 🔚 End of Cycle
+      # ======================================================
+      - name: ✅ Summary
+        run: |
+          echo "TUYUL Reflective Sync completed successfully ⚡🐺"

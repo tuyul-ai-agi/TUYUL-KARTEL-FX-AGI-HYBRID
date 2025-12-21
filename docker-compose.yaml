@@ -1,3 +1,13 @@
+
+# ============================================================
+# 🧠 TUYUL-KARTEL-FX AGI HYBRID v5.8r+
+# File: docker-compose.yml
+# ------------------------------------------------------------
+# SYSTEM: TUYUL FX WOLF AGI Reflective Discipline
+# MODE: Quad Repo + Reflective Bridge + Dashboard
+# AUTHOR: TUYUL LABS – Reflective Systems Division
+# ============================================================
+
 version: "3.9"
 
 services:
@@ -6,126 +16,268 @@ services:
   # ========================================================
   redis:
     image: redis:7.4-alpine
+x-common-env: &common-env
+  REDIS_HOST: redis_reflective_bus
+  REDIS_PORT: 6379
+  BRIDGE_PROTOCOL: "RBP v2.2"
+  REFLECTIVE_MODE: "adaptive_sync"
+  TZ: Asia/Jakarta
+
+# ============================================================
+# 🧩 SERVICES
+# ============================================================
+services:
+  # -----------------------------------------------------------
+  # 🔌 Redis Reflective Bridge – Pusat Komunikasi Quad Repo
+  # -----------------------------------------------------------
+  redis_reflective_bus:
+    image: redis:7.2
     container_name: tuyul_reflective_bus
     restart: always
     ports:
       - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "512mb", "--maxmemory-policy", "allkeys-lru"]
     volumes:
       - ./data/redis:/data
-    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
-    networks:
-      - tuyul_network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
+      interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 5s
+      retries: 5
+    networks:
+      - reflective_net
 
-  # ========================================================
-  # 🌐 2️⃣ Data Bridge (Flask Proxy → TwelveData)
-  # ========================================================
-  data_bridge:
-    build:
-      context: .
-      dockerfile: dockerfile
-    container_name: tuyul_data_bridge
-    command: ["python", "clients/tuyul_data_bridge.py"]
+  # -----------------------------------------------------------
+  # 🧠 Hybrid Core – Otak utama reflektif (Layer 9–12)
+  # -----------------------------------------------------------
+  hybrid_core:
+    build: .
+    container_name: tuyul_fx_agi_hybrid_core
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
+      - TZ=Asia/Jakarta
+    volumes:
+      - ./journal_repo:/app/journal_repo
+      - ./logs:/app/logs
+    networks:
+      - reflective_net
+
+  # -----------------------------------------------------------
+  # 📘 Knowledge Repo – Memori adaptif (Heuristic & Meta-learning)
+  # -----------------------------------------------------------
+  knowledge_repo:
+    build: .
+    container_name: tuyul_fx_knowledge_repo
+    restart: always
+    environment:
+      <<: *common-env
+      REPO_ROLE: knowledge
+    command: >
+      bash -c "
+      python3 core/repo/knowledge_sync_daemon.py
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+    networks:
+      - reflective_net
+
+  # -----------------------------------------------------------
+  # 🧩 Kartel Repo – Data makro global (VIX, RVI, Regime)
+  # -----------------------------------------------------------
+  kartel_repo:
+    build: .
+    container_name: tuyul_fx_kartel_repo
+    restart: always
+    environment:
+      <<: *common-env
+      REPO_ROLE: kartel
+      MACRO_MODE: active
+    command: >
+      bash -c "
+      python3 core/repo/kartel_macro_bridge.py --sync-loop
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+    networks:
+      - reflective_net
+
+  # -----------------------------------------------------------
+  # 🧾 Journal Repo – Vault sinkronisasi reflektif akhir
+  # -----------------------------------------------------------
+  journal_repo:
+    build: .
+    container_name: tuyul_fx_journal_repo
+    restart: always
+    environment:
+      <<: *common-env
+      REPO_ROLE: journal
+      AUTO_ARCHIVE: true
+      ARCHIVE_INTERVAL_HOURS: 12
+    command: >
+      bash -c "
+      python3 core/journal/reflective_journal_sync.py
+      "
+    depends_on:
+      - hybrid_core
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+      - ./vaults:/app/vaults
+    networks:
+      - reflective_net
+
+  # -----------------------------------------------------------
+  # 🤖 TUYULBOT-TJX – Orkestrator Reflektif & Bridge Controller
+  # -----------------------------------------------------------
+  tuyulbot_tjx:
+    build: .
+    container_name: tuyul_fx_bot_tjx
+    restart: always
+    environment:
+      <<: *common-env
+      BOT_PERSONALITY: alpha_serigala
+    command: >
+      bash -c "
+      python3 bots/tuyulagibot_tjx.py
+      "
+    depends_on:
+      - hybrid_core
+      - redis_reflective_bus
+      - knowledge_repo
+      - kartel_repo
+      - journal_repo
+    volumes:
+      - ./bots:/app/bots
+      - ./logs:/app/logs
+      - ./configs:/app/configs
+    networks:
+      - reflective_net
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f tuyulagibot_tjx || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # 🔄 Reflective Sync Controller – Integritas Quad Repo
+  # -----------------------------------------------------------
+  reflective_sync_controller:
+    build: .
+    container_name: tuyul_reflective_sync
+    restart: always
+    environment:
+      <<: *common-env
+      BRIDGE_CONFIG: configs/redis_reflective_bridge.yml
+    command: >
+      bash -c "
+      python3 core/bridge/reflective_bridge_runtime.py
+      "
+    depends_on:
+      - redis_reflective_bus
+    volumes:
+      - ./core:/app/core
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+    networks:
+      - reflective_net
+
+  # -----------------------------------------------------------
+  # 🌐 Reflective Webhook Server – GitHub ↔ GPT ↔ BOT Sync
+  # -----------------------------------------------------------
+  reflective_webhook_server:
+    build: .
+    container_name: tuyul_reflective_webhook
     restart: always
     ports:
       - "8000:8000"
     environment:
-      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
-      - BRIDGE_PORT=8000
+      <<: *common-env
+      GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET}
+    command: >
+      bash -c "
+      python3 core/webhooks/tuyul_reflective_webhook_server.py
+      "
     depends_on:
-      - redis
-    networks:
-      - tuyul_network
-
-  # ========================================================
-  # 🧠 3️⃣ AGI Hybrid Orchestrator (Main Engine)
-  # ========================================================
-  agi_hybrid:
-    build:
-      context: .
-      dockerfile: dockerfile
-    container_name: tuyul_agi_hybrid
-    command: ["python", "main.py"]
-    restart: always
-    environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - PYTHONUNBUFFERED=1
-      - TZ=Asia/Jakarta
+      - redis_reflective_bus
     volumes:
-      - ./logs:/app/logs
-      - ./journal_repo:/app/journal_repo
-      - ./knowledge:/app/knowledge
+      - ./core:/app/core
       - ./configs:/app/configs
-    depends_on:
-      - data_bridge
-      - redis
-    networks:
-      - tuyul_network
-
-  # ========================================================
-  # 🧩 4️⃣ TUYULBOT-TJX Reflective BOT
-  # ========================================================
-  tuyulbot_tjx:
-    build:
-      context: .
-      dockerfile: dockerfile
-    container_name: tuyulbot_tjx
-    command: ["python", "bots/tuyulagibot-tjx.py"]
-    restart: always
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
-      - TZ=Asia/Jakarta
-    volumes:
-      - ./journal_repo:/app/journal_repo
       - ./logs:/app/logs
-    depends_on:
-      - agi_hybrid
-      - redis
+      - ./journal_repo:/app/journal_repo
     networks:
-      - tuyul_network
+      - reflective_net
 
-  # ========================================================
-  # ⚙️ 5️⃣ Bridge Observer (Integrity Watchdog)
-  # ========================================================
-  observer:
-    build:
-      context: .
-      dockerfile: dockerfile
-    container_name: tuyul_bridge_observer
-    command: ["python", "ai_bridge/bridge_observer_v573r.py"]
+  # -----------------------------------------------------------
+  # 📊 Reflective Dashboard – Streamlit Real-Time Visualization
+  # -----------------------------------------------------------
+  reflective_dashboard:
+    build: .
+    container_name: tuyul_reflective_dashboard
     restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      <<: *common-env
+    command: >
+      bash -c "
+      streamlit run tools/reflective_dashboard.py --server.port 8501 --server.headless true
+      "
     depends_on:
-      - agi_hybrid
+      - tuyulbot_tjx
+      - redis_reflective_bus
+    volumes:
+      - ./tools:/app/tools
+      - ./logs:/app/logs
+      - ./configs:/app/configs
     networks:
-      - tuyul_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://data_bridge:8000/bridge/status"]
-      interval: 60s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+      - reflective_net
+
+  # -----------------------------------------------------------
+  # 🧾 Reflective Logger – Centralized Log Monitor
+  # -----------------------------------------------------------
+  reflective_logger:
+    image: alpine:latest
+    container_name: tuyul_reflective_logger
+    restart: always
+    command: >
+      sh -c "
+      touch /logs/app.log && tail -f /logs/*.log
+      "
+    volumes:
+      - ./logs:/logs
+    depends_on:
+      - hybrid_core
+      - knowledge_repo
+      - kartel_repo
+      - journal_repo
+      - tuyulbot_tjx
+    networks:
+      - reflective_net
 
 # ============================================================
-# 🧭 NETWORK & VOLUMES
+# 🌐 NETWORK & VOLUMES
 # ============================================================
 networks:
   tuyul_network:
     driver: bridge
 
 volumes:
-  journal_repo:
-  logs:
-  knowledge:
-  configs:
-  data:
+  redis_data:
+  hybrid_logs:
+  knowledge_logs:
+  kartel_logs:
+  journal_logs:

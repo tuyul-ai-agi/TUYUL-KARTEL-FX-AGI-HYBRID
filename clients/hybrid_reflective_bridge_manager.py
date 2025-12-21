@@ -16,7 +16,17 @@ Fungsi:
   • Menulis log meta-learning ke Journal Vault dan ReflectiveLogger
 """
 
-import asyncio, json, datetime
+import asyncio
+import datetime
+import json
+
+import numpy as np
+
+from modules.reflective_lorentzian_adapter import (
+    compute_lorentzian_distance,
+    tuyul_lorentzian_adapter,
+)
+
 from .client_agi_hybrid import HybridClient
 from .fx_vault_client import FXVaultClient
 from .kartel_vault_client import KartelVaultClient
@@ -43,14 +53,41 @@ class HybridReflectiveBridgeManager:
         hybrid_data = await self.hybrid.run_reflex_cycle()
         self.logger.log("hybrid_cycle", hybrid_data)
 
+        # Step 1.5: Lorentzian Reflective Adapter Integration
+        features = np.random.rand(5)
+        reference = np.random.rand(5)
+        base_distance = compute_lorentzian_distance(features, reference)
+        distances = [
+            base_distance,
+            *[abs(np.random.normal(0.2, 0.05)) for _ in range(8)],
+        ]
+        kernel_estimate = np.linspace(0.1, 0.9, 10).tolist()
+
+        lorentzian_output = tuyul_lorentzian_adapter(
+            prediction=np.random.uniform(-2, 2),
+            distances=distances,
+            kernel_estimate=kernel_estimate,
+        )
+        self.logger.log("lorentzian_metrics", lorentzian_output)
+
         # Step 2: Update FX Vault Bias
-        bias = "Bullish continuation" if hybrid_data["fusion_confidence"] > 0.9 else "Neutral"
+        bias = (
+            "Bullish continuation"
+            if hybrid_data["fusion_confidence"] > 0.9
+            else "Neutral"
+        )
         await self.fx.update_bias(bias, hybrid_data["fusion_confidence"])
-        self.logger.log("fx_bias_update", {"bias": bias, "conf": hybrid_data["fusion_confidence"]})
+        self.logger.log(
+            "fx_bias_update",
+            {"bias": bias, "conf": hybrid_data["fusion_confidence"]},
+        )
 
         # Step 3: Update Kartel Global Regime (VIX)
         await self.kartel.update_global_state(vix=22.3, regime="Expansion")
-        self.logger.log("kartel_regime_update", {"vix": 22.3, "regime": "Expansion"})
+        self.logger.log(
+            "kartel_regime_update",
+            {"vix": 22.3, "regime": "Expansion"},
+        )
 
         # Step 4: Journal Logging
         reflective_record = {
@@ -59,7 +96,7 @@ class HybridReflectiveBridgeManager:
             "wlwci": hybrid_data["wlwci"],
             "integrity_index": hybrid_data["integrity_index"],
             "global_regime": "Expansion",
-            "fx_bias": bias
+            "fx_bias": bias,
         }
         await self.journal.write_reflective_log(reflective_record)
 
@@ -80,7 +117,9 @@ class HybridReflectiveBridgeManager:
         for vault in [self.hybrid, self.fx, self.kartel, self.journal]:
             audits.append(await vault.audit_integrity())
 
-        avg_integrity = round(sum(a["integrity_index"] for a in audits) / len(audits), 3)
+        avg_integrity = round(
+            sum(a["integrity_index"] for a in audits) / len(audits), 3
+        )
         drift = abs(audits[0]["integrity_index"] - avg_integrity)
         print(f"🧩 Reflective Integrity Summary → Avg: {avg_integrity}, Drift: {drift}")
 

@@ -1,0 +1,24 @@
+# 🧠 TUYUL FX HYBRID AUTLOAD MANIFEST
+# Reflective VWAP–MACD Resonance Adapter
+# Layer: 9–12 (Equilibrium Resonance)
+
+module_name: reflective_vwap_macd_resonance
+description: >
+  Bridges VWAP Equilibrium (volume pressure)
+  and MACD Momentum Equilibrium (curvature bias)
+  into a coherent reflective resonance feed
+  for TRQ–3D and FusionConf₁₂.
+
+autoload: true
+priority: 9
+output_layer: 12
+
+pipeline:
+  pre_reqs:
+    - reflective_vwap_engine
+    - reflective_macd_equilibrium
+  run:
+    - compute
+  post_route:
+    - hybrid_reflective_bridge_manager.inject_resonance
+log_file: logs/reflective_vwap_macd_resonance.json

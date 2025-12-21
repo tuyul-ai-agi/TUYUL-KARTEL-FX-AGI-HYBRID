@@ -256,7 +256,7 @@ services:
     restart: always
     command: >
       sh -c "
-      touch /logs/*.log && tail -f /logs/*.log
+      touch /logs/app.log && tail -f /logs/*.log
       "
     volumes:
       - ./logs:/logs

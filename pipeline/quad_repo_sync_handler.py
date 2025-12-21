@@ -12,10 +12,8 @@
 import os
 import json
 from datetime import datetime
-from friendly_lamp_x54j5rxggj9wfrwr_5526_app_github_dev__jit_plugin import (
-    vaultSync,
-    getIntegrityFeedback,
-)
+
+from modules.tuyul_bots_reflective_sync import ReflectiveBridgeSync
 
 OUTPUT_FILE = "journal_repo/quad_repo_sync.json"
 LOG_FILE = "logs/quad_repo_sync_handler.log"
@@ -29,8 +27,8 @@ def run_quad_repo_sync():
     """Menjalankan sinkronisasi reflektif satu kali antar empat repo."""
     print("🔁 Running Quad Repo Sync Handler (RBP_v2.2)...")
 
-    sync_data = vaultSync()
-    integrity = getIntegrityFeedback()
+    sync_data = ReflectiveBridgeSync().run_full_sync()
+    integrity = sync_data
 
     data = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
@@ -38,7 +36,7 @@ def run_quad_repo_sync():
         "knowledge_to_kartel": "Synced",
         "kartel_to_journal": "Synced",
         "hybrid_to_repo": sync_data.get("hybrid_to_vault", "Synced"),
-        "repo_to_journal": sync_data.get("vault_to_journal", "Synced"),
+        "repo_to_journal": sync_data.get("kartel_to_journal", "Synced"),
         "latency_ms": sync_data.get("latency_ms", 0),
         "integrity_index": round(integrity.get("integrity_index", 0.9), 3),
         "coherence_drift": integrity.get("coherence_drift", "Stable"),

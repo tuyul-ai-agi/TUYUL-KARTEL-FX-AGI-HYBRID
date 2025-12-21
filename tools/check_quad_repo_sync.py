@@ -2,13 +2,13 @@
 # 🧠 Check Quad Repo Reflective Sync
 # ============================================================
 
-from friendly_lamp_x54j5rxggj9wfrwr_5526_app_github_dev__jit_plugin import getIntegrityFeedback
+from modules.tuyul_bots_reflective_sync import ReflectiveBridgeSync
 
 
 def check_quad_repo_sync():
     """Cek integritas sinkronisasi Quad Repo."""
 
-    feedback = getIntegrityFeedback()
+    feedback = ReflectiveBridgeSync().run_full_sync()
     print(
         f"🧠 Integrity={feedback['integrity_index']} | "
         f"Drift={feedback['coherence_drift']} | Regime={feedback['regime_adaptation']}"

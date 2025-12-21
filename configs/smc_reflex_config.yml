@@ -1,0 +1,7 @@
+smc_reflex:
+  pivot_window: 5
+  ema_fast_len: 9
+  ema_slow_len: 21
+  slope_weight: 0.2
+  confidence_threshold: 65
+  log_path: "logs/smc_reflex_log.json"

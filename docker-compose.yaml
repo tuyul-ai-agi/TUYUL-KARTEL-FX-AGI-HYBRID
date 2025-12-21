@@ -10,6 +10,12 @@
 
 version: "3.9"
 
+services:
+  # ========================================================
+  # 🔴 1️⃣ Redis Reflective Bridge Bus
+  # ========================================================
+  redis:
+    image: redis:7.4-alpine
 x-common-env: &common-env
   REDIS_HOST: redis_reflective_bus
   REDIS_PORT: 6379
@@ -49,20 +55,13 @@ services:
     container_name: tuyul_fx_agi_hybrid_core
     restart: always
     environment:
-      <<: *common-env
-      MODE: reflective
-      REPO_ROLE: hybrid
-    command: >
-      bash -c "
-      python3 core/core_reflective_boot.py &&
-      python3 core/reflective/reflective_loop_handler.py
-      "
-    depends_on:
-      - redis_reflective_bus
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - TWELVEDATA_API_KEY=${TWELVEDATA_API_KEY}
+      - TZ=Asia/Jakarta
     volumes:
-      - ./core:/app/core
-      - ./configs:/app/configs
-      - ./utils:/app/utils
+      - ./journal_repo:/app/journal_repo
       - ./logs:/app/logs
     networks:
       - reflective_net
@@ -273,10 +272,8 @@ services:
 # 🌐 NETWORK & VOLUMES
 # ============================================================
 networks:
-  reflective_net:
+  tuyul_network:
     driver: bridge
-    driver_opts:
-      com.docker.network.enable_ipv6: "false"
 
 volumes:
   redis_data:

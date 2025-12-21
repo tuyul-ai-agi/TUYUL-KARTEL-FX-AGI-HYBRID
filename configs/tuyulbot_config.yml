@@ -1,0 +1,12 @@
+agent:
+  name: tuyul_bots_reflective_sync
+  mode: quad_repo_sync
+  description: >
+    Internal TUYUL Bots daemon handling Hybrid ↔ Vault ↔ Kartel ↔ Journal flow.
+  schedule: on_demand
+paths:
+  sync_state: configs/tuyul_hybrid_reflective_sync.yml
+  log: logs/tuyul_quad_sync_log.json
+runtime:
+  integrity_threshold: 0.97
+  log_format: ndjson

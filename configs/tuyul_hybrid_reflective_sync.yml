@@ -1,0 +1,10 @@
+hybrid_status: active
+hybrid_to_vault: synced
+integrity_index: 0.961
+journal_status: up-to-date
+kartel_status: coherent
+kartel_to_journal: up-to-date
+reflective_sync: adaptive
+timestamp: '2025-12-21T13:08:09.286088+00:00'
+vault_status: stable
+vault_to_kartel: linked

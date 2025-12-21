@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-12-21T16:20:37.812Z",
+  "pair": "BTCUSD",
+  "timeframe": "1h",
+  "fusion_curvature": 0.03941,
+  "reflective_bias": "Bullish",
+  "reflective_intensity": 0.9278,
+  "source": "reflective_vwap_macd_resonance"
+}

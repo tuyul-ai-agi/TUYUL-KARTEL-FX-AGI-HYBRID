@@ -11,10 +11,13 @@ import datetime
 import json
 from pathlib import Path
 
+import numpy as np
+
 # === CORE IMPORTS ===
 from hybrid_reflective_bridge_manager import HybridReflectiveBridgeManager
 from scripts.run_hybrid_analysis import run_analysis
 from tools import hybrid_balance_logger
+from modules.reflective_lorentzian_adapter import tuyul_lorentzian_adapter
 
 # === AGI Reflective Layers ===
 from api_twelvedata_com__jit_plugin import performAgiFullAnalysis, runReflectiveCycle
@@ -78,6 +81,13 @@ async def run_reflective_master_cycle():
         # === STEP 6: RISK ADAPTATION ===
         risk = riskCalculate(balance=100000, sl_pips=50, pair="XAUUSD")
 
+        # === Step: Inject Lorentzian Reflective Adaptation ===
+        lorentzian_metrics = tuyul_lorentzian_adapter(
+            prediction=np.random.uniform(-1, 1),
+            distances=[abs(np.random.normal(0.3, 0.1)) for _ in range(10)],
+            kernel_estimate=[0.2, 0.3, 0.5, 0.7, 0.8],
+        )
+
         # === STEP 7: LOGGING & SYNTHESIS ===
         reflective_log = {
             "timestamp": ts,
@@ -105,6 +115,8 @@ async def run_reflective_master_cycle():
             },
             "bridge_cycle": bridge_result,
         }
+
+        reflective_log["lorentzian"] = lorentzian_metrics
 
         # Write to log
         with open(LOG_PATH, "a") as f:

@@ -1,0 +1,9 @@
+lorentzian:
+  feature_count: 5
+  neighbors: 8
+  smoothing_window: 5
+  scale_alpha: 1.00
+  scale_beta: 0.98
+  scale_gamma: 1.02
+  output_target: "fusion_conf12"
+  log_path: "logs/lorentzian_metrics_log.json"

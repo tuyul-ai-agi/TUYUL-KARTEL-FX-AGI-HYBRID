@@ -16,12 +16,21 @@ Fungsi:
   • Menulis log meta-learning ke Journal Vault dan ReflectiveLogger
 """
 
-import asyncio, json, datetime
+import asyncio, datetime, json
+
+import numpy as np
+import yaml
 from .client_agi_hybrid import HybridClient
 from .fx_vault_client import FXVaultClient
-from .kartel_vault_client import KartelVaultClient
 from .journal_vault_client import JournalVaultClient
+from .kartel_vault_client import KartelVaultClient
 from .reflective_logger import ReflectiveLogger
+from modules.reflective_smc_reflex_engine import (
+    DEFAULT_CONFIG_PATH,
+    SMCReflexConfig,
+    compute_reflective_bias_state,
+    load_smc_reflex_config,
+)
 
 class HybridReflectiveBridgeManager:
     """Orkestrator utama sinkronisasi reflektif Quad Repo"""
@@ -33,6 +42,7 @@ class HybridReflectiveBridgeManager:
         self.kartel = KartelVaultClient(config["kartel_endpoint"], config["token"])
         self.journal = JournalVaultClient(config["journal_endpoint"], config["token"])
         self.logger = ReflectiveLogger()
+        self.smc_cfg = self._load_smc_config()
 
     async def run_full_reflective_cycle(self):
         """Menjalankan siklus reflektif penuh antar vault"""
@@ -43,16 +53,29 @@ class HybridReflectiveBridgeManager:
         hybrid_data = await self.hybrid.run_reflex_cycle()
         self.logger.log("hybrid_cycle", hybrid_data)
 
-        # Step 2: Update FX Vault Bias
-        bias = "Bullish continuation" if hybrid_data["fusion_confidence"] > 0.9 else "Neutral"
-        await self.fx.update_bias(bias, hybrid_data["fusion_confidence"])
-        self.logger.log("fx_bias_update", {"bias": bias, "conf": hybrid_data["fusion_confidence"]})
+        # Step 2: SMC Reflex Analysis
+        smc_snapshot = self._run_smc_reflex(hybrid_data)
+        self.logger.log("smc_reflex", smc_snapshot)
 
-        # Step 3: Update Kartel Global Regime (VIX)
+        # Step 3: Update FX Vault Bias
+        base_bias = (
+            "Bullish continuation" if hybrid_data["fusion_confidence"] > 0.9 else "Neutral"
+        )
+        smc_conf = smc_snapshot["trend_conf_score"] / 100
+        bias_conf = max(hybrid_data["fusion_confidence"], smc_conf)
+        bias = (
+            smc_snapshot["bias"]
+            if smc_snapshot["trend_conf_score"] >= self.smc_cfg.confidence_threshold
+            else base_bias
+        )
+        await self.fx.update_bias(bias, bias_conf)
+        self.logger.log("fx_bias_update", {"bias": bias, "conf": bias_conf})
+
+        # Step 4: Update Kartel Global Regime (VIX)
         await self.kartel.update_global_state(vix=22.3, regime="Expansion")
         self.logger.log("kartel_regime_update", {"vix": 22.3, "regime": "Expansion"})
 
-        # Step 4: Journal Logging
+        # Step 5: Journal Logging
         reflective_record = {
             "timestamp": ts,
             "fusion_confidence": hybrid_data["fusion_confidence"],
@@ -63,7 +86,7 @@ class HybridReflectiveBridgeManager:
         }
         await self.journal.write_reflective_log(reflective_record)
 
-        # Step 5: Vault Integrity Audit
+        # Step 6: Vault Integrity Audit
         integrity_summary = await self.audit_vaults()
         self.logger.log("integrity_audit", integrity_summary)
 
@@ -89,6 +112,46 @@ class HybridReflectiveBridgeManager:
             "drift": drift,
             "status": "stable" if avg_integrity >= 0.9 else "degraded"
         }
+
+    def _load_smc_config(self) -> SMCReflexConfig:
+        """Load SMC reflex configuration with safe fallback."""
+
+        try:
+            return load_smc_reflex_config()
+        except yaml.YAMLError as exc:
+            self.logger.log(
+                "smc_reflex_config_error",
+                {"error": str(exc), "path": str(DEFAULT_CONFIG_PATH)},
+            )
+            return SMCReflexConfig()
+
+    def _run_smc_reflex(self, hybrid_data) -> dict:
+        """Execute the SMC reflex routine using simplified synthetic inputs."""
+
+        prices = self._build_price_series(hybrid_data)
+        highs = prices + 0.6
+        lows = prices - 0.6
+
+        ema_fast = float(np.mean(prices[-self.smc_cfg.ema_fast_len :]))
+        ema_slow = float(np.mean(prices[-self.smc_cfg.ema_slow_len :]))
+
+        return compute_reflective_bias_state(
+            closes=prices,
+            highs=highs,
+            lows=lows,
+            ema_fast=ema_fast,
+            ema_slow=ema_slow,
+            config=self.smc_cfg,
+        )
+
+    def _build_price_series(self, hybrid_data) -> np.ndarray:
+        """Build a basic price series to feed the SMC reflex module."""
+
+        min_length = max(self.smc_cfg.ema_slow_len * 2, 20)
+        base_price = 1900.0
+        drift = (hybrid_data.get("fusion_confidence", 0.5) - 0.5) * 20
+        sequence = np.linspace(-1.0, 1.0, num=min_length) + drift
+        return sequence + base_price
 
     async def auto_cycle(self, interval_minutes=60):
         """Menjalankan reflective cycle otomatis setiap N menit"""

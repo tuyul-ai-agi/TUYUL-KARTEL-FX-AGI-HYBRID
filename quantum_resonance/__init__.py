@@ -1,0 +1,1 @@
+"""Quantum resonance package placeholder."""

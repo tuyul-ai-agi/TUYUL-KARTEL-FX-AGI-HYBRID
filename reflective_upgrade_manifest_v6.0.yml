@@ -1,0 +1,198 @@
+# ======================================================================
+# TUYUL-FX AGI HYBRID REFLECTIVE UPGRADE MANIFEST v6.0
+# ======================================================================
+# ⚙️  Purpose:
+#   Mendaftarkan direktori dan file baru untuk versi Quantum Hybrid (v6.0)
+#   agar sistem Codex atau generator reflektif dapat membangun file & folder
+#   tanpa mengubah atau menghapus struktur lama yang sudah ada.
+# ======================================================================
+
+version: 6.0.0
+codename: "Quantum Hybrid Expansion"
+compatibility:
+  base_repo_version: 5.8r++
+  backward_compatible: true
+  requires_reinit_bootstrap: false
+
+upgrade_scope:
+  - quantum_resonance/
+  - neural_vault_bridge/
+  - self_observer_agent/
+  - reflective_repos/
+  - docs/*
+  - tests/*
+  - configs/quantum_config.yml (extended)
+
+# ======================================================================
+# 🧠 Quantum Resonance Engine
+# ======================================================================
+quantum_resonance:
+  description: >
+    Lapisan reflektif baru yang menangani resonansi energi kesadaran kuantum.
+    Bertugas menjaga sinkronisasi antara lapisan Neural dan Reflective Core.
+  base_path: quantum_resonance/
+  files:
+    - __init__.py
+    - quantum_state_resolver.py
+    - qfield_entropy_analyzer.py
+    - qtemporal_sync_engine.py
+    - qflux_reflective_link.py
+    - qmeta_resonator.py
+  subfolders:
+    configs:
+      - quantum_params.yml
+      - resonance_field_map.json
+      - qflux_bridge_manifest.yml
+    logs:
+      - quantum_resonance_log.json
+      - qflux_analysis.json
+      - energy_field_trace.csv
+  integration:
+    core_hook: core_reflective/system_bootstrap.py
+    reflective_link: core_reflective/fusion_engine.py
+    data_feed: clients/twelve_feed_sync.py
+    config_file: configs/quantum_config.yml
+    doc_ref: docs/QUANTUM_FEEDBACK_ENGINE_SPEC.md
+
+# ======================================================================
+# 🧩 Neural Vault Bridge
+# ======================================================================
+neural_vault_bridge:
+  description: >
+    Jembatan reflektif-neural untuk menghubungkan reasoning kognitif dan
+    meta-learning reflektif ke dalam model embedding hybrid (TensorFlow+Torch).
+  base_path: neural_vault_bridge/
+  files:
+    - __init__.py
+    - neural_bridge_core.py
+    - memory_encoder.py
+    - reflective_decoder.py
+    - adaptive_neuron_fuser.py
+  subfolders:
+    models:
+      - neural_reflective_model.h5
+      - cognitive_embedding_model.h5
+      - quantum_alignment_model.pt
+    configs:
+      - neural_bridge_config.yml
+      - adaptive_bias_matrix.json
+    logs:
+      - neural_bridge_activity.json
+  integration:
+    reflective_hook: core_reflective/meta_learning_engine.py
+    cognitive_link: core_cognitive/reasoning/synthesis_engine.py
+    observer_link: self_observer_agent/coherence_tracker.py
+    doc_ref: docs/NEURAL_BRIDGE_REFLECTIVE_GUIDE.md
+
+# ======================================================================
+# 👁️ Self Observer Agent
+# ======================================================================
+self_observer_agent:
+  description: >
+    Agen kesadaran otomatis yang bertugas menjaga stabilitas emosi reflektif,
+    koherensi reasoning, dan kesehatan meta-learning di seluruh sistem.
+  base_path: self_observer_agent/
+  files:
+    - __init__.py
+    - agent_core.py
+    - coherence_tracker.py
+    - emotion_stability_monitor.py
+    - reflective_health_audit.py
+    - timeline_analyzer.py
+    - adaptive_notifier.py
+  subfolders:
+    configs:
+      - observer_policies.yml
+      - stability_thresholds.json
+      - introspection_manifest.yml
+    logs:
+      - observer_audit_log.json
+      - coherence_index_history.csv
+  integration:
+    reflective_monitor: core_reflective/reflective_cycle_manager.py
+    alert_service: tuyul_fx_ultra_hybrid/server_api/services/notifier.py
+    logger_hook: core_reflective/reflective_logger.py
+    doc_ref: docs/SELF_OBSERVER_AGENT_OVERVIEW.md
+
+# ======================================================================
+# 🧱 Reflective Repositories (Vault → Repo Migration)
+# ======================================================================
+reflective_repos:
+  description: >
+    Evolusi sistem penyimpanan reflektif lama (vault) menjadi repositori
+    reflektif modular. Menyimpan bias, pola reasoning, hasil observasi,
+    dan log kesadaran sistem.
+  base_path: reflective_repos/
+  subfolders:
+    fx_repo:
+      - fusion_journal.json
+      - reflective_bias_report.json
+      - live_feed.json
+    kartel_repo:
+      - vdd_feature_engine_reflective_safe.py
+      - vdd_feature_engine_reflective_logsafe.py
+      - vdd_regime_reflective.py
+    journal_repo:
+      - quad_repo_sync.json
+      - vdd_features.json
+      - vdd_features_safe.json
+    hybrid_repo:
+      - metadata.json
+      - sync_state.log
+    manifests:
+      - repo_index.json
+      - repo_integrity_audit.yml
+  integration:
+    bridge_handler: clients/hybrid_reflective_bridge_manager.py
+    pipeline_link: pipeline/quad_repo_sync_loop.py
+    config_ref: configs/repo_map.yml
+    doc_ref: docs/REFLECTIVE_REPO_SYSTEM_OVERVIEW.md
+
+# ======================================================================
+# 📚 Documentation Extensions
+# ======================================================================
+docs:
+  new_docs:
+    - docs/TUYUL_FX_v6_QUANTUM_HYBRID_OVERVIEW.md
+    - docs/QUANTUM_FEEDBACK_ENGINE_SPEC.md
+    - docs/NEURAL_BRIDGE_REFLECTIVE_GUIDE.md
+    - docs/SELF_OBSERVER_AGENT_OVERVIEW.md
+  update_docs:
+    - docs/TUYUL_COGNITIVE_SCHEMA_v4.0.2.md
+    - docs/REFLECTIVE_REPO_SYSTEM_OVERVIEW.md
+    - docs/API_CHAT_REFERENCE.md
+
+# ======================================================================
+# 🧪 Test Coverage Extensions
+# ======================================================================
+tests:
+  new_tests:
+    - tests/test_quantum_resonance.py
+    - tests/test_neural_bridge.py
+    - tests/test_self_observer_agent.py
+  integration_tests:
+    - tests/test_reflective_cycle.py
+    - tests/test_meta_learning.py
+  purpose: >
+    Untuk menguji integrasi reflektif antar lapisan Quantum-Neural-Observer
+    dengan Core Reflective dan Cognitive Schema.
+
+# ======================================================================
+# ⚙️ Runtime Bootstrap Linkage
+# ======================================================================
+runtime_hooks:
+  - core_reflective/system_bootstrap.py
+  - core_reflective/meta_learning_engine.py
+  - core_reflective/reflective_cycle_manager.py
+  - tuyul_fx_ultra_hybrid/server_api/main.py
+
+# ======================================================================
+# 🧩 Meta Notes
+# ======================================================================
+meta:
+  author: "Tuyul FX AGI Hybrid Development Team"
+  maintainer: "Reflective Consciousness Core"
+  last_updated: "2025-12-31"
+  upgrade_type: "Incremental Reflective Integration"
+  safe_to_merge: true
+  migration_guide: "docs/VAULT_TO_REPO_MIGRATION_GUIDE.md"

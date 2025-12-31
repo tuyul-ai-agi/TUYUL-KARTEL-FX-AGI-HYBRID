@@ -1,0 +1,54 @@
+{
+  "version": "v5.8r++",
+  "protocol": "RBP_v2.3+",
+  "components": {
+    "hybrid_repo": {
+      "repo_name": "TUYUL-KARTEL-FX-AGI-HYBRID",
+      "role": "Orkestrator Reflektif",
+      "manifest": "hybrid_vault_manifest_v1.json"
+    },
+    "fx_vault": {
+      "repo_name": "TUYUL-FX-KNOWLEDGE-VAULT-AGI",
+      "role": "Ground Truth Teori",
+      "manifest": "fx_vault_manifest_v1.json"
+    },
+    "kartel_vault": {
+      "repo_name": "TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI",
+      "role": "Memori Reflektif",
+      "manifest": "kartel_vault_manifest_v1.json"
+    },
+    "journal_vault": {
+      "repo_name": "TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI",
+      "role": "Laboratorium Empiris",
+      "manifest": "journal_vault_manifest_v1.json"
+    }
+  },
+  "integrity": {
+    "required_coherence": 0.90,
+    "audit_interval_hours": 24,
+    "auto_sync": true,
+    "reflective_cycle_trigger": "run_reflection_cycle.yml"
+  },
+  "metadata_standard": [
+    "session_id",
+    "symbol",
+    "strategy_id",
+    "timeframe",
+    "market_regime",
+    "bias_type",
+    "fusion_state"
+  ],
+  "pipeline": [
+    "run_decision_cycle.yml",
+    "run_reflection_cycle.yml",
+    "sync_fx_vault_metadata.yml",
+    "vault_integrity_audit.yml",
+    "tri_vault_sync_loop.py"
+  ],
+  "governance": {
+    "changelog_policy": "CHANGELOG_*.md required for all version updates",
+    "feedback_protocol": "reflective_feedback.md",
+    "meta_learning_review": "trigger_meta_learning.yml"
+  },
+  "last_updated": "2026-01-01T00:00:00Z"
+}

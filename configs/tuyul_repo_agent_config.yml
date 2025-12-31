@@ -1,0 +1,53 @@
+# ============================================================
+# 🧠 TUYUL REPO AGENT CONFIG v5.8r++
+# Quad Repo Reflective Mode – RBP_v2.3+
+# ============================================================
+
+agent:
+  name: "tuyul-repo-agent"
+  version: "v5.8r++"
+  persona: "Alpha Serigala Strategis – Reflektif, Adaptif, Presisi"
+  bridge_protocol: "RBP_v2.3+"
+  reflective_mode: "quad_repo"
+
+repositories:
+  hybrid_repo: "https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID"
+  fx_vault: "https://github.com/tuyul-ai-agi/TUYUL-FX-KNOWLEDGE-VAULT-AGI"
+  kartel_vault: "https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI"
+  journal_vault: "https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI"
+
+reflective_pipeline:
+  decision_cycle: "run_decision_cycle.yml"
+  reflection_cycle: "run_reflection_cycle.yml"
+  meta_learning: "trigger_meta_learning.yml"
+  audit_integrity: "vault_integrity_audit.yml"
+
+commands:
+  - analyze fusion
+  - run montecarlo
+  - sync quad
+  - reflective cycle
+  - check integrity
+  - commit reflection
+  - update status
+  - trace
+  - fusion summarize
+
+security:
+  github_token: "${{ secrets.AGENT_GITHUB_PAT }}"
+  restricted_actions:
+    - force-push
+    - branch delete
+    - unverified commit
+
+logging:
+  reflective_log: "journal_vault/logs/reflective_feedback.json"
+  audit_log: "logs/reflective_cycle_log.json"
+  integrity_log: "logs/vault_integrity_audit.log"
+
+integrity_threshold:
+  coherence_index: 0.90
+  reflective_integrity: 0.93
+  fusion_confidence_min: 0.90
+
+tagline: "Gaskeun Serigala Bossku, Quad Repo sinkron penuh! ⚡"

@@ -1,0 +1,50 @@
+<svg width="1200" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 28px 'JetBrains Mono', monospace; fill: #0ff; }
+      .sub { font: 20px 'JetBrains Mono', monospace; fill: #fff; }
+      .label { font: 16px 'JetBrains Mono', monospace; fill: #ccc; }
+      .node { stroke: #0ff; stroke-width: 2; fill: rgba(0,0,0,0.4); rx: 15; ry: 15; }
+      .arrow { stroke: #0ff; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0ff" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="330" y="50" class="title">TUYUL FX AGI HYBRID — QUAD REPO REFLECTIVE SYSTEM v5.8r++</text>
+  <text x="400" y="80" class="sub">“Hybrid berpikir · FX mengajar · Kartel mengingat · Journal belajar”</text>
+
+  <!-- Nodes -->
+  <rect x="520" y="120" width="200" height="80" class="node" />
+  <text x="550" y="165" class="sub">🧠 Hybrid Repo</text>
+  <text x="560" y="190" class="label">Reflective Orchestrator</text>
+
+  <rect x="120" y="280" width="220" height="80" class="node" />
+  <text x="150" y="320" class="sub">📘 FX Vault</text>
+  <text x="160" y="345" class="label">Theoretical Knowledge</text>
+
+  <rect x="820" y="280" width="220" height="80" class="node" />
+  <text x="850" y="320" class="sub">📗 Kartel Vault</text>
+  <text x="860" y="345" class="label">Reflective Memory</text>
+
+  <rect x="470" y="460" width="260" height="80" class="node" />
+  <text x="500" y="500" class="sub">📕 Journal Vault</text>
+  <text x="510" y="525" class="label">Empirical Experience</text>
+
+  <!-- Arrows -->
+  <line x1="620" y1="200" x2="240" y2="280" class="arrow" />
+  <line x1="740" y1="200" x2="920" y2="280" class="arrow" />
+  <line x1="240" y1="360" x2="580" y2="460" class="arrow" />
+  <line x1="940" y1="360" x2="700" y2="460" class="arrow" />
+  <line x1="580" y1="540" x2="620" y2="200" class="arrow" />
+
+  <!-- Reflective Bridge -->
+  <circle cx="600" cy="340" r="40" stroke="#0ff" stroke-width="3" fill="rgba(0,255,255,0.05)" />
+  <text x="575" y="347" class="sub">🤖</text>
+  <text x="530" y="380" class="label">Reflective Bridge</text>
+
+  <!-- Footer -->
+  <text x="350" y="660" class="label">RBP_v2.3+ | αβγ Sync Engine | Meta-Learning Coherence ≥ 0.91 | Integrity Index: 0.94</text>
+</svg>

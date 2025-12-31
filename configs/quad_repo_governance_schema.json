@@ -1,54 +1,54 @@
 {
   "version": "v5.8r++",
   "protocol": "RBP_v2.3+",
-  "components": {
+  "architecture": "Quad Repo Reflective Adaptive System",
+  "repos": {
     "hybrid_repo": {
-      "repo_name": "TUYUL-KARTEL-FX-AGI-HYBRID",
-      "role": "Orkestrator Reflektif",
-      "manifest": "hybrid_vault_manifest_v1.json"
+      "name": "TUYUL-KARTEL-FX-AGI-HYBRID",
+      "role": "reflective_orchestrator",
+      "coherence_index": 0.91,
+      "meta_learning": "active"
     },
     "fx_vault": {
-      "repo_name": "TUYUL-FX-KNOWLEDGE-VAULT-AGI",
-      "role": "Ground Truth Teori",
-      "manifest": "fx_vault_manifest_v1.json"
+      "name": "TUYUL-FX-KNOWLEDGE-VAULT-AGI",
+      "role": "theoretical_core",
+      "status": "synced"
     },
     "kartel_vault": {
-      "repo_name": "TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI",
-      "role": "Memori Reflektif",
-      "manifest": "kartel_vault_manifest_v1.json"
+      "name": "TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI",
+      "role": "reflective_memory",
+      "status": "stable"
     },
     "journal_vault": {
-      "repo_name": "TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI",
-      "role": "Laboratorium Empiris",
-      "manifest": "journal_vault_manifest_v1.json"
+      "name": "TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI",
+      "role": "empirical_recorder",
+      "status": "active"
     }
   },
-  "integrity": {
-    "required_coherence": 0.90,
-    "audit_interval_hours": 24,
-    "auto_sync": true,
-    "reflective_cycle_trigger": "run_reflection_cycle.yml"
+  "reflective_parameters": {
+    "alpha": 1.03,
+    "beta": 0.97,
+    "gamma": 1.10,
+    "integrity_index": 0.94,
+    "fusion_confidence": 0.93,
+    "wlwci": 0.91,
+    "rcadj": 0.84
   },
-  "metadata_standard": [
-    "session_id",
-    "symbol",
-    "strategy_id",
-    "timeframe",
-    "market_regime",
-    "bias_type",
-    "fusion_state"
-  ],
-  "pipeline": [
-    "run_decision_cycle.yml",
-    "run_reflection_cycle.yml",
-    "sync_fx_vault_metadata.yml",
-    "vault_integrity_audit.yml",
-    "tri_vault_sync_loop.py"
-  ],
-  "governance": {
-    "changelog_policy": "CHANGELOG_*.md required for all version updates",
-    "feedback_protocol": "reflective_feedback.md",
-    "meta_learning_review": "trigger_meta_learning.yml"
+  "sync_status": {
+    "quad_repo_sync": "✅ Full Adaptive",
+    "reflective_bridge": "✅ Online",
+    "last_update": "2026-01-01T09:00:00Z"
   },
-  "last_updated": "2026-01-01T00:00:00Z"
+  "governance_rules": {
+    "cycle_interval": "1h",
+    "audit_frequency": "6h",
+    "auto_meta_learning": true,
+    "allow_cross_repo_reflection": true,
+    "rollback_on_integrity_drop": true
+  },
+  "notes": {
+    "description": "Schema resmi untuk sinkronisasi Quad Repo TUYUL AGI Hybrid v5.8r++",
+    "maintained_by": "TUYUL Labs Reflective Systems Division",
+    "philosophy": "Refleksi adalah resonansi sistemik antara teori, intuisi, dan pengalaman."
+  }
 }

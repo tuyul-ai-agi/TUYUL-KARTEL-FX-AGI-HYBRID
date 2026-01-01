@@ -1,22 +1,13 @@
 """
-Core Package Init
------------------
-Inisialisasi seluruh submodul AGI Hybrid Core.
+TUYUL-FX Quantum Hybrid Core
+Version: v6.0.0
+-------------------------------------------
+Central runtime and reflective orchestration layer.
+This package unifies all reflective, neural, and quantum layers
+under a single consciousness pipeline.
 """
 
-__version__ = "5.7.3r++"
-__author__ = "Tuyul Kartel AGI Core Team"
-
-from .fusion.final_output_reflective_engine import FinalOutputReflectiveEngine
-from .reflective.reflective_cycle_core import ReflectiveCycleCore
-from .volatility_reflective.reflective_volatility_engine import (
-    ReflectiveVolatilityEngine,
-)
-
-__all__ = [
-    "__version__",
-    "__author__",
-    "FinalOutputReflectiveEngine",
-    "ReflectiveCycleCore",
-    "ReflectiveVolatilityEngine",
-]
+__version__ = "6.0.0"
+__protocol__ = "RCP6"
+__bridge__ = "Hybrid Reflective Bridge"
+__codename__ = "Quantum Hybrid"

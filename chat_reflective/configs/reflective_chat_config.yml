@@ -1,1 +1,6 @@
-# Placeholder for reflective chat config
+version: 6.0.0
+reflective_awareness: true
+memory_enabled: true
+vault_integration: true
+coherence_target: 0.93
+autosync_interval: 600

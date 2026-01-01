@@ -1,1 +1,9 @@
 # Placeholder for gemini chat settings
+version: 6.0.0
+provider: Google
+endpoint: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
+model: gemini-pro
+api_key_env: GEMINI_API_KEY
+temperature: 0.7
+top_p: 0.9
+reflective_mode: enabled

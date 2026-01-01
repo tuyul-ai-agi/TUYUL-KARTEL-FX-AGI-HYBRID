@@ -1,1 +1,8 @@
-[Placeholder reflective prompt]
+Initiate reflective response generation.
+Analyze the user's query through the reflective lens.
+Return:
+- reflective_summary
+- emotional_bias
+- coherence_estimate
+- meta_intent alignment
+Ensure alignment with TUYUL Core principles.

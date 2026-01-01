@@ -1,11 +1,29 @@
 # ===============================================================
 # 🤖 TUYULBOT-TJX CONFIGURATION FILE
-# Reflective BOT Orchestrator – TUYUL FX AGI HYBRID v5.7.8r++
+# Reflective BOT Orchestrator – TUYUL FX AGI HYBRID v6.0.0
 # ===============================================================
+
+version: 6.0.0
+mode: reflective
+observer_mode: active
+quantum_feedback: enabled
+neural_bridge: enabled
+coherence_target: 0.93
+
+bots:
+  - name: tuyulagibot-tjx
+    role: "Neural Reflective Orchestrator"
+    vault_access: [Hybrid, FX, Kartel, Journal]
+    heartbeat_interval: 180
+
+  - name: tuyulagibot_reflective
+    role: "Meta-Observer Bot"
+    vault_access: [Hybrid, Journal]
+    heartbeat_interval: 120
 
 bot:
   id: "TUYULBOT-TJX"
-  version: "v5.7.8r++"
+  version: "v6.0.0"
   mode: "reflective"
   interval_seconds: 60          # ⏱️ waktu antar loop broadcast
   auto_heal: true               # 🔁 restart jika integritas rendah

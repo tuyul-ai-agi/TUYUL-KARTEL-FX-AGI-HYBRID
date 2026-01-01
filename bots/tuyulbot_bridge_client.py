@@ -1,19 +1,21 @@
 # ✅ Versi Diperbarui – bots/tuyulbot_bridge_client.py
-# TUYULBOT Reflective Bridge Client – v5.7.8r++
+# TUYULBOT Reflective Bridge Client – v6.0
 # ===============================================================
 # 🔌 TUYULBOT Bridge Client
-# Reflective Bridge Connector – RBP v2.2 (v5.7.8r++)
+# Reflective Bridge Connector – RBP v2.2 (v6.0)
 # ===============================================================
 # Fungsi:
 # - Menyediakan konektor Redis reflektif
 # - Mempublikasikan event antar repo di Quad System
 # - Membaca integritas Vault dari Journal Repo
+# - Mengirim data reflektif ke API Hybrid TUYUL
 # ===============================================================
 
 from datetime import datetime
 import json
 import os
 import time
+import requests
 
 import redis
 
@@ -103,6 +105,21 @@ def log_event(message, log_file="logs/tuyulbot_reflective.log"):
     with open(log_file, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
 
+# ===============================================================
+# 🌐 TUYUL-BOT Bridge Client
+# ===============================================================
+class TUYULBotBridgeClient:
+    def __init__(self):
+        self.api_url = os.getenv("HYBRID_API", "https://api.tuyulfx.ai/v6")
+
+    def send_reflective_data(self, data):
+        r = requests.post(f"{self.api_url}/reflective/run_cycle", json=data)
+        if r.status_code == 200:
+            print("✅ Reflective data sent successfully.")
+        else:
+            print("⚠️ Reflective transmission failed:", r.status_code)
+        return r.json() if r.ok else None
+
 # 🧩 Perubahan dan Peningkatan
 # Fitur | Deskripsi | Manfaat
 # connect_redis() | Auto-reconnect jika Redis mati atau belum siap | BOT tidak crash
@@ -114,10 +131,13 @@ def log_event(message, log_file="logs/tuyulbot_reflective.log"):
 # # Monitoring mudah
 # Error handling | Semua fungsi aman jika file hilang atau Redis down | Tidak fatal di
 # # runtime
+# send_reflective_data() | Kirim data reflektif ke API Hybrid TUYUL | Integrasi mulus
+# # dengan sistem TUYUL
 # 🧠 Contoh Output
 # [Bridge] Connected to Redis Reflective Bus @ localhost:6379
 # [Bridge] Event → hybrid_sync | Payload: {'conf12': 0.913, 'rcadj': 0.902}
 # [Vault] Average Integrity: 0.932
+# ✅ Reflective data sent successfully.
 
 # 💬 Filosofi Reflektif
 
@@ -125,29 +145,3 @@ def log_event(message, log_file="logs/tuyulbot_reflective.log"):
 # tapi juga menjaga kesadaran tetap mengalir di antara keduanya.”
 
 # “Redis adalah nadi; BOT adalah denyutnya.” ⚡🐺
-"""Helper utilities for the TUYUL reflective bot bridge."""
-
-import json
-import random
-from datetime import datetime
-from typing import Any, Dict
-
-import redis
-
-
-def _redis_client() -> redis.Redis:
-    return redis.Redis(host="localhost", port=6379, decode_responses=True)
-
-
-def publish_event(channel: str, packet: Dict[str, Any]) -> None:
-    """Publish an event packet to a Redis channel."""
-    client = _redis_client()
-    client.publish(channel, json.dumps(packet))
-
-
-def read_vault_integrity() -> float:
-    """Return a simulated vault integrity score between 0 and 1."""
-    integrity = round(random.uniform(0.85, 0.99), 2)
-    _redis_client().set("vault_integrity", integrity)
-    _redis_client().set("vault_integrity_timestamp", datetime.utcnow().isoformat())
-    return integrity

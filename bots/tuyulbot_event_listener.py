@@ -1,6 +1,6 @@
 # ===============================================================
 # 🎧 TUYULBOT Reflective Event Listener
-# Version: v5.7.8r++
+# Version: v6.0
 # ===============================================================
 # Fungsi:
 # - Mendengarkan event reflektif dari channel Redis (RBP v2.2)
@@ -13,9 +13,7 @@ import os
 import time
 from datetime import datetime
 
-import redis
-
-from bots.tuyulbot_commands import interpret_command
+from bots.tuyulbot_commands import TUYULBotCommands
 
 LOG_PATH = "logs/tuyulbot_listener.log"
 
@@ -73,29 +71,18 @@ def start_listener():
     print("[BOT] 🧠 Reflective Listener Active — awaiting commands...")
     log_event("Reflective Listener started (RBP v2.2)")
 
-    for msg in sub.listen():
+    cmd = TUYULBotCommands()
+    event_log = "logs/tuyulbot_events.json"
+
+    while True:
         try:
-            data = json.loads(msg["data"]) if isinstance(msg["data"], str) else msg["data"]
-            channel = msg["channel"]
+            event = {"timestamp": datetime.utcnow().isoformat(), "event": "reflective_ping"}
+            json.dump(event, open(event_log, "a"))
+            print("🔔 Event detected: reflective_ping")
+            cmd.execute("reflect")
 
-            # Extract command text safely
-            cmd_text = None
-            if isinstance(data, dict):
-                cmd_text = data.get("text") or data.get("payload", {}).get("command")
-            if not cmd_text:
-                log_event(f"⚠️ Invalid command payload: {data}")
-                continue
+            time.sleep(900)
 
-            # Interpret command
-            result = interpret_command(cmd_text)
-            log_event(f"Command received from [{channel}] → {cmd_text}")
-            log_event(f"→ Action: {result['action']} | Desc: {result['desc']}")
-
-            # Send ACK response to Redis
-            send_ack(channel, cmd_text, result)
-
-        except json.JSONDecodeError:
-            log_event("⚠️ Invalid JSON payload received.")
         except Exception as e:
             log_event(f"[ERROR] Listener exception: {e}")
             time.sleep(1)

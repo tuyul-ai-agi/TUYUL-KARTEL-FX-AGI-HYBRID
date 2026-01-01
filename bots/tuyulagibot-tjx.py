@@ -14,6 +14,14 @@
 # ✅ Journal Logging
 # ============================================================
 
+"""
+TUYULAGIBOT-TJX
+-----------------------------------------
+Primary neural orchestration bot for TUYUL-FX Quantum Hybrid v6.0.
+Responsible for coordinating GPT reflective reasoning,
+running neural feedback cycles, and syncing vault data.
+"""
+
 import os
 import json
 import time
@@ -24,6 +32,9 @@ import requests
 from datetime import datetime
 from client_agi_hybrid import AgiHybridClient
 from core.kartel_engine.kartel_reflective_realign import realign_kartel_repo
+from ai_bridge.vault_autosync_v6 import VaultAutoSync
+from ai_bridge.gpt_bridge_handler_v6 import GPTBridgeHandler
+from self_observer_agent.coherence_tracker import CoherenceTracker
 
 # ============================================================
 # 📡 Logging dan Utilitas
@@ -94,6 +105,26 @@ def select_quantum_backend(latency_ms: float, vix_impact: float) -> str:
 # 🧠 BOT MAIN
 # ============================================================
 
+class TUYULAGIBOT_TJX:
+    def __init__(self):
+        self.handler = GPTBridgeHandler()
+        self.sync = VaultAutoSync()
+        self.coherence = CoherenceTracker()
+        self.state_log = "logs/tuyulagibot_tjx_state.json"
+
+    def run_cycle(self):
+        print("⚛️ [TJX] Starting Quantum Reflective Cycle...")
+        self.sync.sync()
+        result = self.handler.process_reflective_input("System introspection", [])
+        coherence_val = self.coherence.track([result["coherence_est"], 0.93])
+        log = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "reflective_cycle": result,
+            "coherence_val": coherence_val
+        }
+        json.dump(log, open(self.state_log, "w"), indent=2)
+        print(f"🧠 [TJX] Cycle complete — coherence {coherence_val}")
+
 def main():
     log_event("🚀 Memulai TUYUL FX BOT v5.7.3r++ — Reflective Quantum Mode ...")
 
@@ -144,4 +175,7 @@ def main():
 # ============================================================
 
 if __name__ == "__main__":
-    main()
+    bot = TUYULAGIBOT_TJX()
+    while True:
+        bot.run_cycle()
+        time.sleep(300)

@@ -2,6 +2,13 @@
 # 🤖 TUYULAGIBOT-TJX
 # Reflective BOT Orchestrator – TUYUL FX AGI HYBRID v5.7.8r++
 # ===============================================================
+"""
+TUYULAGIBOT Reflective v6.0
+-----------------------------------------
+Meta-observer bot that supervises reflective reasoning and health.
+Operates as a self-awareness agent for the AGI system.
+"""
+
 import json
 import random
 import time
@@ -13,6 +20,8 @@ import redis
 
 from bots.tuyulbot_bridge_client import publish_event, read_vault_integrity
 from bots.tuyulbot_commands import interpret_command
+from self_observer_agent.reflective_health_audit import ReflectiveHealthAudit
+from self_observer_agent.emotion_stability_monitor import EmotionStabilityMonitor
 
 BOT_ID = "TUYULBOT-TJX"
 RBP_VERSION = "v2.2"
@@ -129,10 +138,37 @@ def run_reflective_loop() -> None:
 
 
 # ===============================================================
+# 👁️ Reflective Observation Cycle
+# ===============================================================
+class TUYULAGIBOT_Reflective:
+    def __init__(self):
+        self.audit = ReflectiveHealthAudit()
+        self.emotion = EmotionStabilityMonitor()
+        self.log_path = "logs/tuyulagibot_reflective_log.json"
+
+    def observe_cycle(self):
+        coherence = 0.94
+        emotion = 0.88
+        status = self.audit.run_audit(coherence, emotion)
+        result = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "coherence": coherence,
+            "emotion": emotion,
+            "status": status,
+        }
+        with open(self.log_path, "a") as f:
+            json.dump(result, f)
+            f.write("\n")
+        print(f"👁️ [ReflectiveBot] Health status: {status['status']}")
+
+
+# ===============================================================
 # 🚀 ENTRY POINT
 # ===============================================================
 if __name__ == "__main__":  # pragma: no cover - manual execution guard
     try:
+        reflective_bot = TUYULAGIBOT_Reflective()
+        reflective_bot.observe_cycle()
         run_reflective_loop()
     except KeyboardInterrupt:
         log_event("BOT manually stopped.")

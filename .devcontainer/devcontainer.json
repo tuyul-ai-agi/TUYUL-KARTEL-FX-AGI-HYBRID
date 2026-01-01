@@ -1,16 +1,25 @@
 {
-  "name": "TUYUL FX AGI Hybrid Dev",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "name": "TUYUL-FX Quantum Hybrid Reflective v6.0",
+  "image": "mcr.microsoft.com/vscode/devcontainers/python:3.10",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "moby": false
-    }
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
-  "postCreateCommand": "./postcreate.sh",
+  "postCreateCommand": "bash .devcontainer/postcreate.sh",
+  "runArgs": ["--init"],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/tuyul_fx,type=bind,consistency=cached",
+  "workspaceFolder": "/workspaces/tuyul_fx",
+  "remoteUser": "vscode",
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python"]
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
+        "python.analysis.autoImportCompletions": true
+      }
     }
   }
 }

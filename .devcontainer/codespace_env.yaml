@@ -1,0 +1,23 @@
+# ======================================================================
+# TUYUL-FX Quantum Hybrid v6.0 — Codespace Environment Config
+# ======================================================================
+# Mengatur variabel environment, token, dan path penting agar runtime
+# reflektif dapat langsung berjalan di GitHub Codespaces / DevContainer.
+# ======================================================================
+
+version: "1.0"
+
+environment:
+  REFLECTIVE_MODE: "thinking"
+  QUANTUM_LAYER: "active"
+  NEURAL_BRIDGE: "enabled"
+  SELF_OBSERVER: "active"
+  API_KEY_TWELVEDATA: "${{ secrets.TWELVEDATA_API_KEY }}"
+  GEMINI_API_KEY: "${{ secrets.GEMINI_API_KEY }}"
+  AGI_VAULT_TOKEN_PATH: "/workspaces/tuyul_fx/.devcontainer/.vault_token"
+  PYTHONPATH: "/workspaces/tuyul_fx"
+  LOG_LEVEL: "INFO"
+
+volumes:
+  - name: reflective_logs
+    path: /workspaces/tuyul_fx/logs

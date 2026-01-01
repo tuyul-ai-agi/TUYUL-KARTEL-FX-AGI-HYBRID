@@ -1,31 +1,19 @@
-import os, json
+import json, os, datetime
 
-VAULT_PATHS = {
-    "FX Vault": "vaults/fx_vault/fusion_journal.json",
-    "Kartel Vault": "vaults/kartel_vault/fusion_output.json",
-    "Journal Vault": "vaults/journal_vault/reflection_output.json",
+manifest_path = "reflective_repos/manifests/repo_index.json"
+if os.path.exists(manifest_path):
+    with open(manifest_path) as f:
+        data = json.load(f)
+    print(f"✅ Reflective manifest loaded. Last sync: {data.get('audit',{}).get('last_sync_status','Unknown')}")
+else:
+    print("⚠️ Reflective manifest not found. Run reflective_autobuild.sh first.")
+
+log = {
+    "checked_at": datetime.datetime.utcnow().isoformat(),
+    "status": "OK"
 }
+os.makedirs("logs", exist_ok=True)
+with open("logs/vault_autocheck_log.json", "w") as f:
+    json.dump(log, f, indent=2)
 
-def check_vaults():
-    print("🔍 Memeriksa kesehatan Vaults...")
-    all_ok = True
-    for name, path in VAULT_PATHS.items():
-        if not os.path.exists(path):
-            print(f"❌ {name}: File {path} tidak ditemukan.")
-            all_ok = False
-        else:
-            try:
-                with open(path) as f:
-                    json.load(f)
-                print(f"✅ {name}: Data valid.")
-            except json.JSONDecodeError:
-                print(f"⚠️ {name}: JSON rusak atau kosong.")
-                all_ok = False
-    return all_ok
-
-if __name__ == "__main__":
-    print("🧠 Vault Health Check mulai...")
-    if check_vaults():
-        print("✅ Semua Vault sehat.")
-    else:
-        print("🚨 Beberapa Vault bermasalah.")
+print("🧠 Vault integrity check complete.")

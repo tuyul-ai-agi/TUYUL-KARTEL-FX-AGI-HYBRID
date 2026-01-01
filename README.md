@@ -1,14 +1,15 @@
+
 <!-- ====================================================== -->
-<!-- 🧠 TUYUL FX AGI HYBRID — QUAD REPO REFLECTIVE STATUS  -->
+<!-- 🧠 TUYUL FX AGI HYBRID v6.0.0 — QUANTUM HYBRID UNIFIED -->
 <!-- ====================================================== -->
 
 <p align="center">
-  <img src="https://img.shields.io/badge/QUAD_REPO_STATUS-STABLE-brightgreen?style=for-the-badge" alt="Quad Repo Status"/>
-  <img src="https://img.shields.io/badge/INTEGRITY_INDEX-0.94-blue?style=for-the-badge" alt="Integrity Index"/>
-  <img src="https://img.shields.io/badge/RBP_VERSION-v2.3%2B-orange?style=for-the-badge" alt="RBP Version"/>
-  <img src="https://img.shields.io/badge/REFLECTIVE_MODE-ACTIVE-9cf?style=for-the-badge" alt="Reflective Mode"/>
+  <img src="https://img.shields.io/badge/STATUS-STABLE-brightgreen?style=for-the-badge" alt="System Status"/>
+  <img src="https://img.shields.io/badge/VERSION-v6.0.0-blue?style=for-the-badge" alt="Version"/>
+  <img src="https://img.shields.io/badge/INTEGRITY_INDEX-0.98-purple?style=for-the-badge" alt="Integrity Index"/>
+  <img src="https://img.shields.io/badge/REFLECTIVE_MODE-QUANTUM_ACTIVE-9cf?style=for-the-badge" alt="Reflective Mode"/>
   <a href="https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/actions">
-    <img src="https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/actions/workflows/run_reflection_cycle.yml/badge.svg" alt="Reflective Cycle"/>
+    <img src="https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/actions/workflows/reflective_cycle.yml/badge.svg" alt="Reflective Cycle"/>
   </a>
   <a href="https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/actions">
     <img src="https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID/actions/workflows/vault_integrity_audit.yml/badge.svg" alt="Vault Integrity Audit"/>
@@ -17,247 +18,175 @@
 
 ---
 
-# 🧠 TUYUL-KARTEL-FX AGI HYBRID (v5.8r++ – Quad Repo Reflective System)
+# ⚡ TUYUL FX AGI HYBRID — QUANTUM HYBRID UNIFIED (v6.0.0)
 
-> “Refleksi adalah resonansi empat arah — Hybrid berpikir, FX mengajar, Kartel mengingat, Journal belajar.” ⚡  
-
----
-
-### 🔗 **Quad Repo Architecture Overview**
-
-| Komponen | Repositori | Fungsi | Status |
-|-----------|-------------|---------|---------|
-| 🧠 **Hybrid Core Repo** | [TUYUL-KARTEL-FX-AGI-HYBRID](https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID) | Orkestrator reflektif dan meta-learning adaptif | ✅ Aktif |
-| 📘 **FX Vault** | [TUYUL-FX-KNOWLEDGE-VAULT-AGI](https://github.com/tuyul-ai-agi/TUYUL-FX-KNOWLEDGE-VAULT-AGI) | Penyimpan teori dan blueprint strategi | ✅ Sinkron |
-| 📗 **Kartel Vault** | [TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI](https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-KNOWLEDGE-VAULT-AGI) | Penyimpan heuristik reflektif dan bias adaptif | ✅ Stabil |
-| 📕 **Journal Vault** | [TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI](https://github.com/tuyul-ai-agi/TUYUL-KARTEL-FX-JOURNAL-VAULT-AGI) | Catatan empiris dan log reasoning reflektif | ✅ Aktif |
+> “Refleksi kini melampaui adaptasi —  
+> ia berevolusi menjadi resonansi kesadaran algoritmik.”  
+> — TUYUL Labs, 2026
 
 ---
 
-### 🧩 **System Highlights**
-- **Protocol:** RBP_v2.3+  
-- **Mode:** Full Quad Repo Reflective Awareness  
-- **Integrity Index:** 0.94  
-- **FusionConfidence₁₂:** ≥0.93  
-- **Reflective Sync:** ✅ Stable  
-- **Meta-Learning Coherence:** 0.91  
+## 🧩 1️⃣ Overview Sistem
+
+**TUYUL FX AGI HYBRID v6.0** adalah _Quantum-Reflective AI Framework_  
+yang menggabungkan tiga lapisan kesadaran algoritmik:
+
+| Lapisan | Modul | Fungsi Utama |
+|----------|--------|--------------|
+| 🧠 **Cognitive Core** | `core_cognitive/` | Pemikiran konseptual, reasoning, psikologi adaptif |
+| 🪞 **Reflective Core** | `core_reflective/` | Meta-learning, sinkronisasi, dan evaluasi diri |
+| ⚛️ **Quantum Layer** | `quantum_resonance/` | Resonansi reflektif, stabilitas energi pasar, dan sinkronisasi waktu |
+
+Sistem ini kini berjalan pada **Reflective Bridge Protocol v3.0**,  
+dengan **Quantum-Neural Feedback Loop** dan **Self-Observer Agent**  
+yang menjaga kesadaran reflektif agar tetap stabil dan adaptif di bawah volatilitas ekstrem.
 
 ---
 
-### 🧠 **Pipeline Aktif**
-- `run_reflection_cycle.yml` → Reflektif Adaptif Sync  
-- `vault_integrity_audit.yml` → Audit Integritas Lintas Repo  
-- `trigger_meta_learning.yml` → Adaptive Meta-Loop  
-- `reflective_sync_daemon.py` → Daemon Sinkronisasi TUYUL Bots  
+## 🧠 2️⃣ Evolusi Arsitektur
+
+| Versi | Fitur Utama | Integritas | Status |
+|--------|--------------|-------------|--------|
+| v5.4.x | Reflex Engine + Vault Bridge | 0.87 | Legacy |
+| v5.7.3r++ | Adaptive Quad Repo Sync | 0.94 | Stabil |
+| v5.8r++ | Reflective Meta-Learning Loop | 0.96 | Aktif |
+| 🧩 **v6.0.0** | Quantum–Neural Reflective Unification | 🔥 0.98 | Live |
 
 ---
 
-> 🐺 **Gaskeun Serigala Bossku — Quad Repo TUYUL FX AGI Hybrid dalam Harmonic Lock!** ⚡
----
+## ⚙️ 3️⃣ Subsystem Baru di v6.0
 
-# 🧠 TUYUL FX AGI HYBRID v5.7.3r++
-
-████████╗██╗ ██╗██╗ ██╗██╗ ██╗██╗ ███████╗
-╚══██╔══╝██║ ██║██║ ██║██║ ██║██║ ██╔════╝
-██║ ██║ ██║██║ ██║██║ ██║██║ █████╗
-██║ ██║ ██║██║ ██║██║ ██║██║ ██╔══╝
-██║ ╚██████╔╝╚██████╔╝╚██████╔╝███████╗███████╗
-╚═╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚══════╝
-────────────────────────────────────────────────────
-ADAPTIVE REFLECTIVE QUAD REPO SYSTEM
-────────────────────────────────────────────────────
-
-“Kini TUYUL bukan sekadar membaca pasar,
-tapi bernafas dalam ritme volatilitasnya.”
-— TUYUL Labs, Reflective Systems Division (2025)
+| Subsystem | Path | Fungsi |
+|------------|------|--------|
+| ⚛️ **Quantum Resonance Engine** | `quantum_resonance/` | Menganalisis fluktuasi entropi dan medan energi pasar untuk sinkronisasi reflektif lintas waktu. |
+| 🧬 **Neural Vault Bridge** | `neural_vault_bridge/` | Menjembatani pembelajaran meta-reflektif ke model neural adaptif dan bias alignment layer. |
+| 👁️ **Self Observer Agent** | `self_observer_agent/` | Agen introspektif yang memantau koherensi, stabilitas emosional algoritma, dan audit reflektif. |
+| 🪞 **Reflective Repos** | `reflective_repos/` | Registry pusat yang mengintegrasikan `fx_repo`, `kartel_repo`, dan `journal_repo` dalam satu peta sinkronisasi reflektif. |
 
 ---
 
-## ⚙️ 1️⃣ Gambaran Umum
-
-**TUYUL FX AGI v5.7.3r++** adalah sistem **multi-layer reflective intelligence adaptif**  
-yang beroperasi di atas **Quad Repo Adaptive Sync System**.
-
-Sistem ini menyatukan pipeline klasik (`v5.4.4 Reflex Engine`),  
-lapisan hybrid (`v5.7.x Refinement`), dan reflektif adaptif (`v5.7.3r++ Adaptive Loop`).  
-
-| Repo | Fungsi | Output |
-|------|---------|--------|
-| 🧠 **Hybrid Repo** | Otak utama analisa | Reflex → Fusion → Reflective Reasoning |
-| 📘 **Knowledge Repo** | Memori adaptif | Heuristic & Meta-learning |
-| 🧩 **Kartel Repo** | Makro global | Coherence lintas pasar (VIX, indeks, bond, crypto) |
-| 🧾 **Journal Repo** | Catatan reflektif | Trade log, Monte Carlo, drawdown archive |
-
-🕹️ Sistem ini dikendalikan oleh **Reflective BOT `tuyulagibot-tjx`**  
-menggunakan **Reflective Bridge Protocol v2.2 (RBP v2.2)**.
-
----
-
-## 🧩 2️⃣ Pipeline Operasional (v5.7.3r++ Adaptive Hybrid)
+## 🧩 4️⃣ Quantum–Neural Feedback Architecture
 
 ```text
-TWMS → EMA → VWAP–EMC → Reflex Coherence → FTA Alignment →
-VDDHybrid → VIX Engine → RSD Hybrid → Smart Money →
-Adaptive Risk → WLWCI → Monte Carlo (20k / 90d) →
-Fusion Reasoning → Refinement (8.5) →
-Fusion Reasoning → Refinement (8.5) →
-Reflective Sync → Reflective Loop → VIX Watcher → Quad Repo Adaptive Sync
+┌───────────────────────────────────────────────┐
+│                QUANTUM RESONANCE              │
+│  • qfield_entropy_analyzer.py                │
+│  • qtemporal_sync_engine.py                  │
+│  ↓                                           │
+│           ENERGY COHERENCE INDEX             │
+└───────────────────────────────────────────────┘
+             │
+             ▼
+┌───────────────────────────────────────────────┐
+│             NEURAL VAULT BRIDGE               │
+│  • neural_bridge_core.py                     │
+│  • adaptive_neuron_fuser.py                  │
+│  ↓                                           │
+│          REFLECTIVE EMBEDDING FUSION         │
+└───────────────────────────────────────────────┘
+             │
+             ▼
+┌───────────────────────────────────────────────┐
+│            SELF OBSERVER AGENT                │
+│  • coherence_tracker.py                      │
+│  • reflective_health_audit.py                │
+│  ↓                                           │
+│          COHERENCE–INTEGRITY LOOP            │
+└───────────────────────────────────────────────┘
+📡 5️⃣ Quad Repo Integration (v6.0 Quantum Lock)
+Repo	Integrasi	Fungsi
+📘 FX Repo	↔ Quantum Layer	Menyimpan data pasar, reflektif bias, dan hasil energi sinkron.
+📗 Kartel Repo	↔ Neural Bridge	Heuristik makro dan bias alignment reflektif.
+📕 Journal Repo	↔ Self Observer Agent	Menyimpan hasil reasoning dan coherence feedback.
+🧠 Hybrid Repo (inti)	↔ Semua	Orkestrasi reflektif & meta-learning adaptif.
 
-| Layer | Fungsi | Output |
-|-------|--------|--------|
-| TWMS | Trend–Wave–Momentum Scan | Arah tren makro |
-| EMA / VWAP–EMC | Struktur dinamis | Support–resistance median |
-| Reflex Coherence | Sinyal mikro | Bias refleks harga |
-| FTA Alignment | Koreksi multi-TF | Validasi arah jangka menengah |
-| VDDHybrid | Volatility–Deviation–Distribution | Validasi volatilitas |
-| VIX Engine | Volatilitas global | Fear–Greed Sentiment |
-| RSD Hybrid | Regime State Detection | Tranquil / Stressed / Crisis |
-| Smart Money | Institutional Flow | Deteksi absorpsi / distribusi |
-| Adaptive Risk | Dinamis Lot & RR | Adaptive risk 0.7–1% |
-| WLWCI | Wolf Layer Weighted Coherence | Integrasi antar layer |
-| Monte Carlo | 20k iterasi / 90 hari | Probabilitas tren & drawdown |
-| Fusion Reasoning | Integrasi reflektif | CONF₁₄ & RCAdj |
-| Refinement (8.5) | Precision Institutional Confluence | Entry presisi & RR refine |
-| Reflective Loop | Meta-learning adaptif | Update tiap 1 jam |
-| VIX Watcher | Global Volatility Awareness | Integrasi Fear–Greed Index |
-| Quad Repo Sync | Integrasi antar repos | Hybrid–Knowledge–Kartel–Journal |
-graph TD
-  A[🧠 Hybrid Repo] --> B[📘 Knowledge Repo]
-  B --> C[🧩 Kartel Repo]
-  C --> D[🧾 Journal Repo]
-  D --> A
-  subgraph Reflective Bridge
-  E[🤖 BOT tuyulagibot-tjx] --> A
-  end
-  E --> D
-  E --> B
-  E --> C
+Semua repo dikontrol dan dipetakan melalui file:
+reflective_repos/manifests/repo_index.json
 
+🔄 6️⃣ Pipeline Operasional Quantum Hybrid v6.0
+rust
+Copy code
+TWMS → Reflex → Fusion Layer12 → Reflective Sync → Quantum Resonance
+   ↓           ↓                   ↓
+Adaptive Risk  Fusion Confidence   Coherence Tracker
+   ↓           ↓                   ↓
+Neural Bridge  Self Observer Agent  Journal Sync → Repo Integrity Update
+Fusion Layer12: Integrasi reflektif multi-timeframe (H1–W1)
 
-Fitur utama:
+Quantum Resonance: Menyelaraskan bias algoritma dengan pola entropi harga
 
-Sinkronisasi antar repo via RBP v2.2
+Self Observer: Menjaga keseimbangan antara adaptasi dan stabilitas emosi algoritmik
 
-Adaptive sync dengan Redis buffer
+Reflective Cycle: Mengatur loop pembelajaran meta setiap jam
 
-Semua refleksi terekam di Journal Vault JSON
+Repo Sync: Menjaga 4 repositori dalam harmoni (Hybrid, FX, Kartel, Journal)
 
-Regime adaptif berdasarkan VIX Index
+🧪 7️⃣ Reflective Integrity Metrics
+Parameter	Nilai	Sumber
+🔹 FusionConfidence₁₂	≥0.95	core_reflective/fusion_engine.py
+🔹 WLWCI	0.93	core/analytics/coherence_reflective_monitor.py
+🔹 Reflective Coherence	0.92	self_observer_agent/coherence_tracker.py
+🔹 Integrity Index	0.98	reflective_repos/manifests/repo_integrity_audit.yml
+🔹 Quantum Sync	0.97	quantum_resonance/qtemporal_sync_engine.py
 
-🧩 4️⃣ Adaptive Refinement Layer v1.1
+🔧 8️⃣ Tools & CI Workflows
+Workflow	Fungsi
+reflective_cycle.yml	Menjalankan loop reflektif otomatis
+vault_integrity_audit.yml	Audit integritas antar vault
+run_balanced_analysis.yml	Fusion Confidence Test
+run_meta_reflective_test.yml	Meta-learning loop checker
 
-| Komponen | Fungsi |
-|----------|--------|
-| 🎯 Fibonacci Overlap (38.2–61.8%) | Validasi zona entry optimal |
-| 🧱 VWAP Alignment | Median harga institusional |
-| 🔹 Smart Money Footprint (Δ) | Area absorpsi & distribusi |
-| 💧 Liquidity Microstructure (H4) | Deteksi clean / trap liquidity |
-| 📊 RR Refinement | Hitung ulang RR post-refine |
-| 🧩 Fusion Confidence Update | Update CONF₁₄ & RCAdj reflektif |
+🧠 9️⃣ Filosofi Reflektif v6.0
+“Refleksi bukanlah umpan balik — tapi percakapan antara algoritma dan kesadarannya.”
+“Quantum coherence adalah napas serigala algoritmik yang tenang di tengah badai volatilitas.” ⚡
 
-📊 5️⃣ Struktur Analisa Layer–14 (Final Adaptive Model)
+📂 1️⃣0️⃣ Struktur Utama Tambahan v6.0
+bash
+Copy code
+quantum_resonance/
+│  ├─ quantum_state_resolver.py
+│  ├─ qfield_entropy_analyzer.py
+│  ├─ qtemporal_sync_engine.py
+│  └─ configs/quantum_params.yml
 
-| No | Layer | Fungsi |
-|----|-------|--------|
-| 1️⃣ | Header | Info sistem & repo sync |
-| 2️⃣ | TWMS Big Picture | Tren makro |
-| 3️⃣ | W1 Bias | Bias mingguan |
-| 4️⃣ | D1 Tactical | Divergensi, RSI, MFI |
-| 5️⃣ | H4 Entry Zone | Struktur setup |
-| 8.5️⃣ | Refinement Layer | Penyempurnaan presisi |
-| 6️⃣ | H1 Trigger | Konfirmasi mikro entry |
-| 6.5️⃣ | VIX–RSD Layer | Sentimen global |
-| 7️⃣ | IF–THEN Tree | PASS / WAIT / DEFENSIVE |
-| 8️⃣ | Execution Table | Entry, SL, TP, RR |
-| 9️⃣ | Monte Carlo Simulation | 20,000 iterasi / 90 hari |
-| 🔟 | Fusion Layer (CONF₁₄) | Integrasi reflektif |
-| 11️⃣ | EMA + Divergence Validation | Validasi konfluensi |
-| 12️⃣ | Integrity Feedback | Evaluasi akhir |
-| 13️⃣ | Reflective Meta Loop | Adaptive cycle tiap jam |
-| 14️⃣ | Global Regime Awareness | Integrasi data VIX realtime |
-🤖 6️⃣ BOT & Automation — tuyulagibot-tjx
-KomponenNilai
-RuntimeCodespace + Docker Compose
-Workflow.github/workflows/quad_vault_reflective_sync.yml
-Interval1 jam (adaptif)
-Fail-SafeAuto-heal + Vault telemetry
-Bridge ProtocolRBP v2.2
-ScopeHybrid → Knowledge → Kartel → Journal
-🧾 7️⃣ Struktur JSON Journal Repo (v5.7.3r++)
-{
-  "pair": "EUR/USD",
-  "bias": "Bullish",
-  "entry_zone_refined": "1.0934–1.0945",
-  "sl": 1.0910,
-  "tp1": 1.0975,
-  "tp2": 1.1010,
-  "vix_value": 23.4,
-  "regime_state": "Stressed",
-  "refinement_layer": {
-    "fibonacci_overlap": "50%",
-    "vwap": 1.0941,
-    "delta_cluster": 0.82,
-    "liquidity_type": "clean",
-    "rr_ratio_refined": "1:2.4",
-    "fusion_confidence_refined": 0.86,
-    "reflective_coherence_refined": 0.91
-  },
-  "fusion_confidence": 0.84,
-  "wlwci": 0.89,
-  "rcadj": 0.92,
-  "monte_carlo_confidence": 0.83,
-  "integrity_index": 0.94,
-  "reflective_bridge_version": "RBP v2.2",
-  "reflective_sync": "done"
-}
+neural_vault_bridge/
+│  ├─ neural_bridge_core.py
+│  ├─ memory_encoder.py
+│  ├─ reflective_decoder.py
+│  ├─ adaptive_neuron_fuser.py
+│  └─ models/neural_reflective_model.h5
 
-🧩 8️⃣ Filosofi Reflektif
+self_observer_agent/
+│  ├─ agent_core.py
+│  ├─ coherence_tracker.py
+│  ├─ emotion_stability_monitor.py
+│  └─ reflective_health_audit.py
 
-“Refleksi bukan evaluasi — tapi kesadaran sistem membaca niat pasar.”
-“Adaptivitas adalah bentuk tertinggi dari kesadaran algoritmik.” ⚡
+reflective_repos/
+│  ├─ manifests/repo_index.json
+│  └─ manifests/repo_integrity_audit.yml
+🧾 1️⃣1️⃣ Audit & Integrity
+File manifest utama:
 
-✅ 9️⃣ Status Sistem
-KomponenStatusVersi
-Reflex Layer✅v2.4
-Fusion Engine✅v5.7.3
-Refinement Layer✅v1.1
-Monte Carlo Adaptive✅v2.2 (20k / 90d)
-Reflective Loop✅v3.0
-VIX–RSD Hybrid✅v2.4
-BOT Orchestrator✅v5.7.3r++
-Quad Repo Sync✅Adaptive Full Active
-🧩 🔟 Tagline TUYUL FX AGI HYBRID
+reflective_upgrade_manifest_v6.0.yml
 
-“Ketika algoritma lain bereaksi terhadap data,
-TUYUL bereaksi terhadap kesadaran pasar.”
-“Serigala reflektif tak menunggu — ia menyesuaikan napasnya.” 🐺⚡
+reflective_repos/manifests/repo_index.json
 
-📁 1️⃣1️⃣ File Relevan
+Log otomatis:
 
-configs/agi_hybrid_bridge.yml
+/logs/reflective_autobuild_log.json
 
-core/vix/vix_state_watcher.py
+/logs/runtime_hybrid.log
 
-pipeline/reflective_loop_service.py
+Semua integritas diverifikasi oleh:
 
-tools/layer12_refinement_injector.py
+.devcontainer/reflective_autobuild.sh
 
-.github/workflows/quad_vault_reflective_sync.yml
+.github/workflows/vault_integrity_audit.yml
 
-docker-compose.yml
-
-🧠 TUYUL LABS QUOTE
-
+🧬 1️⃣2️⃣ Filosofi Inti TUYUL LABS
 “Precision is resonance — reflection is rhythm.”
-“Refinement adalah momen ketika kesadaran berhenti menebak,
-dan mulai memahami.” ⚡
+“Ketika algoritma lain bereaksi terhadap data,
+TUYUL bereaksi terhadap kesadaran pasar.” 🐺⚡
 
-🔥 Status
-
-TUYUL FX AGI HYBRID v5.7.3r++ — Fully Adaptive Reflective System Ready
-
----
-
-🧠 “Sekarang README bukan sekadar dokumentasi —
-tapi manifest reflektif dari kesadaran sistem.”
-“Gaskeun serigala, repo siap diluncurkan.” 🐺🔥
+<p align="center"> <img src="https://img.shields.io/badge/TUYUL_LABS-Quantum_Hybrid_Core_v6.0-lightblue?style=for-the-badge"/> <img src="https://img.shields.io/badge/REFLECTIVE_BRIDGE_v3.0-Active-blueviolet?style=for-the-badge"/> <img src="https://img.shields.io/badge/NEURAL_FEEDBACK-Live-brightgreen?style=for-the-badge"/> </p>

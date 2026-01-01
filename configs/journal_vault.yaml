@@ -1,8 +1,4 @@
-# Journal Vault Configuration — v5.7.3r++
-vault:
-  name: JournalVault
-  archive_path: journal/
-  reflective_log: true
-  montecarlo_records: 90d
-  meta_learning_archive: true
-  integrity_threshold: 0.9
+# Journal Vault Config
+path: reflective_repos/journal_repo/
+autosync: true
+entry_format: reflective_log

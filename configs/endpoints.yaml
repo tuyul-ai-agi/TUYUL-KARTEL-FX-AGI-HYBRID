@@ -1,7 +1,5 @@
-# Endpoint Configuration (RBP v2.2)
-hybrid_api: https://api.hybrid.tuyulfx.ai
-fx_vault_api: https://api.fxvault.tuyulfx.ai
-kartel_vault_api: https://api.kartel.tuyulfx.ai
-journal_vault_api: https://api.journal.tuyulfx.ai
-reflective_bridge_api: https://bridge.tuyulfx.ai
-dashboard_api: http://localhost:5733
+# API Endpoints for Reflective Systems
+reflective_chat: http://localhost:8008/reflective/chat
+dashboard_api: http://localhost:8010/status
+data_bridge: http://localhost:8020/fetch
+fusion_monitor: http://localhost:8050/reflective/metrics

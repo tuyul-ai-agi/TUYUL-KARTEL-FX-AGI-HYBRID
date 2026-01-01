@@ -1,7 +1,6 @@
-smc_reflex:
-  pivot_window: 5
-  ema_fast_len: 9
-  ema_slow_len: 21
-  slope_weight: 0.2
-  confidence_threshold: 65
-  log_path: "logs/smc_reflex_log.json"
+# Self-Monitoring & Coherence Config
+self_observer_agent: self_observer_agent/agent_core.py
+audit_interval: 3600
+thresholds:
+  coherence_min: 0.90
+  emotion_min: 0.85

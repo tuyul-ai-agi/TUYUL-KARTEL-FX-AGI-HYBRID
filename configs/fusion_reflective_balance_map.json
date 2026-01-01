@@ -1,8 +1,6 @@
 {
-  "fusion_weight": 0.45,
-  "reflective_weight": 0.55,
-  "wlwci_weight": 0.2,
-  "rcadj_factor": 0.75,
-  "meta_learning_tolerance": 0.03
+  "alpha": 1.03,
+  "beta": 0.97,
+  "gamma": 1.10,
+  "integrity_index": 0.94
 }
-

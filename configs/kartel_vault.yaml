@@ -1,12 +1,4 @@
-# Kartel Vault Config — v5.7.3r++
-vault:
-  name: KartelVault
-  regime_detection: active
-  vix_monitor_interval: 1800
-  adaptive_state: true
-  default_regime: "Tranquil"
-  global_bias_map:
-    tranquil: "Risk-on"
-    expansion: "Neutral"
-    stressed: "Risk-off"
-
+# Kartel Vault Reflective Config
+bias_matrix: reflective_repos/kartel_repo/vdd_regime_reflective.py
+integrity_threshold: 0.92
+adaptive_mode: true

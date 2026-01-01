@@ -1,7 +1,5 @@
-# Quantum Configuration — TUYUL FX AGI HYBRID v5.7.3r++
-quantum_engine:
-  mode: VQE + QAOA
-  sampling_iterations: 20000
-  coherence_validation: true
-  montecarlo_seed: 573
-  reflective_qbit_threshold: 0.94
+# Quantum Resonance Configuration
+quantum_engine: quantum_resonance/qmeta_resonator.py
+field_map: quantum_resonance/configs/resonance_field_map.json
+sync_interval: 180
+energy_mode: reflective_lock

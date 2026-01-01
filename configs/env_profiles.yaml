@@ -1,12 +1,8 @@
-# Environment Profiles — TUYUL FX AGI HYBRID v5.7.3r++
+# Environment Profiles
 profiles:
   dev:
-    reflection_mode: "simulation"
-    meta_sync: false
-  staging:
-    reflection_mode: "adaptive"
-    meta_sync: true
+    mode: debug
+    logging: verbose
   prod:
-    reflection_mode: "full_reflective"
-    meta_sync: true
-
+    mode: reflective
+    logging: minimal

@@ -1,12 +1,5 @@
-# FX Vault Reflective Config — v5.7.3r++
-vault:
-  name: FXVault
-  integrity_threshold: 0.9
-  reflective_mode: adaptive
-  journal_hook: true
-  bias_sync:
-    update_interval: 300
-    default_bias: neutral
-  connection:
-    endpoint: https://api.fxvault.tuyulfx.ai
-    token_var: FX_API_TOKEN
+# FX Vault Reflective Configuration
+data_feed: TwelveData
+pairs: ["GBP/USD", "EUR/USD", "USD/JPY"]
+update_interval: 3600
+storage: reflective_repos/fx_repo/fusion_journal.json

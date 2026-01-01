@@ -1,27 +1,37 @@
 {
-  "name": "TUYUL-FX Quantum Hybrid Reflective v6.0",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python:3.10",
+  "name": "TUYUL FX AGI HYBRID v6.0 Quantum Codespace",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "moby": false
-    }
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {}
   },
   "postCreateCommand": "bash .devcontainer/postcreate.sh",
-  "runArgs": ["--init"],
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/tuyul_fx,type=bind,consistency=cached",
-  "workspaceFolder": "/workspaces/tuyul_fx",
+  "runArgs": ["--privileged"],
+  "mounts": [
+    "source=${localWorkspaceFolder}/vaults,target=/workspace/vaults,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "REFLECTIVE_MODE": "QUANTUM_ACTIVE",
+    "PYTHONUNBUFFERED": "1",
+    "TZ": "Asia/Jakarta"
+  },
   "remoteUser": "vscode",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "ms-toolsai.jupyter",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "GitHub.copilot",
+        "GitHub.vscode-pull-request-github"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python3",
-        "python.analysis.autoImportCompletions": true
+        "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
-  }
+  },
+  "overrideCommand": false
 }

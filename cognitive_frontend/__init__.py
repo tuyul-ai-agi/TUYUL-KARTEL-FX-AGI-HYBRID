@@ -1,9 +1,10 @@
-# TUYUL FX AGI HYBRID v5.7.3r++
-# Cognitive Frontend Package Loader — RBP v2.2
-from .web_ui import run_reflective_dashboard
-from .context_interpreter import ContextInterpreter
-from .reflex_console import ReflexConsole
+"""
+TUYUL-FX Quantum Hybrid Cognitive Frontend v6.0.0
+-------------------------------------------------
+Bridges user interaction, reflective reasoning,
+and live awareness dashboard.
+"""
 
-__all__ = ["run_reflective_dashboard", "ContextInterpreter", "ReflexConsole"]
-
-print("🧠 Cognitive Frontend initialized — TUYUL v5.7.3r++ Adaptive UI Active")
+__version__ = "6.0.0"
+__author__ = "TUYUL Reflective Systems Division"
+__frontend_mode__ = "Cognitive-Reflective Dashboard"

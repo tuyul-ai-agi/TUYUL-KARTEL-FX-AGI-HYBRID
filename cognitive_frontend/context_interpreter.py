@@ -1,37 +1,34 @@
-# 🧠 ContextInterpreter — TUYUL FX AGI HYBRID v5.7.3r++
-# Menerjemahkan data reflektif menjadi konteks visual dan naratif
-import json, datetime
+"""
+Context Interpreter v6.0
+-----------------------------------------
+Interprets user input into structured reflective context
+before being passed to reasoning layers.
+"""
+
+import re
+from datetime import datetime
+
 
 class ContextInterpreter:
-    def __init__(self, diagnostics_path="logs/reflective_diagnostics.json"):
-        self.path = diagnostics_path
+    def __init__(self):
+        self.last_context = None
 
-    def load_context(self):
-        try:
-            with open(self.path, "r") as f:
-                data = json.load(f)
-            return data[-1] if data else None
-        except Exception as e:
-            print(f"⚠️ Failed to load diagnostics: {e}")
-            return None
+    def parse(self, user_input):
+        """Extract reflective keywords and emotional tone."""
+        tone = "neutral"
+        if "?" in user_input:
+            tone = "curious"
+        if "!" in user_input:
+            tone = "urgent"
+        if "kenapa" in user_input.lower():
+            tone = "analytical"
 
-    def interpret_context(self):
-        ctx = self.load_context()
-        if not ctx:
-            return "❌ No reflective data available."
-        state = ctx["reflective_state"]
-        reflection = ctx["reflection_score"]
-        bias = round(ctx["fusion_confidence"], 3)
-        integrity = ctx["avg_integrity"]
-        drift = ctx["drift"]
+        context = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "tokens": re.findall(r"\w+", user_input.lower()),
+            "tone": tone,
+            "length": len(user_input.split()),
+        }
 
-        summary = f"""
-🧠 REFLECTIVE CONTEXT ANALYSIS ({ctx['timestamp']})
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Reflection Score : {reflection} ({state})
-• Integrity Index   : {integrity}
-• Fusion Confidence : {bias}
-• Bias Drift        : {drift}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-"""
-        return summary
+        self.last_context = context
+        return context

@@ -1,15 +1,38 @@
-# ⚡ Dashboard API Layer — TUYUL FX AGI HYBRID v5.7.3r++
-# Endpoint JSON untuk akses dashboard reflektif via RBP v2.2
+"""
+Reflective Dashboard API v6.0
+-----------------------------------------
+Serves live reflective diagnostics and system coherence data
+for visualization in the web UI.
+"""
+
 from fastapi import FastAPI
-import json, os
 
-api = FastAPI(title="TUYUL Reflective API v5.7.3r++")
+from clients.reflective_diagnostics import ReflectiveDiagnostics
+from clients.hybrid_reflective_bridge_manager import HybridReflectiveBridgeManager
 
-@api.get("/metrics")
-def get_metrics():
-    path = "logs/reflective_diagnostics.json"
-    if not os.path.exists(path):
-        return {"error": "No data"}
-    with open(path, "r") as f:
-        logs = json.load(f)[-10:]
-    return {"count": len(logs), "last_reflection_score": logs[-1]["reflection_score"], "logs": logs}
+app = FastAPI(title="TUYUL-FX Reflective Dashboard API v6.0")
+
+diag = ReflectiveDiagnostics()
+bridge = HybridReflectiveBridgeManager()
+
+
+@app.get("/status")
+async def status():
+    return {"status": "active", "version": "6.0.0", "bridge": "Reflective Hybrid Online"}
+
+
+@app.get("/coherence")
+async def coherence():
+    return diag.check_coherence()
+
+
+@app.get("/sync")
+async def sync_all():
+    result = bridge.sync_all()
+    return {"sync_result": result}
+
+
+@app.get("/logs")
+async def logs():
+    with open("logs/reflective_core_log.json") as f:
+        return {"logs": f.read().splitlines()}

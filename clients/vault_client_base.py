@@ -1,45 +1,34 @@
-# 🧠 VaultClientBaseReflective — TUYUL FX AGI HYBRID v5.7.3r++
-# Base class untuk seluruh vault client (Hybrid–Kartel–Journal–FX)
-import asyncio, json, datetime, httpx
+"""
+Vault Client Base v6.0
+-----------------------------------------
+Base class for reflective vault communication clients.
+Provides safe read/write and coherence logging.
+"""
+
+import json, os
+from datetime import datetime
+from pathlib import Path
 
 class VaultClientBase:
-    VERSION = "v5.7.3r++"
-    PROTOCOL = "RBP v2.2"
-
-    def __init__(self, name, endpoint, token=None):
+    def __init__(self, vault_path, name):
+        self.vault_path = Path(vault_path)
         self.name = name
-        self.endpoint = endpoint
-        self.token = token
-        self.session = httpx.AsyncClient(timeout=30)
-        self.integrity_index = 1.0
-        self.last_sync = None
+        self.vault_path.parent.mkdir(parents=True, exist_ok=True)
+        if not self.vault_path.exists():
+            self.vault_path.write_text("[]")
 
-    async def _request(self, method, path, payload=None):
-        url = f"{self.endpoint}/{path}"
-        headers = {"Authorization": f"Bearer {self.token}"} if self.token else {}
-        resp = await self.session.request(method, url, json=payload or {}, headers=headers)
-        resp.raise_for_status()
-        return resp.json()
+    def read(self):
+        try:
+            return json.loads(self.vault_path.read_text())
+        except Exception as e:
+            return {"error": str(e)}
 
-    async def audit_integrity(self):
-        """Audit Vault Integrity Reflectively"""
-        now = datetime.datetime.utcnow().isoformat() + "Z"
-        metrics = {
-            "vault": self.name,
-            "integrity_index": round(self.integrity_index, 3),
-            "last_sync": self.last_sync,
-            "timestamp": now
-        }
-        print(f"🧾 [{self.name}] Integrity Audit:", json.dumps(metrics, indent=2))
-        return metrics
+    def write(self, data):
+        self.vault_path.write_text(json.dumps(data, indent=2))
+        return {"status": "written", "vault": self.name}
 
-    async def reflective_sync(self):
-        """Simulasikan sinkronisasi reflektif ke Quad Repo"""
-        await asyncio.sleep(0.3)
-        self.last_sync = datetime.datetime.utcnow().isoformat() + "Z"
-        self.integrity_index = round(min(1.0, max(0.0, self.integrity_index + 0.01)), 3)
-        print(f"⚡ [{self.name}] Reflective sync complete → integrity: {self.integrity_index}")
-        return {"status": "synced", "integrity": self.integrity_index}
-
-    async def aclose(self):
-        await self.session.aclose()
+    def log_action(self, message):
+        log_dir = Path("logs")
+        log_dir.mkdir(exist_ok=True)
+        log_path = log_dir / f"{self.name}_actions.log"
+        log_path.write_text(f"[{datetime.utcnow()}] {message}\n", append=True)

@@ -1,30 +1,25 @@
-import datetime
-import json
-import os
+"""
+Reflective Logger v6.0
+-----------------------------------------
+Global reflective event logger used by bridge managers.
+"""
 
+import json, os
+from datetime import datetime
 
 class ReflectiveLogger:
-    LOG_PATH = "logs/reflective_telemetry.json"
-    MAX_ENTRIES = 100
+    def __init__(self, path="logs/reflective_core_log.json"):
+        self.path = path
+        os.makedirs(os.path.dirname(path), exist_ok=True)
 
-    @staticmethod
-    def log(event_type, payload):
-        os.makedirs("logs", exist_ok=True)
+    def log(self, event, level="INFO"):
         entry = {
-            "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
-            "event_type": event_type,
-            "payload": payload,
+            "timestamp": datetime.utcnow().isoformat(),
+            "level": level,
+            "event": event
         }
-
-        logs = []
-        if os.path.exists(ReflectiveLogger.LOG_PATH):
-            try:
-                with open(ReflectiveLogger.LOG_PATH, "r", encoding="utf-8") as f:
-                    logs = json.load(f)
-            except (json.JSONDecodeError, OSError):
-                logs = []  # reset corrupted log to keep pipeline running
-
-        logs.append(entry)
-        with open(ReflectiveLogger.LOG_PATH, "w", encoding="utf-8") as f:
-            json.dump(logs[-ReflectiveLogger.MAX_ENTRIES :], f, indent=2)
-        print(f"🧾 [ReflectiveLogger] Event logged: {event_type}")
+        data = []
+        if os.path.exists(self.path):
+            data = json.loads(open(self.path).read() or "[]")
+        data.append(entry)
+        json.dump(data, open(self.path, "w"), indent=2)

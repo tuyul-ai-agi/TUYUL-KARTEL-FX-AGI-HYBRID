@@ -1,14 +1,15 @@
-# 🧠 HybridClient — TUYUL FX AGI HYBRID v5.7.3r++
-# Core Reflective Hybrid API Connector
-from .vault_client_base import VaultClientBase
+"""
+AGI Hybrid Client v6.0
+-----------------------------------------
+Communicates with external AGI reflection endpoints.
+"""
 
-class HybridClient(VaultClientBase):
-    """Handles reflex–fusion–reflective communication via RBP v2.2"""
+import requests
 
-    def __init__(self, endpoint, token=None):
-        super().__init__("HybridVault", endpoint, token)
+class AGIHybridClient:
+    def __init__(self, endpoint="http://localhost:8008/reflective/chat"):
+        self.endpoint = endpoint
 
-    async def run_reflex_cycle(self):
-        print("🔄 [Hybrid] Running Reflex → Fusion → Reflective cycle...")
-        await self.reflective_sync()
-        return {"fusion_confidence": 0.923, "wlwci": 0.911, "integrity_index": self.integrity_index}
+    def send(self, message, user="system"):
+        res = requests.post(self.endpoint, json={"message": message, "user": user})
+        return res.json()

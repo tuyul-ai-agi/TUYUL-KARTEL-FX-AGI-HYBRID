@@ -1,9 +1,6 @@
-# GPT Cognitive Personality — TUYUL Alpha Serigala v5.7.3r++
-profile:
-  id: alpha_serigala_v5.7.3r++
-  personality: "Disiplin, reflektif, sadar konteks"
-  reflection_focus: "market intention, volatility rhythm"
-  tone: "calm, strategic, analytic"
-  coherence_bias: 0.93
-  empathy_factor: 0.12
-  adaptive_loop: enabled
+# GPT Reasoning Profile
+model: gpt-5
+mode: reflective_reasoning
+temperature: 0.6
+context_window: 4096
+memory_bridge: neural_vault_bridge

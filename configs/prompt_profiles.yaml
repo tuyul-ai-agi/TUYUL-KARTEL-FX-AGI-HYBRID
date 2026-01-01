@@ -1,5 +1,6 @@
-# Prompt Profiles Manifest — TUYUL FX AGI HYBRID v5.7.3r++
-source: ai_bridge/prompt_templates/overview_prompt_manifest.yml
-auto_reload: true
-reflective_bridge: true
-meta_validation: true
+# Prompt Profiles
+profiles:
+  reflective:
+    meta_prompt: chat_reflective/prompt_templates/meta_prompt.txt
+    reasoning_prompt: chat_reflective/prompt_templates/reasoning_prompt.txt
+    reflective_prompt: chat_reflective/prompt_templates/reflective_prompt.txt

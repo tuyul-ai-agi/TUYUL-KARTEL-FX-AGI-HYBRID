@@ -1,20 +1,12 @@
-# TUYUL FX AGI HYBRID v5.7.3r++
-# Reflective Bridge Configuration (RBP v2.2)
-version: v5.7.3r++
-protocol: RBP v2.2
-timestamp: 2025-12-11T16:20Z
+# TUYUL-FX Quantum Hybrid Bridge Config
+version: 6.0.0
 bridge:
-  mode: adaptive
-  integrity_check_interval: 3600  # seconds
-  reflective_sync: true
-  auto_recovery: enabled
-  telemetry: logs/reflective_telemetry.json
-vaults:
-  hybrid: https://api.hybrid.tuyulfx.ai
-  fx: https://api.fxvault.tuyulfx.ai
-  kartel: https://api.kartel.tuyulfx.ai
-  journal: https://api.journal.tuyulfx.ai
-meta_learning:
-  enabled: true
-  cycle_hours: 8
-  reflective_log_path: journal/
+  protocol: "RCP6"
+  coherence_target: 0.93
+  active_layers:
+    - Cognitive
+    - Reflective
+    - Neural
+    - Quantum
+sync_interval: 300
+status: "active"

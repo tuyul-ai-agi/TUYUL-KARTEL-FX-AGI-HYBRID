@@ -1,12 +1,5 @@
-# Quad Repo Sync Map — TUYUL FX AGI HYBRID v5.7.3r++
-repos:
-  hybrid_repo: core/hybrid
-  knowledge_repo: core/knowledge
-  kartel_repo: core/kartel
-  journal_repo: core/journal
-sync_rules:
-  interval_minutes: 60
-  reflective_bridge: true
-  fallback_mode: safe
-  integrity_check: auto
-
+# Repository Map
+map:
+  fx: fx_vault_reflective.yaml
+  journal: journal_vault.yaml
+  kartel: kartel_vault.yaml

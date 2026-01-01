@@ -1,9 +1,5 @@
-# Reflective Parameters — v5.7.3r++
-reflective_tuning:
-  conf12_target: 0.92
-  wlwci_target: 0.9
-  rcadj_min: 0.75
-  coherence_tolerance: 0.03
-  bias_drift_limit: 0.02
-  integrity_feedback: enabled
-  meta_learning_rate: 0.015
+# Reflective Parameters
+coherence_target: 0.93
+entropy_tolerance: 0.04
+auto_resync: true
+observer_feedback: true

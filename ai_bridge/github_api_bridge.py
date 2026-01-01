@@ -1,4 +1,39 @@
 """
+GitHub API Bridge v6.0
+-----------------------------------------
+Connects reflective reasoning layer with GitHub Actions and repositories.
+Used by reflective_agent_executor to write awareness logs or issues.
+"""
+
+import os
+from typing import Tuple
+import requests
+
+
+class GitHubBridge:
+    def __init__(self, token: str | None = None, repo: str | None = None):
+        self.token = token or os.getenv("GITHUB_TOKEN")
+        if not self.token:
+            raise RuntimeError("GITHUB_TOKEN is required for GitHubBridge")
+        self.repo = repo or os.getenv("GITHUB_REPOSITORY", "tuyul-ai-agi/TUYUL-KARTEL-FX-AGI-HYBRID")
+
+    def _headers(self) -> dict:
+        return {
+            "Authorization": f"token {self.token}",
+            "Accept": "application/vnd.github+json",
+        }
+
+    def create_issue(self, title: str, body: str) -> Tuple[int, dict]:
+        url = f"https://api.github.com/repos/{self.repo}/issues"
+        payload = {"title": title, "body": body}
+        response = requests.post(url, headers=self._headers(), json=payload, timeout=20)
+        return response.status_code, response.json() if response.text else {}
+
+    def dispatch_workflow(self, workflow: str, ref: str = "main", inputs: dict | None = None) -> int:
+        url = f"https://api.github.com/repos/{self.repo}/actions/workflows/{workflow}/dispatches"
+        payload = {"ref": ref, "inputs": inputs or {}}
+        response = requests.post(url, headers=self._headers(), json=payload, timeout=20)
+        return response.status_code"""
 GitHub API Bridge v5.7.3r++
 ---------------------------
 Sinkronisasi Quad Repo (Hybrid–Knowledge–Kartel–Journal)

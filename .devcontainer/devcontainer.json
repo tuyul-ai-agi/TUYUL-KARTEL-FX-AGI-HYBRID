@@ -2,7 +2,9 @@
   "name": "TUYUL-FX Quantum Hybrid Reflective v6.0",
   "image": "mcr.microsoft.com/vscode/devcontainers/python:3.10",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
   },
   "postCreateCommand": "bash .devcontainer/postcreate.sh",
   "runArgs": ["--init"],

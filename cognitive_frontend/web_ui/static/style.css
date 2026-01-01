@@ -1,0 +1,24 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0f0f10;
+  color: #eee;
+  padding: 40px;
+}
+
+h1 {
+  color: #4ae3b5;
+}
+
+.meter {
+  height: 20px;
+  width: 60%;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.meter span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #4ae3b5, #6f8efc);
+}

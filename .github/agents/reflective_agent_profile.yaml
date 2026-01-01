@@ -1,0 +1,31 @@
+# ======================================================================
+# TUYUL-FX Quantum Hybrid v6.0.0
+# GitHub Reflective Agent Profile
+# ======================================================================
+# Agen reflektif CI/CD yang bertugas untuk:
+#  - Menjalankan pipeline reflective sync antar repo (Hybrid–FX–Kartel–Journal)
+#  - Melatih model meta-learning Quantum–Neural saat commit/merge
+#  - Menulis hasil reasoning ke Journal Vault (melalui GitHub Actions)
+# ======================================================================
+
+version: "6.0.0"
+agent_name: "tuyul-reflective-agent"
+agent_role: "Reflective Reasoning CI Bot"
+runtime_environment: "GitHub Codespace"
+sync_targets:
+  - reflective_repos/fx_repo
+  - reflective_repos/kartel_repo
+  - reflective_repos/hybrid_repo
+  - reflective_repos/journal_repo
+triggers:
+  - push
+  - pull_request
+  - schedule
+tasks:
+  - run_reflective_cycle
+  - audit_integrity
+  - sync_vaults
+metadata:
+  maintainer: "TUYUL Labs Reflective Systems Division"
+  contact: "reflective@tuyullabs.ai"
+  last_updated: "2026-01-01T00:00:00Z"

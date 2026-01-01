@@ -15,367 +15,99 @@ servers:
 security:
   - bearerAuth: []
 tags:
-  - name: Reflex
-    description: Analisa koherensi mikro antar layer
-  - name: Fusion
-    description: Layer–12 Hybrid Fusion Reflective System
-  - name: Monte Carlo
-    description: Simulasi reflektif 20k iterasi / 90 hari
-  - name: Risk
-    description: Adaptive Risk Engine (0.7–1%)
-  - name: Vault
-    description: Quad Repo Sync (Hybrid–Knowledge–Kartel–Journal)
-  - name: Reflective
-    description: Meta-learning reflektif & heuristic snapshot
-  - name: Integrity
-    description: Integrity Feedback & Coherence Drift Analysis
-  - name: VIX
-    description: Global Volatility & Regime State Detector
-  - name: GPT Bridge
-    description: Jembatan reasoning GPT–AGI reflektif
-  - name: System
-    description: Runtime diagnostics & latency sync
-paths:
-  /reflex/analyze:
-    post:
-      tags: [Reflex]
-      summary: Reflex Coherence Analyzer
-      operationId: reflexAnalyze
-      description: Jalankan analisa refleks kesadaran harga mikro.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                pair:
-                  type: string
-                timeframe:
-                  type: string
-      responses:
-        "200":
-          description: Reflex metrics result
+  openapi: 3.1.0
+  info:
+    title: TUYUL-FX Reflective Quantum API
+    version: 6.0.0
+    description: >
+      API reflektif multi-layer yang menggabungkan reasoning kognitif, meta-learning reflektif,
+      dan resonansi kuantum. Versi 6.0 tetap kompatibel dengan endpoint lama (v5.7.x).
+
+  servers:
+    - url: https://api.tuyulfx.ai/v6
+      description: Quantum Hybrid Gateway
+    - url: https://api.tuyulfx.ai/v5
+      description: Legacy Reflective Gateway (Compatibility Mode)
+
+  paths:
+    /reflective/run_cycle:
+      post:
+        summary: Jalankan siklus reflektif penuh
+        requestBody:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ReflexMetrics"
-  /fusion/analyze:
-    post:
-      tags: [Fusion]
-      summary: Fusion Reflective Analysis
-      operationId: fusionAnalyze
-      description: Jalankan analisa lintas-layer Layer–12 (Reflex → Fusion → Reflective).
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                pair:
-                  type: string
-                timeframe:
-                  type: string
-      responses:
-        "200":
-          description: Fusion reflective report
+                $ref: '#/components/schemas/ReflectiveInput'
+        responses:
+          '200':
+            description: Reflective cycle result
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ReflectiveOutput'
+
+    /quantum/resonance:
+      get:
+        summary: Ambil status resonansi kuantum reflektif
+        responses:
+          '200':
+            description: Quantum resonance metrics
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/QuantumResonance'
+
+    /neural/bridge:
+      post:
+        summary: Sinkronisasi sinyal reflektif–neural
+        requestBody:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FusionReport"
-  /fusion/confidence:
-    get:
-      tags: [Fusion]
-      summary: Fusion Confidence Map
-      operationId: getFusionConfidence
-      description: Mendapatkan nilai CONF₁₂ dan WLWCI seluruh pair.
-      responses:
-        "200":
-          description: Fusion confidence data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FusionConfidence"
-  /fusion/coherence-map:
-    get:
-      tags: [Fusion]
-      summary: Reflex–EMA Coherence Correlation Map
-      operationId: getCoherenceMap
-      description: Korelasi lintas-layer antar EMA–Reflex.
-      responses:
-        "200":
-          description: Coherence correlation data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CoherenceMap"
-  /fusion/montecarlo:
-    post:
-      tags: [Monte Carlo]
-      summary: Monte Carlo Reflective Simulation
-      operationId: runFusionMonteCarlo
-      description: Simulasi 20.000 iterasi dalam 90 hari untuk distribusi tren.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                pair:
-                  type: string
-      responses:
-        "200":
-          description: Monte Carlo simulation result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MonteCarloResult"
-  /fusion/save-journal:
-    post:
-      tags: [Fusion]
-      summary: Save Fusion Reflective Output to Journal Vault
-      operationId: fusionSaveJournal
-      responses:
-        "200":
-          description: Journal Vault synchronization result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VaultSyncResult"
-  /vix/status:
-    get:
-      tags: [VIX]
-      summary: Global VIX Regime State
-      operationId: getVixStatus
-      description: Mendapatkan nilai VIX, Fear–Greed Index, dan global volatility mode.
-      responses:
-        "200":
-          description: VIX global status report
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VixReport"
-  /risk/calculate:
-    post:
-      tags: [Risk]
-      summary: Adaptive Risk Calculator
-      operationId: riskCalculate
-      description: Hitung ukuran lot optimal dan risk % dinamis berdasarkan SL & balance.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                balance:
-                  type: number
-                sl_pips:
-                  type: number
-                pair:
-                  type: string
-      responses:
-        "200":
-          description: Adaptive risk calculation result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RiskResult"
-  /vault/sync:
-    post:
-      tags: [Vault]
-      summary: Quad Repo Sync (Hybrid–Knowledge–Kartel–Journal)
-      operationId: vaultSync
-      description: Jalankan sinkronisasi lintas repositori dan catat log reflektif ke Journal.
-      responses:
-        "200":
-          description: Vault synchronization status
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VaultStatus"
-  /vault/integrity:
-    get:
-      tags: [Integrity]
-      summary: Vault Integrity Feedback
-      operationId: getIntegrityFeedback
-      description: Ambil integritas & drift antar repositori Vault.
-      responses:
-        "200":
-          description: Vault integrity report
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IntegrityReport"
-  /reflective/cycle:
-    post:
-      tags: [Reflective]
-      summary: Run Full Reflective Meta-Learning Cycle
-      operationId: runReflectiveCycle
-      description: Jalankan Fusion → Reflection → Sync Loop untuk memperbarui heuristik Kartel Vault.
-      responses:
-        "200":
-          description: Reflective meta-learning cycle result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReflectiveCycle"
-  /reflective/report:
-    get:
-      tags: [Reflective]
-      summary: Reflective Bias Drift & Coherence Report
-      operationId: getReflectiveReport
-      description: Menampilkan ringkasan pergerakan bias dan peningkatan koherensi reflektif.
-      responses:
-        "200":
-          description: Reflective coherence gain report
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReflectiveReport"
-  /gpt/bridge:
-    post:
-      tags: [GPT Bridge]
-      summary: TUYUL GPT Reflective Bridge
-      operationId: gptBridge
-      description: Kirim reasoning reflektif ke TUYUL AGI Hybrid Core dan kembalikan hasilnya.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                prompt:
-                  type: string
-                layer:
-                  type: string
-                model:
-                  type: string
-      responses:
-        "200":
-          description: GPT Bridge reflective response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GptBridgeResponse"
-  /system/status:
-    get:
-      tags: [System]
-      summary: Runtime & Latency Status
-      operationId: getSystemStatus
-      description: Mendapatkan status runtime dan latensi sistem.
-      responses:
-        "200":
-          description: System runtime and latency status
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SystemStatus"
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: PAT
-  schemas:
-    ReflexMetrics:
-      type: object
-      properties:
-        rc_value:
-          type: number
-        rcadj:
-          type: number
-        wlwci:
-          type: number
-        conf12:
-          type: number
-        bias_delta:
-          type: number
-        timestamp:
-          type: string
-    FusionReport:
-      type: object
-      properties:
-        pair:
-          type: string
-        conf12:
-          type: number
-        wlwci:
-          type: number
-        rcadj:
-          type: number
-        integrity_index:
-          type: number
-        bias:
-          type: string
-        regime_state:
-          type: string
-        reflective_sync:
-          type: string
-    FusionConfidence:
-      type: object
-      properties:
-        pair:
-          type: string
-        conf12:
-          type: number
-        fusion_confidence:
-          type: number
-    CoherenceMap:
-      type: object
-      properties:
-        ema_reflex_corr:
-          type: number
-        coherence_index:
-          type: number
-    MonteCarloResult:
-      type: object
-      properties:
-        win_probability:
-          type: number
-        tp1_probability:
-          type: number
-        tp2_probability:
-          type: number
-        sl_probability:
-          type: number
-        drawdown:
-          type: number
-        conf_int:
-          type: number
-        distribution:
-          type: string
-    RiskResult:
-      type: object
-      properties:
-        pair:
-          type: string
-        lot:
-          type: number
-        risk_pct:
-          type: number
-        rr_ratio:
-          type: number
-        sl_pips:
-          type: number
-    IntegrityReport:
-      type: object
-      properties:
-        integrity_index:
-          type: number
-        coherence_drift:
-          type: string
-        regime_adaptation:
-          type: string
-        reflection_score:
-          type: number
-    VixReport:
-      type: object
-      properties:
-        vix_level:
-          type: number
+                $ref: '#/components/schemas/NeuralSyncInput'
+        responses:
+          '200':
+            description: Neural–Reflective sync result
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/NeuralSyncOutput'
+
+  components:
+    schemas:
+      ReflectiveInput:
+        type: object
+        properties:
+          pair: { type: string }
+          timeframe: { type: string }
+          mode: { type: string, enum: ["thinking", "adaptive"] }
+
+      ReflectiveOutput:
+        type: object
+        properties:
+          fusion_conf12: { type: number }
+          wlwci: { type: number }
+          rcadj: { type: number }
+          coherence_index: { type: number }
+
+      QuantumResonance:
+        type: object
+        properties:
+          energy_flux: { type: number }
+          coherence_field: { type: number }
+          reflective_intensity: { type: number }
+
+      NeuralSyncInput:
+        type: object
+        properties:
+          cognitive_vector: { type: array, items: { type: number } }
+          reflective_signal: { type: array, items: { type: number } }
+
+      NeuralSyncOutput:
+        type: object
+        properties:
+          sync_status: { type: string }
+          coherence_level: { type: number }
         term_structure:
           type: string
         global_regime:

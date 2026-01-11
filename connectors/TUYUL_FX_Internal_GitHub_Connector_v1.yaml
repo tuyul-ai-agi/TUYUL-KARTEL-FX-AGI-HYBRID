@@ -1,0 +1,377 @@
+openapi: 3.1.0
+info:
+  title: TUYUL FX Internal GitHub Connector
+  version: "1.0.0"
+  description: |
+    🔐 Internal connector untuk TUYUL FX ULTIMATE HYBRID AGI (v6.0r∞)
+    — digunakan untuk GitHub Deep Scan Mode.
+
+    Fungsionalitas:
+    • Ambil metadata repo TUYUL FX dari GitHub publik
+    • Lakukan pemetaan struktur direktori (tree recursive)
+    • Ambil isi file prioritas (base64 → decode internal)
+    • Lakukan pencarian istilah teknis di repo (code search)
+    • Mendukung mode reflektif & hemat token (chunk-based abstraction)
+
+    Repo target tetap:
+    `tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI`
+
+servers:
+  - url: https://api.github.com
+
+tags:
+  - name: TUYUL FX Core
+    description: Internal crawling endpoints for TUYUL AGI reflective synthesis.
+
+paths:
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulGetRepoInfo
+      summary: Ambil informasi utama repo TUYUL FX
+      parameters:
+        - name: Accept
+          in: header
+          required: false
+          schema:
+            type: string
+            default: application/vnd.github+json
+        - name: X-GitHub-Api-Version
+          in: header
+          required: false
+          schema:
+            type: string
+            default: "2022-11-28"
+      responses:
+        '200':
+          description: Informasi repo berhasil diambil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepoInfo'
+        '404':
+          description: Repo tidak ditemukan
+        '403':
+          description: Dibatasi (rate limit)
+
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI/branches:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulListBranches
+      summary: Daftar semua branch repo TUYUL FX
+      parameters:
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Daftar branch berhasil diambil
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Branch'
+
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI/git/refs/heads/{branch}:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulGetBranchRef
+      summary: Ambil SHA ref dari branch tertentu
+      parameters:
+        - name: branch
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Nama branch (default: main)
+      responses:
+        '200':
+          description: SHA branch berhasil diambil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BranchRef'
+
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI/git/commits/{commit_sha}:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulGetCommit
+      summary: Ambil detail commit (termasuk tree SHA)
+      parameters:
+        - name: commit_sha
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Commit berhasil diambil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commit'
+
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI/git/trees/{tree_sha}:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulGetTree
+      summary: Ambil struktur direktori (tree)
+      parameters:
+        - name: tree_sha
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recursive
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["1"]
+      responses:
+        '200':
+          description: Struktur tree berhasil diambil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreeResponse'
+
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI/git/blobs/{file_sha}:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulGetBlob
+      summary: Ambil isi file (base64)
+      parameters:
+        - name: file_sha
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Blob berhasil diambil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blob'
+
+  /repos/tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI/contents/{path}:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulGetContentByPath
+      summary: Ambil isi file atau folder dari path tertentu
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ref
+          in: query
+          required: false
+          schema:
+            type: string
+            default: main
+      responses:
+        '200':
+          description: Konten berhasil diambil
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ContentFile'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/ContentDirItem'
+
+  /search/code:
+    get:
+      tags: [TUYUL FX Core]
+      operationId: tuyulSearchCode
+      summary: Cari istilah di repo TUYUL
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Contoh: "fusion repo:tjx578/TUYUL-FX-ULTIMATE-HYBRID-AGI"
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 30
+      responses:
+        '200':
+          description: Hasil pencarian kode dikembalikan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodeSearchResult'
+
+components:
+  schemas:
+    RepoInfo:
+      type: object
+      properties:
+        full_name:
+          type: string
+        default_branch:
+          type: string
+        private:
+          type: boolean
+        description:
+          type: string
+
+    Branch:
+      type: object
+      properties:
+        name:
+          type: string
+        commit:
+          type: object
+          properties:
+            sha:
+              type: string
+
+    BranchRef:
+      type: object
+      properties:
+        ref:
+          type: string
+        object:
+          type: object
+          properties:
+            sha:
+              type: string
+            type:
+              type: string
+
+    Commit:
+      type: object
+      properties:
+        sha:
+          type: string
+        tree:
+          type: object
+          properties:
+            sha:
+              type: string
+            url:
+              type: string
+
+    TreeItem:
+      type: object
+      properties:
+        path:
+          type: string
+        mode:
+          type: string
+        type:
+          type: string
+          enum: [blob, tree]
+        sha:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+
+    TreeResponse:
+      type: object
+      properties:
+        sha:
+          type: string
+        truncated:
+          type: boolean
+        tree:
+          type: array
+          items:
+            $ref: '#/components/schemas/TreeItem'
+
+    Blob:
+      type: object
+      properties:
+        sha:
+          type: string
+        size:
+          type: integer
+        encoding:
+          type: string
+        content:
+          type: string
+
+    ContentDirItem:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [file, dir]
+        name:
+          type: string
+        path:
+          type: string
+        sha:
+          type: string
+
+    ContentFile:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [file]
+        name:
+          type: string
+        path:
+          type: string
+        sha:
+          type: string
+        encoding:
+          type: string
+        content:
+          type: string
+        download_url:
+          type: string
+
+    CodeSearchResult:
+      type: object
+      properties:
+        total_count:
+          type: integer
+        incomplete_results:
+          type: boolean
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              path:
+                type: string
+              sha:
+                type: string
+              html_url:
+                type: string
+              repository:
+                type: object
+                properties:
+                  full_name:
+                    type: string

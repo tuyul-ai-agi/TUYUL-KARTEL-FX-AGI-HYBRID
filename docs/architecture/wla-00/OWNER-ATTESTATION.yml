@@ -65,3 +65,4 @@ owner_confirmation: "APPROVED_BY_DWI_KELANA_PUTRA"
 effective_status_before_commit_verification: "NOT_EVALUATED"
 wla_01_authorized_before_commit_verification: false
 verification_rule: "Only a GitHub Verified commit attributed to tjx578 that contains this exact attestation may advance WLA-00 to PASS."
+github_web_confirmation: "CONFIRMED_AND_SIGNED_BY_TJX578"

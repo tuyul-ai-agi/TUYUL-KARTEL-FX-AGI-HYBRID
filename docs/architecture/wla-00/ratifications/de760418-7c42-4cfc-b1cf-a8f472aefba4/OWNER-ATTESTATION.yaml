@@ -1,0 +1,49 @@
+ratification_attestation:
+  schema: "wolf15.wla00.owner-attestation.v1"
+  ratification_id: "de760418-7c42-4cfc-b1cf-a8f472aefba4"
+  packet_id: "WLA00-RP-20260824-002"
+  packet_sha256: "3f0dc8e53d47fdbf92efb7cbf388c974b904feadb3afb17612f0a0f52abfb6b8"
+  reviewed_combined_sha256: "c2905ff65b9dd9bf07da555ce1cd6ea1e2898432f6f49a5e5d98a7a6cbb6fb6d"
+  target_base_sha: "7ff2a9194b22e185b35dc61574c61628ba404939"
+  verdict: "APPROVED"
+  conditions: []
+  conditions_sha256_rfc8785: "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  decided_at_utc: "2026-08-24T07:29:18.577Z"
+  governance_mode: "SINGLE_OWNER_BOOTSTRAP"
+  exception_id: "WLA00-EXC-001"
+  role: "CONSTITUTIONAL_OWNER"
+  assumed_roles: ["ARO", "WAO", "JDS", "MRR", "SEC"]
+  independent_concurrence_available: false
+  backup_assignments_available: false
+  principal:
+    name: "Dwi Kelana Putra"
+    alias: "KELANA TJX"
+    github_login: "tjx578"
+    github_numeric_id: "221953664"
+    github_node_id: "U_kgDODTq-gA"
+    authority_basis: "SYSTEM_OWNER_AND_REPOSITORY_OWNER"
+  authorization:
+    allowed:
+      - "WLA-01 contract-only spike"
+      - "Schema and contract tests"
+      - "Documentation and deterministic fixtures"
+    forbidden:
+      - "Runtime registration"
+      - "Database migration or outbox activation"
+      - "Dispatcher, broker, or EA access"
+      - "Deployment or production mutation"
+      - "Advisory activation or execution authority"
+      - "Creation of learning repositories"
+      - "Gate P0-A certification"
+    expires_on: "WLA-01 completion or any scope expansion"
+    reusable: false
+  signature_reference: "THIS_GITHUB_VERIFIED_COMMIT"
+  declaration: |-
+    Saya, Dwi Kelana Putra (KELANA TJX), sebagai pemilik sistem dan repository, menyetujui WLA-00 dengan verdict APPROVED.
+
+    Saya mengesahkan SINGLE_OWNER_BOOTSTRAP_EXCEPTION WLA00-EXC-001 karena saat ini seluruh fungsi governance berada pada saya sendiri.
+
+    Otorisasi hanya berlaku untuk WLA-01 contract-only spike. Tidak mengizinkan runtime registration, database/outbox activation, deployment, broker/EA access, repo baru, Gate P0-A certification, atau production mutation.
+
+    Conditions: []
+    Saya mengizinkan pembuatan dan commit dokumen ratifikasi pada branch dokumentasi khusus melalui akun GitHub tjx578.

@@ -1,4 +1,12 @@
 # 🧠 TUYUL FX AGI SYSTEM OVERVIEW (v5.8r++)
+
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** See the proposed
+> [WLA-00 constitution](architecture/wla-00/README.md). All operating, active,
+> automatic meta-learning, synchronization, and adaptive claims below are
+> historical descriptions. They grant no Alpha, promotion, SHADOW,
+> source-mutation, or execution authority. Runtime state is `NOT_MEASURED`.
+
 > “Refleksi bukan sekadar algoritma —  
 > tapi kesadaran sistem membaca niat pasar.” ⚡  
 > — *TUYUL Labs Reflective Systems Division, 2026*

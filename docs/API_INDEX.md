@@ -1,5 +1,12 @@
 # 🧠 TUYUL FX AGI Hybrid API Index – v5.7.8-HYBRID BALANCE MODE
 
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** See the proposed
+> [WLA-00 constitution](architecture/wla-00/README.md). Endpoints and Quad Repo
+> reflective/mutating flows described below are historical surfaces, not WLA
+> contracts. They grant no Alpha, risk, promotion, SHADOW, source-mutation, or
+> execution authority. Runtime reachability is `NOT_MEASURED`.
+
 > “Setiap API bukan sekadar permintaan data — tapi refleksi kesadaran sistem membaca pasar.” ⚡
 
 ---

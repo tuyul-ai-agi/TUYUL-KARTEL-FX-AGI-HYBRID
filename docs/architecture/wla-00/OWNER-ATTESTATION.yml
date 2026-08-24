@@ -1,0 +1,68 @@
+schema_version: "WLA00-OWNER-ATTESTATION-V1"
+ratification_domain: "wolf15/wla-00/human-ratification/v1"
+
+ratification:
+  ratification_id: "de760418-7c42-4cfc-b1cf-a8f472aefba4"
+  packet_id: "WLA00-RP-20260824-002"
+  packet_sha256: "3f0dc8e53d47fdbf92efb7cbf388c974b904feadb3afb17612f0a0f52abfb6b8"
+  reviewed_combined_digest_sha256: "c2905ff65b9dd9bf07da555ce1cd6ea1e2898432f6f49a5e5d98a7a6cbb6fb6d"
+  target_repository: "tjx578/TUYUL-FX-WOLF-15LAYER-SYSTEM"
+  target_base_sha: "7ff2a9194b22e185b35dc61574c61628ba404939"
+  decided_at_utc: "2026-08-24T07:29:18.577Z"
+  submitted_verdict: "APPROVED"
+  conditions_canonical_json: "[]"
+  conditions_sha256: "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+
+constitutional_owner:
+  name: "Dwi Kelana Putra"
+  owner_alias: "KELANA TJX"
+  authority_basis: "SYSTEM_OWNER_AND_REPOSITORY_OWNER"
+  role: "CONSTITUTIONAL_OWNER"
+  github_login: "tjx578"
+  github_subject_id: "221953664"
+  authentication_reference: "https://github.com/tjx578"
+
+single_owner_exception:
+  exception_id: "WLA00-EXC-001"
+  governance_mode: "SINGLE_OWNER_BOOTSTRAP"
+  multi_role_independence_achieved: false
+  backup_assignments_available: false
+  assumed_roles:
+    - "ARO"
+    - "WAO"
+    - "JDS"
+    - "MRR"
+    - "SEC"
+  concurrence_mode: "OWNER_SELF_CONCURRENCE_EXCEPTION"
+  reusable: false
+  expires_on: "WLA-01 completion or any scope expansion, whichever occurs first"
+
+contract_directions:
+  wolf15_owned_initial_events:
+    - "wolf15.alpha-fact.exported.v1"
+    - "wolf15.outcome-evidence.exported.v1"
+  journal_receipt_consumer_owned: true
+  alpha_fact_typed_discriminated_union_required: true
+  unknown_type_fail_closed: true
+  forbidden_field_fail_closed: true
+  unknown_nested_schema_fail_closed: true
+
+authorization:
+  authorized_scope:
+    - "WLA-01 contract-only spike"
+    - "Schema and pure contract tests"
+    - "Documentation and deterministic fixtures"
+  forbidden_scope:
+    - "Runtime registration"
+    - "Database migration or outbox activation"
+    - "Dispatcher, broker, or EA access"
+    - "Deployment or production mutation"
+    - "Advisory activation or execution authority"
+    - "Creation of any learning repository"
+    - "Gate P0-A certification"
+
+owner_confirmation: "APPROVED_BY_DWI_KELANA_PUTRA"
+effective_status_before_commit_verification: "NOT_EVALUATED"
+wla_01_authorized_before_commit_verification: false
+verification_rule: "Only a GitHub Verified commit attributed to tjx578 that contains this exact attestation may advance WLA-00 to PASS."
+github_web_confirmation: "CONFIRMED_AND_SIGNED_BY_TJX578"

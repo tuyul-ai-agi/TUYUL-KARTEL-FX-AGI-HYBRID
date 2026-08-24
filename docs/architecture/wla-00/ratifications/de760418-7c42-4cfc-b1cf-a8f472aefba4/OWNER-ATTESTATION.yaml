@@ -37,7 +37,7 @@ ratification_attestation:
       - "Gate P0-A certification"
     expires_on: "WLA-01 completion or any scope expansion"
     reusable: false
-  signature_reference:"THIS_GITHUB_VERIFIED_COMMIT"
+  signature_reference: "THIS_GITHUB_VERIFIED_COMMIT"
   declaration: |-
     Saya, Dwi Kelana Putra (KELANA TJX), sebagai pemilik sistem dan repository, menyetujui WLA-00 dengan verdict APPROVED.
 

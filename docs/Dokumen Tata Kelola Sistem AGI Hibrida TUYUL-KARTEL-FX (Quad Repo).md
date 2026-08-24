@@ -1,6 +1,13 @@
 # 🧠 Dokumen Tata Kelola Sistem AGI Hibrida TUYUL–KARTEL–FX (Quad Repo Architecture)
 ### Versi: v5.8r++ | Protocol: RBP_v2.3+
 
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** This document predates the proposed
+> [WLA-00 constitution](architecture/wla-00/README.md). Its bidirectional sync,
+> parameter-update, and meta-learning statements do not authorize the Wolf15
+> learning plane. WOLF15 remains canonical Alpha; runtime status is
+> `NOT_MEASURED`.
+
 ---
 
 ## 1.0 Pendahuluan

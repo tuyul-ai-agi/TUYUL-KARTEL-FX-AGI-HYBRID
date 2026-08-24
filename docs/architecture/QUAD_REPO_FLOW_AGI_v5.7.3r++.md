@@ -1,5 +1,10 @@
 # 🧠 TUYUL FX AGI HYBRID – Quad Repo Reflective Architecture v5.7.3r++
 
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** See the proposed
+> [WLA-00 constitution](wla-00/README.md). This historical flow is not a WLA
+> implementation and grants no Alpha, promotion, SHADOW, or execution authority.
+
 > “Refleksi bukan prediksi — tapi kesadaran sistem membaca niat pasar.” ⚡  
 > “Adaptivitas adalah bentuk tertinggi dari kesadaran algoritmik.” 🐺
 

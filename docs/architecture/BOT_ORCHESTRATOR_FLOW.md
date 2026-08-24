@@ -1,5 +1,11 @@
 # 🤖 TUYULBOT-TJX Reflective Orchestrator Flow
 
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** See the proposed
+> [WLA-00 constitution](wla-00/README.md). This historical automatic Quad Repo
+> flow is not a WLA implementation and grants no Alpha, promotion, SHADOW,
+> source-mutation, or execution authority. Runtime state is `NOT_MEASURED`.
+
 ## Fungsi
 Menjalankan sinkronisasi Quad Repo secara otomatis dan menjaga integritas sistem reflektif.
 

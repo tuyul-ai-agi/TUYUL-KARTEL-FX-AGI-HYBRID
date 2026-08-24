@@ -2,6 +2,14 @@
 <!-- 🧠 TUYUL FX AGI HYBRID v6.0.0 — QUANTUM HYBRID UNIFIED -->
 <!-- ====================================================== -->
 
+> [!IMPORTANT]
+> **WLA transition notice (2026-08-24):** The proposed Wolf15 learning
+> constitution is [WLA-00](docs/architecture/wla-00/README.md). WOLF15 remains
+> canonical Alpha. All “active/live” reflective learning, automatic mutation,
+> promotion, and Quad Repo claims below are legacy descriptions and are
+> **non-authoritative for WLA**. They grant no source, promotion, SHADOW, or
+> execution capability. Runtime state is `NOT_MEASURED` until separately proven.
+
 <p align="center">
   <img src="https://img.shields.io/badge/STATUS-STABLE-brightgreen?style=for-the-badge" alt="System Status"/>
   <img src="https://img.shields.io/badge/VERSION-v6.0.0-blue?style=for-the-badge" alt="Version"/>

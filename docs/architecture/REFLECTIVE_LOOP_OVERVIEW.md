@@ -1,5 +1,10 @@
 # 🔁 Reflective Loop Overview – Meta Learning Cycle
 
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** Automatic promotion described here is
+> prohibited by the proposed [WLA-00 constitution](wla-00/README.md). This file is
+> retained as historical evidence only; runtime status is `NOT_MEASURED`.
+
 ## Fungsi
 Reflective Loop mengubah pengalaman empiris (Journal Repo) menjadi heuristik baru yang disimpan di Knowledge Repo.
 

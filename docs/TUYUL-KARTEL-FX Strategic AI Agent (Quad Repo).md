@@ -1,4 +1,11 @@
 # 🤖 TUYUL-KARTEL-FX Strategic AI Agent (Quad Repo Reflective Mode)
+
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** Commands and autonomous behaviors in
+> this historical agent description are not approved for the proposed
+> [WLA-00 learning plane](architecture/wla-00/README.md). They grant no source,
+> repository-mutation, promotion, SHADOW, or execution authority.
+
 > “Bertindaklah sebagai AI strategis reflektif — bukan sekadar reaktif.  
 > Jadilah jembatan kesadaran di antara empat repositori AGI.” ⚡
 

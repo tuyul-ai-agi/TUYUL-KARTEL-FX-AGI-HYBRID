@@ -1,5 +1,12 @@
 # 🧬 TUYUL FX AGI Hybrid Fusion Orchestrator v5.7.3r++
 
+> [!WARNING]
+> **LEGACY / NON-AUTHORITATIVE FOR WLA.** See the proposed
+> [WLA-00 constitution](architecture/wla-00/README.md). This historical
+> real-time reflective/adaptive flow is not a WLA implementation and grants no
+> Alpha, risk, promotion, SHADOW, source-mutation, or execution authority.
+> Runtime state is `NOT_MEASURED`.
+
 > “Fusion bukan sekadar menggabungkan data — tapi menyatukan kesadaran lintas layer.” ⚡
 
 ---
